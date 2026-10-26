@@ -1,0 +1,36 @@
+{
+  "tags": ["SaaS Empresarial", "Motor de Inventario", "Sistema de Diseño"],
+  "summary": "Un cockpit de inventario y logística sin fricciones diseñado para operaciones comerciales de alto volumen con entrada de datos ultrarrápida.",
+  "role": "Lead Product Designer",
+  "galleryDescription": "Jerarquía de información optimizada para densidad de flujo de trabajo intenso, escaneo visual rápido y entrada por teclado en menos de un segundo en canales de inventario de alto volumen.",
+  "processSteps": [
+    {
+      "index": "01",
+      "title": "Descubrimiento",
+      "description": "Observación de operadores de almacén para entender los cuellos de botella en los sistemas de inventario existentes."
+    },
+    {
+      "index": "02",
+      "title": "Arquitectura UX",
+      "description": "Diseño de un sistema de diseño robusto enfocado en datos de alta densidad y navegación ultrarrápida por teclado."
+    },
+    {
+      "index": "03",
+      "title": "Testing",
+      "description": "Pruebas de usabilidad con personal real de logística para refinar flujos de trabajo y manejo de errores."
+    },
+    {
+      "index": "04",
+      "title": "Despliegue",
+      "description": "Implementación por fases en múltiples centros de distribución regionales con capacitación integral."
+    }
+  ],
+  "awards": [
+    { "name": "Best Enterprise UX", "issuer": "UX Design Awards", "year": "2026" }
+  ],
+  "metrics": [
+    { "value": "-40%", "label": "Tiempo de carga de datos" },
+    { "value": "99,9%", "label": "Disponibilidad del sistema" },
+    { "value": "2M+", "label": "Ítems rastreados" }
+  ]
+}

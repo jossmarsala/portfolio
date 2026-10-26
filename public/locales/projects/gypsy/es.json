@@ -1,0 +1,48 @@
+{
+  "tags": [
+    "Desarrollo Full-Stack",
+    "Diseño UI/UX",
+    "CMS a Medida",
+    "Catálogo E-Commerce"
+  ],
+  "summary": "Diseño y desarrollo de un ecosistema digital para Gypsy, una marca de joyería de autor: un catálogo de productos y un panel de administración a medida que centraliza la gestión del inventario y sincroniza el stock en tiempo real.",
+  "role": "Full-Stack Developer & Diseñadora UI/UX",
+  "galleryDescription": "Diseño editorial minimalista que pone en primer plano la calidez del bronce, cobre y alpaca — whitespace generoso, grillas limpias y filtrado intuitivo en mobile. Complementado con una SPA privada en React donde gestionar el inventario es cuestión de pocos clics.",
+  "processSteps": [
+    {
+      "index": "01",
+      "title": "Diagnosticar el cuello de botella",
+      "description": "Gypsy operaba exclusivamente por DMs de Instagram. Los clientes no tenían un lugar centralizado para ver disponibilidad ni precios; cada consulta era manual. El objetivo: reemplazar esa fricción con un catálogo en tiempo real y autogestionable."
+    },
+    {
+      "index": "02",
+      "title": "Diseñar la arquitectura",
+      "description": "Desacoplada pero sincronizada: un catálogo público en Vanilla JS para rendimiento móvil instantáneo y SEO limpio, conectado via API REST a una SPA administrativa en React + Vite que propaga cada actualización en tiempo real al storefront."
+    },
+    {
+      "index": "03",
+      "title": "Construir el CMS",
+      "description": "Node.js + Express serverless en Vercel, PostgreSQL con Prisma ORM para migraciones tipadas, y Vercel Blob para fotografías de joyas en alta resolución — todo integrado a un panel privado donde crear, editar o dar de baja un producto toma segundos."
+    },
+    {
+      "index": "04",
+      "title": "Entregar autonomía",
+      "description": "El dueño de Gypsy pasó de responder DMs manuales a administrar su propio catálogo digital de forma independiente — sin conocimientos técnicos requeridos. El catálogo elevó la percepción de valor de las piezas artesanales con un canal oficial, rápido y confiable."
+    }
+  ],
+  "awards": [],
+  "metrics": [
+    {
+      "value": "0",
+      "label": "Dependencia técnica para actualizar"
+    },
+    {
+      "value": "100%",
+      "label": "Sincronización de stock en tiempo real"
+    },
+    {
+      "value": "2",
+      "label": "Entornos independientes (público + admin)"
+    }
+  ]
+}

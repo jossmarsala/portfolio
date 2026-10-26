@@ -1,0 +1,134 @@
+/* ── Hero section ── */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: visible;
+}
+
+/* ── Carousel wrapper: z-index 2, sandwiched between back and front title layers ── */
+.carousel-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  overflow: visible;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+/* ── Hero title — shared base ── */
+.portfolio-title {
+  font-family: var(--font-family-main);
+  font-size: clamp(3.5rem, 18.5vw, 22.5rem);
+  text-align: center;
+  line-height: 0.82;
+  font-weight: var(--font-weight-main);
+  letter-spacing: var(--letter-spacing-main);
+  margin: 0;
+  transition: font-family 0.3s ease;
+  white-space: nowrap !important;
+  user-select: none;
+  width: max-content;
+
+  /* Positioned slightly above center */
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.portfolio-title .decrypted-text-wrapper,
+.portfolio-title .decrypted-char {
+  white-space: nowrap !important;
+}
+
+.portfolio-title .tilted-o {
+  display: inline-block !important;
+  transform: translate(0.03em, -0.01em) rotate(40deg) scaleX(0.9) !important;
+  transform-origin: center;
+}
+
+/* ── Hero tagline ── */
+.hero-tagline {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.5vw, 1.4rem);
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.5));
+  margin: 0;
+  user-select: none;
+  white-space: nowrap;
+  pointer-events: none;
+
+  /* Positioned closer below center where the name sits */
+  position: absolute;
+  top: calc(46% + clamp(1.8rem, 8.6vw, 10.6rem));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+
+  /* Smooth fade-in on mount / language change */
+  animation: tagline-fade-in 0.4s ease forwards;
+}
+
+@keyframes tagline-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ── Works overlay section: provides sticky scroll room ─────────────────────
+   3× viewport height gives the pinned bento-swap 2 extra viewports of scroll
+   distance. No overflow:hidden here — that would break position:sticky on the
+   inner split-works-container. The box-shadow still appears on the first 100vh
+   of the section as it slides over the About section. ── */
+/* ── Works overlay section: peeks at bottom of hero as smaller rectangle and scales up ── */
+.works-overlay-section {
+  position: relative;
+  z-index: 10;
+  background-color: var(--color-surface);
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  margin-top: -48px;
+  transform: scaleX(0.94);
+  transform-origin: top center;
+  box-shadow:
+    0 -4px 20px rgba(0, 0, 0, 0.04),
+    0 4px 20px rgba(0, 0, 0, 0.04),
+    0 -1px 3px rgba(0, 0, 0, 0.02),
+    0 1px 3px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+  will-change: transform, opacity;
+}
+
+/* ── Footer section wrapper: grey background, sits behind/below works section ── */
+.footer-section-wrapper {
+  position: relative;
+  width: 100%;
+  background-color: var(--color-surface-alt);
+  z-index: 1; /* Lower than works section so works section peeks on top */
+  margin-top: -48px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Content wrapper: transparent background so hero and footer backgrounds are visible around peeking rectangle ── */
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  background-color: transparent;
+}

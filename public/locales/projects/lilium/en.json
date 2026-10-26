@@ -1,0 +1,35 @@
+{
+  "tags": ["Creative Coding", "WebGL Shaders", "ASCII Rendering"],
+  "summary": "An interactive digital sandbox translating real-time 3D geometry and volumetric lighting into monospace typographic raster animations.",
+  "role": "Creative Developer",
+  "galleryDescription": "Shader experiments probing the boundaries between typographic glyph density, luminance thresholds, and interactive 3D spatial transformations.",
+  "processSteps": [
+    {
+      "index": "01",
+      "title": "Research",
+      "description": "Investigating legacy ASCII rendering techniques and modern WebGL shader capabilities."
+    },
+    {
+      "index": "02",
+      "title": "Shader Dev",
+      "description": "Writing custom fragment shaders to map luminance values to specific monospace characters."
+    },
+    {
+      "index": "03",
+      "title": "3D Integration",
+      "description": "Applying the ASCII post-processing pipeline to complex 3D scenes and lighting setups."
+    },
+    {
+      "index": "04",
+      "title": "Optimization",
+      "description": "Fine-tuning performance to ensure smooth 60fps rendering across various devices."
+    }
+  ],
+  "awards": [
+    { "name": "Developer Award", "issuer": "Awwwards", "year": "2025" }
+  ],
+  "metrics": [
+    { "value": "60fps", "label": "Render Target" },
+    { "value": "10k+", "label": "Codepen Views" }
+  ]
+}

@@ -1,0 +1,51 @@
+/* =====================================================
+   WarpHeadline — shared two-column typographic headline
+   Used by WorksSection ("my / works.") and Footer ("let's / talk.")
+   Consolidates .works-headline-* and .footer__headline-* into one block.
+   ===================================================== */
+
+.warp-headline {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  padding: clamp(1rem, 3vw, 3rem);
+  padding-bottom: 0;
+  box-sizing: border-box;
+}
+
+.warp-headline__col {
+  flex: 0 0 50%;
+  width: 50%;
+  max-width: 50%;
+  position: relative;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.warp-headline__col--right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ── Responsive ────────────────────────────────────── */
+@media (max-width: 600px) {
+  .warp-headline {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: clamp(0.75rem, 3vw, 1.5rem);
+    padding-bottom: 0;
+    gap: 0;
+  }
+
+  .warp-headline__col {
+    flex: 0 0 50%;
+    width: 50%;
+    max-width: 50%;
+    min-width: 0;
+  }
+
+  .warp-headline__col--right {
+    justify-content: flex-end;
+  }
+}

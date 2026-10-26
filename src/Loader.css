@@ -1,0 +1,189 @@
+/* =====================================================
+   Loader — cinematic intro animation
+   =====================================================
+   
+   TUNING THE O-SPLIT:
+   The split point determines where the letter "O" is halved.
+   Change --loader-clip-at to shift the split left or right.
+   41% is calibrated for Helvetica Bold at letter-spacing -0.1em.
+   Lower value → split moves left (less of "j" visible on left piece).
+   Higher value → split moves right (more of "o" on the left piece).
+   ===================================================== */
+
+:root {
+  --loader-clip-at: 41%; /* x-position of the O's center   */
+  --loader-slide-dist-left: 6vw; /* how far left half flies left   */
+  --loader-slide-dist-right: 8vw; /* how far right half flies right */
+  --loader-font-size: clamp(3.2rem, 10vw, 7.5rem);
+}
+
+/* ── Outer wrapper ────────────────────────────────── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-index-loader);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* never blocks the carousel or page */
+}
+
+.loader--exit {
+  pointer-events: none;
+}
+
+/* ── Stage (centered) ─────────────────────────────── */
+.loader__stage {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Shared word typography ───────────────────────── */
+.loader__word,
+.loader__line1,
+.loader__line2 {
+  font-family: var(--font-family-main);
+  font-size: var(--loader-font-size);
+  font-weight: 700;
+  letter-spacing: -0.12em;
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ── Split group ──────────────────────────────────── */
+.loader__split-group {
+  position: relative;
+  opacity: 0;
+  clip-path: inset(-25% -100vw -25% -100vw);
+  will-change: clip-path;
+}
+
+/* Enter: fade in */
+.loader--enter .loader__split-group {
+  animation: loader-fade-in 0.5s 0.05s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Stay visible through split + reveal */
+.loader--split .loader__split-group,
+.loader--reveal .loader__split-group {
+  opacity: 1;
+  clip-path: inset(-25% -100vw -25% -100vw);
+}
+
+/* Sweep down when exit begins (instead of fade) */
+.loader--compose .loader__split-group,
+.loader--exit .loader__split-group {
+  opacity: 1;
+  clip-path: inset(125% -100vw -25% -100vw);
+  transition: clip-path 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@keyframes loader-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Left half: "j" + left side of "O" ───────────── */
+.loader__half--left {
+  clip-path: polygon(
+    -30% -30%,
+    var(--loader-clip-at) -30%,
+    var(--loader-clip-at) 130%,
+    -30% 130%
+  );
+  transform: translateX(0);
+  transition: transform 0.9s var(--ease-in-expo);
+  will-change: transform;
+}
+
+/* ── Right half: right side of "O" + "s" ─────────── */
+.loader__half--right {
+  /*
+    polygon() extends far right/top/bottom (130%) so glyph
+    overflow on the outer edges is never clipped.
+    Only the left edge (at split point) is a hard mask.
+  */
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(
+    var(--loader-clip-at) -30%,
+    130% -30%,
+    130% 130%,
+    var(--loader-clip-at) 130%
+  );
+  transform: translateX(0);
+  transition: transform 0.9s var(--ease-in-expo);
+  will-change: transform;
+}
+
+/* Split: fly apart */
+.loader--split .loader__half--left,
+.loader--reveal .loader__half--left,
+.loader--compose .loader__half--left,
+.loader--exit .loader__half--left {
+  transform: translateX(calc(-1 * var(--loader-slide-dist-left)));
+}
+
+.loader--split .loader__half--right,
+.loader--reveal .loader__half--right,
+.loader--compose .loader__half--right,
+.loader--exit .loader__half--right {
+  transform: translateX(var(--loader-slide-dist-right));
+}
+
+/* ── Mono label (appears between split text) ──────── */
+.loader__mono-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-h4);
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-mono);
+  text-transform: lowercase;
+  opacity: 0;
+  white-space: nowrap;
+  filter: blur(0px);
+  transition:
+    opacity 0.35s ease,
+    filter 0.35s ease;
+}
+
+.loader__mono-lines {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+  width: max-content;
+}
+
+/* Each DecryptedText inside the loader must be a full block row */
+.loader__mono-lines .decrypted-text-wrapper {
+  display: block;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Appear instantly during split phase to let DecryptedText handle the animation */
+.loader--split .loader__mono-label {
+  opacity: 1;
+  filter: blur(0px);
+}
+
+/* Fade out when reveal begins */
+.loader--reveal .loader__mono-label,
+.loader--compose .loader__mono-label,
+.loader--exit .loader__mono-label {
+  opacity: 0;
+  filter: blur(4px);
+  transition:
+    opacity 0.35s ease,
+    filter 0.35s ease;
+}

@@ -1,0 +1,34 @@
+{
+  "tags": ["Full-Stack Dev", "UI/UX Design", "Custom CMS", "E-Commerce"],
+  "summary": "End-to-end digital transformation for an artisan jewelry brand: from manual Instagram management to an autonomous web ecosystem with an editorial catalog and a custom-built inventory admin panel. Real-time stock sync, no developer dependency.",
+  "role": "Full-Stack Developer & UI/UX Designer",
+  "galleryDescription": "Editorial minimalist design that lets the warmth of bronze, copper, and alpaca metals take center stage — generous whitespace, clean grids, and frictionless mobile filtering. Paired with a private React SPA that turns inventory management into a matter of a few clicks.",
+  "processSteps": [
+    {
+      "index": "01",
+      "title": "Diagnose the bottleneck",
+      "description": "Before this project, Gypsy ran entirely through Instagram DMs. Customers had no centralized place to check availability or pricing; every inquiry was manual. The goal: replace that friction with a real-time, self-managed catalog."
+    },
+    {
+      "index": "02",
+      "title": "Design the architecture",
+      "description": "Decoupled but synchronized: a Vanilla JS public catalog for instant mobile performance and clean SEO, connected via a REST API to a React + Vite admin SPA that pushes every update live to the storefront."
+    },
+    {
+      "index": "03",
+      "title": "Build the CMS",
+      "description": "Node.js + Express serverless functions on Vercel, PostgreSQL with Prisma ORM for typed migrations, and Vercel Blob for high-resolution jewelry photography — all wired to a private admin panel where creating, editing, or retiring a product takes seconds."
+    },
+    {
+      "index": "04",
+      "title": "Ship autonomy",
+      "description": "The owner of Gypsy went from answering manual DMs to managing their own digital catalog independently — no technical knowledge required. The catalog elevated the perceived value of artisan pieces with a fast, official channel that amplifies Instagram traffic."
+    }
+  ],
+  "awards": [],
+  "metrics": [
+    { "value": "0", "label": "Developer dependency for updates" },
+    { "value": "100%", "label": "Real-time stock sync" },
+    { "value": "2", "label": "Independent environments (public + admin)" }
+  ]
+}

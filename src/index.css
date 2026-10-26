@@ -1,0 +1,77 @@
+:root {
+  font-family: var(--font-family-main);
+  color: var(--color-text);
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+  /* Apply font-smoothing globally — removes need to repeat in every component */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Root is now a plain block — scroll layout is handled per-section */
+#root {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-main);
+  letter-spacing: var(--letter-spacing-main);
+}
+
+/* Base tilted-O styles and variables */
+:root {
+  --tilted-o-logo-offset-x: 0.1em;
+  --tilted-o-logo-offset-y: -0.01em;
+  --tilted-o-anim-offset-x: 0.05em;
+  --tilted-o-anim-offset-y: -0.03em;
+}
+
+/* Default / Logo tilted-o */
+.tilted-o {
+  display: inline-block !important;
+  transform: translate(
+      var(--tilted-o-logo-offset-x),
+      var(--tilted-o-logo-offset-y)
+    )
+    rotate(40deg) scaleX(0.9) !important;
+  transform-origin: center;
+}
+
+/* Specific tilted-o for Logo containers */
+.portfolio-title .tilted-o,
+.footer__sig-name .tilted-o {
+  transform: translate(
+      var(--tilted-o-logo-offset-x),
+      var(--tilted-o-logo-offset-y)
+    )
+    rotate(40deg) scaleX(0.9) !important;
+}
+
+/* Specific tilted-o for Animations (Loader & SplitText) */
+.loader__word .tilted-o,
+.split-works__word .tilted-o,
+.tilted-o--anim {
+  transform: translate(
+      var(--tilted-o-anim-offset-x),
+      var(--tilted-o-anim-offset-y)
+    )
+    rotate(40deg) scaleX(0.9) !important;
+}

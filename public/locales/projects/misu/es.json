@@ -1,0 +1,34 @@
+{
+  "tags": [
+    "Diseño UX/UI",
+    "Desarrollo Full-Stack",
+    "Planificación con IA"
+  ],
+  "summary": "Misu es un sistema de productividad diseñado para acompañar a personas con dificultades de atención: A partir del nivel de energía disponible, el sistema ajusta su apariencia y propone tareas acordes, integra herramientas de organización y concentración en un solo espacio.",
+  "role": "Diseñadora UX/UI y Desarrolladora Full-Stack (proyecto individual)",
+  "galleryDescription": "¿Cómo organizarse cuando la energía y la capacidad de concentración no son iguales todos los días? Muchas herramientas de productividad parten de una base estática. MISU nace para proponer una nueva forma de organizarse: un sistema personal que se adapta al usuario. A partir del nivel de energía disponible, ajusta la interfaz y las recomendaciones de tareas, mientras reúne herramientas de planificación y estudio como temporizador pomodoro, organización semanal asistida por IA, música de ambiente, y más, en un espacio modular.",
+  "processSteps": [
+    {
+      "index": "01",
+      "title": "Adaptar antes que exigir",
+      "description": "Las recomendaciones se ajustan al nivel de energía, tipo de tarea, duración estimada y urgencia del vencimiento — reduciendo el coste de decidir qué hacer sin quitarle al usuario la posibilidad de elegir otra tarea."
+    },
+    {
+      "index": "02",
+      "title": "Hacer visible el siguiente paso",
+      "description": "En vez de presentar todas las tareas como igualmente accionables, el motor de puntuación calcula una selección acotada que ayuda a decidir por dónde empezar. En niveles bajos de energía también limita la cantidad y el tiempo total de sugerencias."
+    },
+    {
+      "index": "03",
+      "title": "Conectar planificación y ejecución",
+      "description": "El planificador semanal (Google Gemini API) convive con el temporizador Pomodoro, audio ambiental, Focus Shield y una lista diaria de tareas — para pasar de organizarse a trabajar en el mismo espacio."
+    },
+    {
+      "index": "04",
+      "title": "Publicar y mejorar",
+      "description": "Comenzó como herramienta de uso personal y evolucionó a una app web publicada con repositorio público — autenticación con Supabase, sincronización en la nube, modo demo con tareas de ejemplo y soporte para español, inglés e italiano."
+    }
+  ],
+  "awards": [],
+  "metrics": []
+}

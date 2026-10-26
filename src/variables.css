@@ -1,0 +1,109 @@
+:root {
+  /* =========================================
+     1. Typography - Families & Styles
+     ========================================= */
+  --font-family-main: "Helvetica", Arial, sans-serif;
+  --font-family-secondary: "Roboto Mono", monospace;
+
+  --font-weight-main: 700; /* Bold */
+  --font-weight-secondary: 400; /* Ultra Light / Thin */
+
+  --letter-spacing-main: -0.1em; /* Small negative letter spacing */
+  --letter-spacing-normal: 0em;
+  --letter-spacing-readable: -0.07em;
+  --letter-spacing-mono: 0.08em;
+
+  /* =========================================
+     2. Typography - Fixed Sizes (Mobile First)
+     ========================================= */
+  /* These variables define the current sizes, 
+     updated automatically per device in media queries below */
+
+  --font-size-h1: 3.2rem; /* 51px */
+  --font-size-h2: 1.75rem; /* 28px */
+  --font-size-h3: 1.5rem; /* 24px */
+  --font-size-h4: 1.2rem; /* 20px */
+  --font-size-body: 1rem; /* 16px */
+  --font-size-small: 0.875rem; /* 14px */
+  --font-size-tiny: 0.75rem; /* 12px */
+
+  --line-height-tight: 0.85;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* =========================================
+     3. Color Palette
+     ========================================= */
+  --color-bg: #efefef;           /* Page background, About section */
+  --color-surface: #ffffff;      /* Works overlay section */
+  --color-surface-alt: #f0f0f0;  /* Footer wrapper, content wrapper */
+  --color-text: #000000;         /* All primary text */
+  --color-text-muted: rgba(0, 0, 0, 0.45);  /* Nav links, secondary UI */
+  --color-text-dim: rgba(0, 0, 0, 0.28);    /* Year, role label */
+  --color-text-dimmer: rgba(0, 0, 0, 0.35); /* Sig role */
+  --color-text-accent: #b0b0b0;  /* About keywords */
+  --color-label-sub: #8e8e8e;    /* Bento label sub-text */
+  --color-cursor: #f7f8fa;       /* Custom cursor fill */
+  --color-border: rgba(0, 0, 0, 0.1); /* Footer mid divider */
+
+  /* =========================================
+     4. Spacing System
+     ========================================= */
+  --space-2xs: 0.25rem; /* 4px */
+  --space-xs: 0.5rem; /* 8px */
+  --space-sm: 0.75rem; /* 12px */
+  --space-md: 1rem; /* 16px */
+  --space-lg: 1.5rem; /* 24px */
+  --space-xl: 2rem; /* 32px */
+  --space-2xl: 3rem; /* 48px */
+  --space-3xl: 4rem; /* 64px */
+
+  /* =========================================
+     5. Animation
+     ========================================= */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-expo: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-material: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* =========================================
+     6. Z-Index Scale
+     ========================================= */
+  --z-index-base: 0;
+  --z-index-dropdown: 100;
+  --z-index-sticky: 200;
+  --z-index-modal: 300;
+  --z-index-popover: 400;
+  --z-index-tooltip: 500;
+  --z-index-loader: 9999;
+  --z-index-navbar: 10000;
+}
+
+/* =========================================
+   Device Breakpoints for Fixed Font Sizes
+   ========================================= */
+
+/* Tablet (768px and up) */
+@media (min-width: 768px) {
+  :root {
+    --font-size-h1: 2.5rem; /* 40px */
+    --font-size-h2: 2rem; /* 32px */
+    --font-size-h3: 1.75rem; /* 28px */
+    --font-size-h4: 1.5rem; /* 24px */
+    --font-size-body: 1rem; /* 16px */
+    --font-size-small: 0.875rem;
+    --font-size-tiny: 0.75rem;
+  }
+}
+
+/* Desktop (1024px and up) */
+@media (min-width: 1024px) {
+  :root {
+    --font-size-h1: 4rem; /* 128px */
+    --font-size-h2: 2.5rem; /* 40px */
+    --font-size-h3: 2rem; /* 32px */
+    --font-size-h4: 1.75rem; /* 28px */
+    --font-size-body: 1.125rem; /* 18px */
+    --font-size-small: 1rem; /* 16px */
+    --font-size-tiny: 0.875rem; /* 14px */
+  }
+}

@@ -1,0 +1,144 @@
+/* =========================================
+   Navbar — fixed, minimal, always on top
+   ========================================= */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-index-navbar);
+  padding: var(--space-lg) var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* Transparent by default — no background on fresh load */
+  background: transparent;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  transition:
+    padding 0.4s var(--ease-spring);
+}
+
+/* ---- List ---- */
+.navbar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+/* ---- Link ---- */
+.navbar__link {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+  color: #fff;
+  pointer-events: auto;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-mono);
+  text-transform: lowercase;
+  transition:
+    opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.navbar__link:hover,
+.navbar__link:focus-visible {
+  opacity: 0.6;
+  outline: none;
+}
+
+/* Keep the decrypted text wrapper inline */
+.navbar__link .decrypted-text-wrapper {
+  display: inline-block;
+  width: 100%;
+}
+
+/* Override encrypted char color inside nav */
+.navbar__link-encrypted {
+  opacity: 0.3;
+}
+
+.navbar__link-revealed {
+  /* inherits white from parent */
+}
+
+/* ---- Language toggle button ---- */
+.navbar__lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  background: transparent;
+  border: none;
+  padding: 0.15em 0;
+  cursor: pointer;
+  pointer-events: auto;
+  color: #fff;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-mono);
+  text-transform: uppercase;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(-6px);
+  animation: nav-item-in 0.55s var(--ease-spring) 0.05s forwards;
+  transition: opacity 0.2s ease;
+}
+
+.navbar__lang-toggle:hover {
+  opacity: 0.6;
+}
+
+.navbar__lang-toggle:focus-visible {
+  outline: none;
+  opacity: 0.6;
+}
+
+.navbar__lang-opt {
+  opacity: 0.3;
+  transition: opacity 0.25s ease;
+}
+
+.navbar__lang-opt--active {
+  opacity: 1;
+}
+
+.navbar__lang-divider {
+  opacity: 0.3;
+  font-size: 0.7em;
+}
+
+/* ---- Entrance animation on load ---- */
+.navbar__item {
+  mix-blend-mode: difference;
+  opacity: 0;
+  transform: translateY(-6px);
+  animation: nav-item-in 0.55s var(--ease-spring) forwards;
+}
+
+.navbar__item:nth-child(1) {
+  animation-delay: 0.15s;
+}
+.navbar__item:nth-child(2) {
+  animation-delay: 0.25s;
+}
+.navbar__item:nth-child(3) {
+  animation-delay: 0.35s;
+}
+
+@keyframes nav-item-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+

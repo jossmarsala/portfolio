@@ -1,0 +1,40 @@
+{
+  "tags": ["Product Design", "Full-Stack Dev", "Brand Identity", "Recommendation Engine"],
+  "summary": "A personalized wellness platform that organizes physical, mental, and nutritional resources and recommends content based on each person's profile, preferences, and goals.",
+  "role": "Product Owner · Brand & UX/UI Designer · Full-Stack Developer",
+  "galleryDescription": "Visual identity built to feel calm and approachable — clear hierarchy, soft gradients, accessible layouts, and voice-guided exercise routines for a genuinely inclusive wellness experience.",
+  "processSteps": [
+    {
+      "index": "01",
+      "title": "Know yourself",
+      "description": "User creates an account and completes a form about habits, preferences, goals, and declared needs — the foundation for every recommendation."
+    },
+    {
+      "index": "02",
+      "title": "Find a starting point",
+      "description": "A profile-based scoring engine processes the data and selects relevant content, reducing the burden of knowing where to begin."
+    },
+    {
+      "index": "03",
+      "title": "Your personal space",
+      "description": "\"Mi Espacio\" surfaces curated recommendations — exercises, meditations, meal plans — so users don't have to rebuild their search on every visit."
+    },
+    {
+      "index": "04",
+      "title": "Explore and return",
+      "description": "Users can follow suggestions, browse the blog, search by interest, or regenerate recommendations whenever they need fresh options."
+    }
+  ],
+  "awards": [
+    {
+      "name": "3rd Place",
+      "issuer": "Emprende U — National Entrepreneurship Competition",
+      "year": "2024"
+    }
+  ],
+  "metrics": [
+    { "value": "100%", "label": "Found it easy to use" },
+    { "value": "88.9%", "label": "Felt better or more relaxed" },
+    { "value": "77.8%", "label": "Would recommend Vitalia" }
+  ]
+}

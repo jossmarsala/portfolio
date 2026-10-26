@@ -1,0 +1,67 @@
+.about-section {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--color-bg);
+  min-height: auto;
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.about-inner {
+  max-width: 850px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 1rem;
+}
+
+/* Quote */
+.about-quote {
+  margin: 0;
+  font-family: var(--font-family-main);
+  font-size: clamp(2rem, 5vw, 3.3rem);
+  font-weight: var(--font-weight);
+  text-align: left;
+  letter-spacing: var(--letter-spacing-readable);
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+}
+
+/* Highlighted animated keywords — class sits on the wrapper span */
+.about-keyword {
+  color: var(--color-text-accent);
+  white-space: nowrap;
+}
+
+/* Force same grey on scrambling chars (overrides DecryptedText defaults) */
+.about-keyword-enc {
+  color: var(--color-text-accent) !important;
+  opacity: 0.5;
+}
+
+@media (max-width: 600px) {
+  .about-inner {
+    padding: 1rem 1.5rem;
+    max-width: 100%;
+  }
+
+  .about-quote {
+    font-size: 2.2rem;
+    max-width: 100%;
+    line-height: 1.1;
+  }
+
+  .about-keyword {
+    pointer-events: none;
+  }
+}
