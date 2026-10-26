@@ -36,7 +36,7 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     year: "2024",
     imageUrl: "/projects/vitalia/videos/HERO.mp4",
     videoUrl: "/projects/vitalia/videos/HERO.mp4",
-    url: "https://vitalia-selfcare.vercel.app/",
+    url: "https://vitalia-selfcare.vercel.app",
     highlightWords: ["personalized", "wellness", "inclusive"],
     galleryImages: [
       "/projects/vitalia/videos/gif-reels-vitalia.mp4",
@@ -71,7 +71,7 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     title: "gypsy joyas",
     year: "2025",
     imageUrl: "/projects/gypsy/images/HERO.webp",
-    url: "https://gypsy-joyas.vercel.app/",
+    url: "https://gypsy-joyas.vercel.app",
     highlightWords: ["artisan", "real-time", "autonomous"],
     galleryImages: [
       "/projects/gypsy/images/HERO.webp",
@@ -88,7 +88,7 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     year: "2026",
     imageUrl: "/projects/posdata/videos/HERO.mp4?v=2",
     videoUrl: "/projects/posdata/videos/HERO.mp4?v=2",
-    url: "https://posdata.studio",
+    url: "https://posdatastudio.vercel.app",
     highlightWords: ["archive", "editorial", "obsolescence"],
     galleryImages: [
       "https://assets.codepen.io/7558/bw-portrait-009.jpg",
@@ -99,13 +99,30 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     ],
     processImageUrl: "https://assets.codepen.io/7558/bw-portrait-001.jpg",
   },
+  lilium: {
+    slug: "lilium",
+    title: "lilium cyber",
+    year: "2025",
+    imageUrl: "/projects/lilium/videos/HERO.mp4",
+    videoUrl: "/projects/lilium/videos/HERO.mp4",
+    url: "https://lilium-cyber.vercel.app",
+    highlightWords: ["real-time", "volumetric", "monospace"],
+    galleryImages: [
+      "/projects/lilium/images/HERO.webp",
+      "https://assets.codepen.io/7558/bw-portrait-002.jpg",
+      "https://assets.codepen.io/7558/bw-portrait-003.jpg",
+      "https://assets.codepen.io/7558/bw-portrait-008.jpg",
+      "https://assets.codepen.io/7558/bw-portrait-010.jpg",
+    ],
+    processImageUrl: "https://assets.codepen.io/7558/bw-portrait-009.jpg",
+  },
   ascii: {
     slug: "ascii",
     title: "lilium cyber",
     year: "2025",
     imageUrl: "/projects/lilium/videos/HERO.mp4",
     videoUrl: "/projects/lilium/videos/HERO.mp4",
-    url: "https://codepen.io",
+    url: "https://lilium-cyber.vercel.app",
     highlightWords: ["real-time", "volumetric", "monospace"],
     galleryImages: [
       "/projects/lilium/images/HERO.webp",

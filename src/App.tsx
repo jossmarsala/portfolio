@@ -8,10 +8,8 @@ import CustomCursor from "./CustomCursor";
 import WorksSection from "./components/WorksSection";
 import Footer from "./Footer";
 import JosMarsalaLogo from "./JosMarsalaLogo";
-import ProjectView from "./components/ProjectView";
 import AboutSidebar from "./AboutSidebar";
 import { PROJECTS_DATA } from "./config/projects";
-import type { ProjectItem } from "./config/projects";
 import { useLang } from "./context/LanguageContext";
 
 const CAROUSEL_IMAGES = [
@@ -53,63 +51,37 @@ function getProjectSlugFromPath(path: string): string | null {
 
 function App() {
   const { lang, t } = useLang();
-  const initialSlug = getProjectSlugFromPath(window.location.pathname);
-  const [loaderDone, setLoaderDone] = useState(() => Boolean(initialSlug));
+  const [loaderDone, setLoaderDone] = useState(false);
 
   const handleLoaderComplete = useCallback(() => {
     setLoaderDone(true);
   }, []);
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
-    () => {
-      return initialSlug ? PROJECTS_DATA[initialSlug] || null : null;
-    },
-  );
 
   const [aboutOpen, setAboutOpen] = useState(false);
   const handleAboutOpen = useCallback(() => setAboutOpen(true), []);
   const handleAboutClose = useCallback(() => setAboutOpen(false), []);
 
-  // Sync document title with active project or home portfolio
+  // Title for portfolio home
   useEffect(() => {
-    if (selectedProject) {
-      document.title = `${selectedProject.title} — Jos Marsala`;
-    } else {
-      document.title = "Jos Marsala";
-    }
-  }, [selectedProject]);
+    document.title = "Jos Marsala";
+  }, []);
 
-  // Support browser forward/back navigation
+  // If a project route is accessed directly, redirect to its live web URL
   useEffect(() => {
-    const handlePopState = () => {
-      const slug = getProjectSlugFromPath(window.location.pathname);
-      if (slug && PROJECTS_DATA[slug]) {
-        setSelectedProject(PROJECTS_DATA[slug]);
-      } else {
-        setSelectedProject(null);
+    const slug = getProjectSlugFromPath(window.location.pathname);
+    if (slug) {
+      const project = PROJECTS_DATA[slug];
+      if (project?.url) {
+        window.location.replace(project.url);
       }
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, []);
-
-  const handleProjectSelect = useCallback((slug: string) => {
-    const project = PROJECTS_DATA[slug] || PROJECTS_DATA["vitalia"];
-    if (!project) return;
-    setSelectedProject(project);
-
-    const newPath = `/${project.slug}`;
-    if (window.location.pathname !== newPath) {
-      window.history.pushState({ slug: project.slug }, "", newPath);
     }
   }, []);
 
-  const handleProjectClose = useCallback(() => {
-    setSelectedProject(null);
-    if (window.location.pathname !== "/") {
-      window.history.pushState(null, "", "/");
+  // Redirect directly to the project's external website in a new tab when clicked
+  const handleProjectSelect = useCallback((slug: string) => {
+    const project = PROJECTS_DATA[slug];
+    if (project?.url) {
+      window.open(project.url, "_blank", "noopener,noreferrer");
     }
   }, []);
 
@@ -427,15 +399,7 @@ function App() {
         </section>
       </div>
 
-      {/* ── Project Details Modal / View (Wireframe layout) ── */}
-      {selectedProject && (
-        <ProjectView
-          key={selectedProject.slug}
-          project={selectedProject}
-          onClose={handleProjectClose}
-          onProjectSelect={handleProjectSelect}
-        />
-      )}
+
     </>
   );
 }

@@ -168,9 +168,18 @@ export function BentoImages({
               ref={(el) => setItem(el, i)}
               className={`bento-images__item bento-images__item--${i + 1}`}
               data-cursor-project={onProjectSelect ? "true" : undefined}
+              role="link"
+              tabIndex={0}
+              aria-label={WORK_TITLES[i]?.title ?? `Work ${i + 1}`}
               onClick={() => {
                 if (onProjectSelect) {
                   onProjectSelect(WORK_TITLES[i].slug);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onProjectSelect?.(WORK_TITLES[i].slug);
                 }
               }}
               style={{ cursor: onProjectSelect ? "pointer" : "default" }}

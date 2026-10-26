@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const SIDE_TITLES = [
   { title: "posdata studio", sub: "2026", slug: "posdata" },
-  { title: "lilium cyber", sub: "2025", slug: "ascii" },
+  { title: "lilium cyber", sub: "2025", slug: "lilium" },
   { title: "faro stock manager", sub: "2026", slug: "faro" },
 ];
 
@@ -117,9 +117,18 @@ export function BentoSideProjects({
               }}
               className={`bento-images__item bento-side__item--${i + 1}`}
               data-cursor-project={onProjectSelect ? "true" : undefined}
+              role="link"
+              tabIndex={0}
+              aria-label={SIDE_TITLES[i]?.title ?? `Side Project ${i + 1}`}
               onClick={() => {
                 if (onProjectSelect) {
                   onProjectSelect(SIDE_TITLES[i].slug);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onProjectSelect?.(SIDE_TITLES[i].slug);
                 }
               }}
               style={{ cursor: onProjectSelect ? "pointer" : "default" }}
