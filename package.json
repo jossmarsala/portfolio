@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "optimize:images": "bash scripts/optimize-images.sh",
+    "optimize:videos": "bash scripts/optimize-videos.sh"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
