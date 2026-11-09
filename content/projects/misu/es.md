@@ -34,21 +34,16 @@ Un espacio de trabajo personalizable mediante widgets arrastrables que integran 
 
 Modo de enfoque que simplifica la interfaz, reduce los estímulos visuales y elimina elementos secundarios para minimizar las distracciones y facilitar la concentración.
 
-# El desafío
-
-Este fue uno de los desafíos más importantes a la hora de diseñar la experiencia de usuario: el nivel de energía del usuario debía una variable que atraviese y personalice toda la experiencia. El usuario puede indicar su energía en una escala de cuatro niveles. A partir de esa selección, el sistema adapta distintos aspectos de su comportamiento:
-
-- Visual design: la ambientación y la apariencia de la interfaz cambian para acompañar cada estado.
-- Interaction design: los widgets y herramientas disponibles se ajustan a las necesidades del momento.
-- Motion design: la intensidad de las animaciones se modifica para ofrecer una experiencia más adecuada al nivel de estimulación buscado.
-- Task recommendations: las sugerencias se recalculan para priorizar actividades compatibles con la energía disponible.
-
 # Desarrollo técnico
 
-MISU fue desarrollado sobre React bajo una arquitectura modular y desacoplada para separar responsabilidades y mantener una experiencia flexible. Su núcleo incorpora un motor de recomendación determinista que evalúa compatibilidad con nivel de energía y proximidad de vencimientos de tareas mediante reglas de decisión y penalizaciones. Cuando el usuario declara baja energía, el algoritmo limita dinámicamente la cantidad de tareas sugeridas y las horas de esfuerzo acumulado. En paralelo, el estado del sistema modifica los tokens visuales del DOM, adaptando la paleta cromática, el contraste, la velocidad de los shaders y la densidad de componentes en pantalla.
-Para resolver la procrastinación de tareas extensas, el planificador semanal integra Google Gemini API mediante un contrato de prompting estructurado. El servicio aplica chunking a tareas superiores a tres horas, distribuye la carga con un límite de seis horas diarias y permite reorganizar los bloques mediante drag & drop. La experiencia se complementa con síntesis de audio nativa mediante Web Audio 1API, que modula la frecuencia y resonancia de los sonidos de interacción según la energía del usuario y genera ruido blanco, rosa y marrón para favorecer la concentración.
-La persistencia sigue un enfoque local-first: prioriza la actualización inmediata de localStorage y sincroniza posteriormente las mutaciones con Supabase mediante escrituras con debounce. Esto permite que el sistema funcione sin conexión y se sincronice al recuperar la conectividad. La arquitectura también contempla la separación entre lógica de estado, interfaz e internacionalización, con soporte para español, inglés e italiano.
+MISU fue desarrollado con React sobre una arquitectura modular. Su motor de recomendaciones cruza el nivel de energía con las fechas de entrega, y la interfaz responde al mismo estado: ajusta la paleta visual, los estímulos y la densidad de información.
+
+El planificador semanal incorpora Google Gemini API para dividir tareas extensas en bloques y ordenar la carga diaria mediante drag & drop. La experiencia sonora se resuelve con Web Audio API, que genera ambientes como ruido blanco y adapta los sonidos de interacción según la energía disponible.
+
+La persistencia sigue un enfoque local-first: localStorage y Supabase trabajan juntos para conservar los datos y sincronizarlos, incluso sin conexión. La arquitectura separa lógica, interfaz e internacionalización, con soporte para español, inglés e italiano.
 
 # Impacto
 
-MISU es el resultado de convertir una dificultad cotidiana propia, en una oportunidad para explorar nuevas formas de diseñar tecnología. Este proyecto me permitió trabajar sobre el desarrollo de un producto digital completo: desde la identificación de una necesidad y el diseño de un software que la resuelva, hasta la implementación de una aplicación funcional con usuarios activos y soporte en tres idiomas -español, inglés e italiano.
+MISU nació de convertir una dificultad cotidiana propia en una oportunidad para explorar nuevas formas de diseñar tecnología. El proyecto me permitió recorrer el ciclo completo de un producto digital: desde identificar una necesidad y diseñar el software que la resuelve, hasta implementar una aplicación funcional.
+
+Hoy MISU tiene usuarios activos y está disponible en español, inglés e italiano.
