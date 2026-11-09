@@ -1,8 +1,14 @@
 {
-  "tags": ["Creative Coding", "WebGL Shaders", "ASCII Rendering"],
+  "tags": [
+    "Creative Coding",
+    "WebGL Shaders",
+    "ASCII Rendering"
+  ],
   "summary": "An interactive digital sandbox translating real-time 3D geometry and volumetric lighting into monospace typographic raster animations.",
   "role": "Creative Developer",
   "galleryDescription": "Shader experiments probing the boundaries between typographic glyph density, luminance thresholds, and interactive 3D spatial transformations.",
+  "bannerTitle": "",
+  "bannerDescription": "",
   "processSteps": [
     {
       "index": "01",
@@ -26,10 +32,26 @@
     }
   ],
   "awards": [
-    { "name": "Developer Award", "issuer": "Awwwards", "year": "2025" }
+    {
+      "name": "Developer Award",
+      "issuer": "Awwwards",
+      "year": "2025"
+    }
   ],
   "metrics": [
-    { "value": "60fps", "label": "Render Target" },
-    { "value": "10k+", "label": "Codepen Views" }
+    {
+      "value": "60fps",
+      "label": "Render Target"
+    },
+    {
+      "value": "10k+",
+      "label": "Codepen Views"
+    }
+  ],
+  "extraSections": [
+    {
+      "title": "",
+      "content": ""
+    }
   ]
 }

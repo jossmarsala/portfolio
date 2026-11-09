@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/parse-projects.js && tsc -b && vite build",
+    "parse:projects": "node scripts/parse-projects.js",
+    "parse:projects:watch": "node scripts/parse-projects.js --watch",
     "lint": "oxlint",
     "preview": "vite preview",
     "optimize:images": "bash scripts/optimize-images.sh",
@@ -22,10 +24,12 @@
     "three": "^0.186.0"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
+    "js-yaml": "^5.5.0",
     "oxlint": "^1.79.0",
     "typescript": "~6.0.2",
     "vite": "^8.2.2"

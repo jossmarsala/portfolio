@@ -1,8 +1,14 @@
 {
-  "tags": ["Programación Creativa", "Shaders WebGL", "Renderizado ASCII"],
+  "tags": [
+    "Programación Creativa",
+    "Shaders WebGL",
+    "Renderizado ASCII"
+  ],
   "summary": "Un sandbox digital interactivo que traduce geometría 3D en tiempo real y luz volumétrica en animaciones raster tipográficas en monoespaciado.",
   "role": "Desarrolladora Creativa",
   "galleryDescription": "Experimentos de shaders que exploran los límites entre la densidad de glifos tipográficos, los umbrales de luminancia y las transformaciones espaciales 3D interactivas.",
+  "bannerTitle": "",
+  "bannerDescription": "",
   "processSteps": [
     {
       "index": "01",
@@ -26,10 +32,26 @@
     }
   ],
   "awards": [
-    { "name": "Developer Award", "issuer": "Awwwards", "year": "2025" }
+    {
+      "name": "Developer Award",
+      "issuer": "Awwwards",
+      "year": "2025"
+    }
   ],
   "metrics": [
-    { "value": "60fps", "label": "Objetivo de renderizado" },
-    { "value": "10k+", "label": "Vistas en Codepen" }
+    {
+      "value": "60fps",
+      "label": "Objetivo de renderizado"
+    },
+    {
+      "value": "10k+",
+      "label": "Vistas en Codepen"
+    }
+  ],
+  "extraSections": [
+    {
+      "title": "",
+      "content": ""
+    }
   ]
 }

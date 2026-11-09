@@ -281,7 +281,7 @@ const CustomCursor: React.FC = () => {
         const linkEl = target?.closest?.(
           "a, button, [data-cursor-hover]",
         ) as HTMLElement | null;
-        if (linkEl) {
+        if (linkEl && !linkEl.closest(".pv-quote")) {
           if (!isHoveringLink || activeLink !== linkEl) {
             addUnderline(linkEl);
           }
@@ -315,7 +315,7 @@ const CustomCursor: React.FC = () => {
       const linkEl = target?.closest?.(
         "a, button, [data-cursor-hover]",
       ) as HTMLElement | null;
-      if (linkEl) addUnderline(linkEl);
+      if (linkEl && !linkEl.closest(".pv-quote")) addUnderline(linkEl);
     };
 
     const handleMouseOut = (e: MouseEvent) => {

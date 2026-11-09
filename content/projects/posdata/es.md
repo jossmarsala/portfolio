@@ -1,0 +1,42 @@
+---
+role: Founder · Brand Designer · UX/UI Designer · Creative Developer
+tags:
+  - Estrategia de Marca
+  - Diseño Editorial
+  - UX/UI e Interacción
+  - Motion Design
+metrics:
+  - value: '4'
+    label: Verticales B2B definidos
+  - value: '4'
+    label: Pilares editoriales de contenido
+  - value: 1px
+    label: Detalle de retícula brutalist
+awards: []
+---
+
+# Summary
+
+Un estudio independiente de diseño y software nacido en el borde entre la sensibilidad editorial y la ingeniería.    Construido para organizaciones que valoran el prestigio estético pero sufren de obsolescencia digital.
+
+# Gallery
+
+Un sistema visual construido bajo el concepto de Fricción Material — el choque deliberado entre la fragilidad orgánica de la naturaleza y la precisión inmutable del hardware. Composiciones botánicas intervenidas por teclados mecánicos, pines de procesador y scanlines de CRT; cada fotografía procesada con tramas de bitmap y grano de escáner analógico.
+
+# Process
+
+## 01. Posicionamiento
+
+Benchmark profundo del sector: la pasividad institucional de estudios como Pentagram vs. el enfoque interactivo-first de Locomotive. La oportunidad: serenidad clínica y permanencia documental frente a un mercado saturado de agencias con tonos ruidosos y promesas comerciales vacías.
+
+## 02. Identidad & Voz
+
+Construcción de una voz de marca que se siente como recorrer una biblioteca ordenada: el concepto 'p.d.' (una posdata precisa, íntima y definitiva), sintaxis de archivo técnico en toda la comunicación, y la tesis central — la belleza no es un adorno; es la estructura que lo sostiene.
+
+## 03. Arquitectura UX/UI
+
+Retícula de 1px brutalist expuesta, carga de imágenes indexada (revelado en bitmap antes del render final), microcopy estructural que reemplaza CTAs genéricos por comandos racionales alineados con la marca. Motion diseñado como 'escáner defectuoso' — mecánico, preciso, con personalidad analógica.
+
+## 04. Go-To-Market B2B
+
+Diseño de la Auditoría de Obsolescencia como producto de entrada Caballo de Troya: un reporte técnico-heurístico (UX/UI, Core Web Vitals, WCAG 2.2 AA) que demuestra valor con datos antes de vender cualquier servicio. Regla de oro: nunca vender desarrollo sin antes diseñar o auditar la experiencia.

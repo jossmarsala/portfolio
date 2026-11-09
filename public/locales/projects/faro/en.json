@@ -1,8 +1,14 @@
 {
-  "tags": ["Enterprise SaaS", "Inventory Engine", "Design System"],
+  "tags": [
+    "Enterprise SaaS",
+    "Inventory Engine",
+    "Design System"
+  ],
   "summary": "A frictionless inventory and logistics cockpit engineered for high-throughput commercial operations with lightning-fast data entry.",
   "role": "Lead Product Designer",
   "galleryDescription": "Information hierarchy optimized for intense workflow density, rapid visual scanning, and sub-second keyboard entry across high-volume inventory channels.",
+  "bannerTitle": "",
+  "bannerDescription": "",
   "processSteps": [
     {
       "index": "01",
@@ -26,11 +32,30 @@
     }
   ],
   "awards": [
-    { "name": "Best Enterprise UX", "issuer": "UX Design Awards", "year": "2026" }
+    {
+      "name": "Best Enterprise UX",
+      "issuer": "UX Design Awards",
+      "year": "2026"
+    }
   ],
   "metrics": [
-    { "value": "-40%", "label": "Data Entry Time" },
-    { "value": "99.9%", "label": "System Uptime" },
-    { "value": "2M+", "label": "Items Tracked" }
+    {
+      "value": "-40%",
+      "label": "Data Entry Time"
+    },
+    {
+      "value": "99.9%",
+      "label": "System Uptime"
+    },
+    {
+      "value": "2M+",
+      "label": "Items Tracked"
+    }
+  ],
+  "extraSections": [
+    {
+      "title": "",
+      "content": ""
+    }
   ]
 }

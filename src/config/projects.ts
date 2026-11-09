@@ -27,6 +27,8 @@ export interface ProjectItem {
   galleryImages?: string[];
   processImageUrl?: string;
   galleryAspectRatio?: "3/4" | "landscape";
+  /** Label used for the process/features section. Defaults to "process". */
+  processLabel?: "process" | "features";
 }
 
 export const PROJECTS_DATA: Record<string, ProjectItem> = {
@@ -56,14 +58,11 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     url: "https://misu-os.vercel.app",
     highlightWords: ["energy", "adaptive", "focus"],
     galleryAspectRatio: "3/4",
+    processLabel: "features",
     galleryImages: [
-      "/projects/misu/images/images-portfolio-misu_dashboard.png",
-      "/projects/misu/images/macbook-mockup-1.png",
+      "/projects/misu/images/images-portfolio-misu_catalog.png",
+      "/projects/misu/images/misu__gif.gif",
       "/projects/misu/images/images-portfolio-misu_designsystem.png",
-      "/projects/misu/images/images-portfolio-misu_mockupphone.png",
-      "/projects/misu/images/macbook-mockup-2.png",
-      "/projects/misu/images/images-portfolio-misu_responsivemockup.png",
-      "/projects/misu/images/macbook-mockup-3.png",
     ],
   },
   gypsy: {
@@ -73,12 +72,12 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     imageUrl: "/projects/gypsy/images/HERO.webp",
     url: "https://gypsy-joyas.vercel.app/",
     highlightWords: ["artisan", "real-time", "autonomous"],
+    galleryAspectRatio: "3/4",
+    processLabel: "features",
     galleryImages: [
-      "/projects/gypsy/images/HERO.webp",
-      "https://assets.codepen.io/7558/bw-portrait-002.jpg",
-      "https://assets.codepen.io/7558/bw-portrait-003.jpg",
-      "https://assets.codepen.io/7558/bw-portrait-008.jpg",
-      "https://assets.codepen.io/7558/bw-portrait-010.jpg",
+      "/projects/gypsy/images/gypsy__mockupphone.webp",
+      "/projects/gypsy/images/gypsy__designsystem.webp",
+      "/projects/gypsy/images/gypsy__responsivemockup.webp",
     ],
     processImageUrl: "https://assets.codepen.io/7558/bw-portrait-009.jpg",
   },

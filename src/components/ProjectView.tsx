@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ProjectItem } from "../config/projects";
@@ -45,39 +45,169 @@ const isMediaVideo = (src: string) => /\.(mp4|webm|mov|ogg)($|\?)/i.test(src);
 
 function renderGalleryMedia(src: string, className = "pv-separator__img") {
   if (isMediaVideo(src)) {
+    const webmSrc = src.replace(/\.(mp4|mov)($|\?)/i, ".webm$2");
     return (
-      <video src={src} className={className} autoPlay loop muted playsInline />
+      <video
+        className={className}
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src={webmSrc} type="video/webm" />
+        <source src={src} type="video/mp4" />
+      </video>
     );
   }
   return <img src={src} alt="" className={className} draggable={false} />;
 }
 
-function renderSummaryWithKeywords(summary: string, highlightWords?: string[]) {
-  if (!highlightWords || highlightWords.length === 0) return summary;
-  const escaped = highlightWords.map((w) =>
-    w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
-  );
-  const regex = new RegExp(`(${escaped.join("|")})`, "gi");
-  const parts = summary.split(regex);
-  return parts.map((part, idx) => {
-    const isKeyword = highlightWords.some(
-      (w) => w.toLowerCase() === part.toLowerCase(),
+function renderExtraSectionContent(raw: string) {
+  const nodes: ReactNode[] = [];
+  const lines = raw.split(/\r?\n/);
+  let listItems: string[] = [];
+  let key = 0;
+
+  const flushList = () => {
+    if (listItems.length === 0) return;
+    nodes.push(
+      <ul className="pv-extra__list" key={`pv-extra-list-${key++}`}>
+        {listItems.map((item, itemIdx) => {
+          const separator = item.indexOf(":");
+          const lead = separator > 0 ? item.slice(0, separator + 1) : "";
+          const rest =
+            separator > 0 ? item.slice(separator + 1).trimStart() : item;
+          return (
+            <li className="pv-extra__list-item" key={itemIdx}>
+              {lead && <span className="pv-extra__list-lead">{lead} </span>}
+              {rest}
+            </li>
+          );
+        })}
+      </ul>,
     );
-    if (isKeyword) {
+    listItems = [];
+  };
+
+  lines.forEach((rawLine) => {
+    const line = rawLine.trim();
+    if (!line) {
+      flushList();
+      return;
+    }
+
+    const bullet = line.match(/^[-*]\s+(.*)$/);
+    if (bullet) {
+      listItems.push(bullet[1]);
+      return;
+    }
+
+    flushList();
+    nodes.push(<p key={`pv-extra-p-${key++}`}>{line}</p>);
+  });
+  flushList();
+
+  return nodes;
+}
+
+function renderSummaryWithKeywords(
+  rawSummary: string,
+  highlightWords?: string[],
+  projectUrl?: string,
+  projectSlug?: string,
+) {
+  let summary = rawSummary;
+  if (
+    projectSlug === "misu" &&
+    projectUrl &&
+    !summary.includes(`](${projectUrl})`)
+  ) {
+    summary = summary.replace(/\b(Misu|MISU)\b/, `[$1](${projectUrl})`);
+  }
+
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const segments: Array<
+    { type: "link"; text: string; url: string } | { type: "text"; text: string }
+  > = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = linkRegex.exec(summary)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({
+        type: "text",
+        text: summary.slice(lastIndex, match.index),
+      });
+    }
+    segments.push({
+      type: "link",
+      text: match[1],
+      url: match[2],
+    });
+    lastIndex = linkRegex.lastIndex;
+  }
+
+  if (lastIndex < summary.length) {
+    segments.push({
+      type: "text",
+      text: summary.slice(lastIndex),
+    });
+  }
+
+  let keyCounter = 0;
+
+  return segments.map((seg) => {
+    if (seg.type === "link") {
       return (
-        <DecryptedText
-          key={idx}
-          text={part}
-          parentClassName="about-keyword"
-          encryptedClassName="about-keyword-enc"
-          animateOn="inViewHover"
-          speed={50}
-          maxIterations={15}
-          sequential={true}
-        />
+        <a
+          key={`pv-link-${keyCounter++}`}
+          href={seg.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pv-quote-link"
+        >
+          <span className="pv-quote-link__word">
+            <span className="pv-quote-link__text">{seg.text}</span>
+            <span className="pv-quote-link__arrow" aria-hidden="true">
+              <span className="pv-quote-link__bracket">[</span>
+              <span className="pv-quote-link__symbol">↗</span>
+              <span className="pv-quote-link__bracket">]</span>
+            </span>
+          </span>
+        </a>
       );
     }
-    return part;
+
+    if (!highlightWords || highlightWords.length === 0) {
+      return <span key={`pv-txt-${keyCounter++}`}>{seg.text}</span>;
+    }
+
+    const escaped = highlightWords.map((w) =>
+      w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+    );
+    const regex = new RegExp(`(${escaped.join("|")})`, "gi");
+    const parts = seg.text.split(regex);
+
+    return parts.map((part) => {
+      const isKeyword = highlightWords.some(
+        (w) => w.toLowerCase() === part.toLowerCase(),
+      );
+      if (isKeyword) {
+        return (
+          <DecryptedText
+            key={`pv-kw-${keyCounter++}`}
+            text={part}
+            parentClassName="about-keyword"
+            encryptedClassName="about-keyword-enc"
+            animateOn="inViewHover"
+            speed={50}
+            maxIterations={15}
+            sequential={true}
+          />
+        );
+      }
+      return <span key={`pv-part-${keyCounter++}`}>{part}</span>;
+    });
   });
 }
 
@@ -97,8 +227,6 @@ export function ProjectView({
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const scrollBodyRef = useRef<HTMLDivElement>(null);
   const seeMoreRef = useRef<HTMLDivElement>(null);
-  const pvContentCardRef = useRef<HTMLDivElement>(null);
-  const pvFooterWrapperRef = useRef<HTMLDivElement>(null);
 
   // ── Entrance animation ──
   useEffect(() => {
@@ -359,27 +487,6 @@ export function ProjectView({
           },
         );
       }
-
-      // Footer zoom-out: content card scales down as footer enters — mirrors index page effect
-      if (pvContentCardRef.current && pvFooterWrapperRef.current) {
-        gsap.fromTo(
-          pvContentCardRef.current,
-          { scaleX: 1, scaleY: 1, transformOrigin: "bottom center" },
-          {
-            scaleX: 0.94,
-            scaleY: 1,
-            transformOrigin: "bottom center",
-            ease: "power1.inOut",
-            scrollTrigger: {
-              trigger: pvFooterWrapperRef.current,
-              start: "top bottom",
-              end: "bottom bottom",
-              scrub: true,
-              scroller,
-            },
-          },
-        );
-      }
     }, scroller);
 
     return () => {
@@ -429,6 +536,13 @@ export function ProjectView({
   const hasProcess = (content?.processSteps?.length ?? 0) > 0;
   const hasMetrics = (content?.metrics?.length ?? 0) > 0;
   const hasAwards = content?.awards != null && content.awards.length > 0;
+  const extraSections = useMemo(
+    () =>
+      (content?.extraSections ?? []).filter(
+        (section) => section.title.trim() && section.content.trim(),
+      ),
+    [content],
+  );
 
   return (
     <div
@@ -439,8 +553,8 @@ export function ProjectView({
       aria-modal="true"
       aria-label={`${project.title} project details`}
     >
-      {/* ── Content card: scales down when footer enters (mirrors index page effect) ── */}
-      <div ref={pvContentCardRef} className="pv-content-card">
+      {/* ── Content card ── */}
+      <div className="pv-content-card">
         {/* ── Close ── */}
         <button
           ref={closeBtnRef}
@@ -530,6 +644,8 @@ export function ProjectView({
                   renderSummaryWithKeywords(
                     content.summary,
                     project.highlightWords,
+                    project.url,
+                    project.slug,
                   )}
               </blockquote>
               {project.url && (
@@ -570,9 +686,14 @@ export function ProjectView({
                       <span className="pv-gallery-triad__caption-index">
                         Problemática y solución
                       </span>
-                      <p className="pv-gallery-triad__caption-text">
-                        {content.galleryDescription}
-                      </p>
+                      <div className="pv-gallery-triad__caption-text">
+                        {content.galleryDescription
+                          .split(/\n\s*\n/)
+                          .filter(Boolean)
+                          .map((paragraph, pIdx) => (
+                            <p key={pIdx}>{paragraph.trim()}</p>
+                          ))}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -626,14 +747,30 @@ export function ProjectView({
               </div>
             ))}
 
-          {/* ── 02  PROCESS ── */}
+          {/* ── 02  PROCESS / FEATURES ── */}
           {hasProcess && (
             <section className="pv-section">
               <div className="pv-section__inner">
-                <div className="pv-label pv-reveal">
-                  <span className="pv-label__index">02</span>
-                  <span className="pv-label__text">process</span>
-                </div>
+                {project.processLabel === "features" ? (
+                  <div
+                    className="pv-gallery-triad__caption pv-reveal"
+                    style={{ padding: 0 }}
+                  >
+                    <div
+                      className="pv-gallery-triad__caption-inner"
+                      style={{ padding: 0, maxWidth: "none" }}
+                    >
+                      <span className="pv-gallery-triad__caption-index">
+                        features
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="pv-label pv-reveal">
+                    <span className="pv-label__index">02</span>
+                    <span className="pv-label__text">process</span>
+                  </div>
+                )}
                 <div className="pv-process">
                   {content!.processSteps.map((step) => (
                     <div key={step.index} className="pv-process__step">
@@ -647,6 +784,64 @@ export function ProjectView({
                         {step.description}
                       </p>
                     </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ── MISU APP SCREEN BANNER ── */}
+          {project.slug === "misu" && (
+            <>
+              <div className="pv-separator pv-banner-black">
+                <div className="pv-banner-black__inner">
+                  {renderGalleryMedia(
+                    "/projects/misu/videos/misu__app-screen.mp4",
+                    "pv-banner-black__video",
+                  )}
+                </div>
+              </div>
+
+              {content?.bannerDescription && (
+                <div className="pv-gallery-triad__caption pv-reveal">
+                  <div className="pv-gallery-triad__caption-inner">
+                    <span className="pv-gallery-triad__caption-index">
+                      {content.bannerTitle || "Problemática y solución"}
+                    </span>
+                    <div className="pv-gallery-triad__caption-text">
+                      {content.bannerDescription
+                        .split(/\n\s*\n/)
+                        .filter(Boolean)
+                        .map((paragraph, pIdx) => (
+                          <p key={pIdx}>{paragraph.trim()}</p>
+                        ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* ── EXTRA NARRATIVE SECTIONS ── */}
+          {extraSections.length > 0 && (
+            <section className="pv-section pv-extra">
+              <div className="pv-section__inner">
+                <div className="pv-extra__sections">
+                  {extraSections.map((section, idx) => (
+                    <article
+                      key={`${section.title}-${idx}`}
+                      className="pv-extra__section pv-reveal"
+                    >
+                      <header className="pv-extra__header">
+                        <span className="pv-extra__index">
+                          {String(idx + 1).padStart(2, "0")}
+                        </span>
+                        <h2 className="pv-extra__title">{section.title}</h2>
+                      </header>
+                      <div className="pv-extra__body">
+                        {renderExtraSectionContent(section.content)}
+                      </div>
+                    </article>
                   ))}
                 </div>
               </div>
@@ -751,8 +946,8 @@ export function ProjectView({
       </div>
       {/* /pv-content-card */}
 
-      {/* ── Footer wrapper: grey background behind content card, mirrors index footer-section-wrapper ── */}
-      <div ref={pvFooterWrapperRef} className="pv-footer-wrapper">
+      {/* ── Footer wrapper ── */}
+      <div className="pv-footer-wrapper">
         <Footer scroller="#project-view-scroller" />
       </div>
     </div>

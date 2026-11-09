@@ -12,6 +12,9 @@ export interface ProjectLocale {
   summary: string;
   role: string;
   galleryDescription: string;
+  bannerTitle?: string;
+  bannerDescription?: string;
+  extraSections?: { title: string; content: string }[];
   processSteps: ProjectProcessStep[];
   awards: ProjectAward[];
   metrics: ProjectMetric[];

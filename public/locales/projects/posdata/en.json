@@ -1,8 +1,16 @@
 {
-  "tags": ["Brand Strategy", "Editorial Design", "UX/UI & Interaction", "Motion Design", "B2B Acquisition"],
+  "tags": [
+    "Brand Strategy",
+    "Editorial Design",
+    "UX/UI & Interaction",
+    "Motion Design",
+    "B2B Acquisition"
+  ],
   "summary": "An independent design studio born at the edge between editorial sensitivity and software engineering — where design and code are not successive stages, but a single language. Built to serve organizations that value aesthetic prestige but suffer from digital obsolescence.",
   "role": "Founder · Brand Designer · UX/UI Designer · Creative Developer",
   "galleryDescription": "A visual system built under the concept of Material Friction — the deliberate clash between the organic fragility of nature and the immutable precision of hardware. Botanical compositions intervened by mechanical keyboards, processor pins, and CRT scanlines; every photograph processed through bitmap halftones and analog scanner grain.",
+  "bannerTitle": "",
+  "bannerDescription": "",
   "processSteps": [
     {
       "index": "01",
@@ -27,8 +35,23 @@
   ],
   "awards": [],
   "metrics": [
-    { "value": "4", "label": "B2B Verticals defined" },
-    { "value": "4", "label": "Editorial content pillars" },
-    { "value": "1px", "label": "Grid brutalism detail" }
+    {
+      "value": "4",
+      "label": "B2B Verticals defined"
+    },
+    {
+      "value": "4",
+      "label": "Editorial content pillars"
+    },
+    {
+      "value": "1px",
+      "label": "Grid brutalism detail"
+    }
+  ],
+  "extraSections": [
+    {
+      "title": "",
+      "content": ""
+    }
   ]
 }

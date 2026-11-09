@@ -8,6 +8,8 @@
   "summary": "Un estudio independiente de diseño y software nacido en el borde entre la sensibilidad editorial y la ingeniería.    Construido para organizaciones que valoran el prestigio estético pero sufren de obsolescencia digital.",
   "role": "Founder · Brand Designer · UX/UI Designer · Creative Developer",
   "galleryDescription": "Un sistema visual construido bajo el concepto de Fricción Material — el choque deliberado entre la fragilidad orgánica de la naturaleza y la precisión inmutable del hardware. Composiciones botánicas intervenidas por teclados mecánicos, pines de procesador y scanlines de CRT; cada fotografía procesada con tramas de bitmap y grano de escáner analógico.",
+  "bannerTitle": "",
+  "bannerDescription": "",
   "processSteps": [
     {
       "index": "01",
@@ -43,6 +45,12 @@
     {
       "value": "1px",
       "label": "Detalle de retícula brutalist"
+    }
+  ],
+  "extraSections": [
+    {
+      "title": "",
+      "content": ""
     }
   ]
 }

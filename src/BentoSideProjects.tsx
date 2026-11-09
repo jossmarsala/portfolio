@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const SIDE_TITLES = [
   { title: "posdata studio", sub: "2026", slug: "posdata" },
   { title: "lilium cyber", sub: "2025", slug: "ascii" },
-  { title: "faro stock manager", sub: "2026", slug: "faro" },
+  { title: "tu nuevo proyecto", sub: "", slug: "__cta__" },
 ];
 
 interface BentoSideProjectsProps {
@@ -52,7 +52,7 @@ export function BentoSideProjects({
         start: "top 75%",
         end: "center 35%",
         scrub: 1.5, // Slower, smoother catch-up feel
-      }
+      },
     });
     heroTimelineRef.current = tl;
 
@@ -108,25 +108,69 @@ export function BentoSideProjects({
     >
       <div className="bento-side__grid">
         {images.slice(0, 3).map((src, i) => {
-          const isVideo = /\.(mp4|webm|mov|ogg)($|\?)/i.test(src);
+          const info = SIDE_TITLES[i];
+          const isCTA = info?.slug === "__cta__";
+          const isVideo = !isCTA && /\.(mp4|webm|mov|ogg)($|\?)/i.test(src);
+
+          const handleClick = () => {
+            if (isCTA) {
+              const footer = document.getElementById("footer");
+              if (footer) {
+                footer.scrollIntoView({ behavior: "smooth" });
+              }
+              return;
+            }
+            if (onProjectSelect) {
+              onProjectSelect(info.slug);
+            }
+          };
+
           return (
             <div
               key={i}
               ref={(el) => {
                 itemRefs.current[i] = el;
               }}
-              className={`bento-images__item bento-side__item--${i + 1}`}
-              data-cursor-project={onProjectSelect ? "true" : undefined}
-              onClick={() => {
-                if (onProjectSelect) {
-                  onProjectSelect(SIDE_TITLES[i].slug);
-                }
-              }}
-              style={{ cursor: onProjectSelect ? "pointer" : "default" }}
+              className={`bento-images__item bento-side__item--${i + 1}${isCTA ? " bento-side__item--cta" : ""}`}
+              data-cursor-project={
+                !isCTA && onProjectSelect ? "true" : undefined
+              }
+              onClick={handleClick}
+              style={{ cursor: "pointer" }}
             >
               <div className={`bento-images__cell bento-side__cell--${i + 1}`}>
                 <div className="bento-images__cell-frame">
-                  {isVideo ? (
+                  {isCTA ? (
+                    <svg
+                      ref={(el) => {
+                        imgRefs.current[i] = el as HTMLElement | null;
+                      }}
+                      className="bento-images__cell-img bento-cta__plus"
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <line
+                        x1="5"
+                        y1="3"
+                        x2="5"
+                        y2="21"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                      <line
+                        x1="3"
+                        y1="5"
+                        x2="21"
+                        y2="5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  ) : isVideo ? (
                     <video
                       key={src}
                       ref={(el) => {
@@ -145,7 +189,7 @@ export function BentoSideProjects({
                         imgRefs.current[i] = el;
                       }}
                       src={src}
-                      alt={SIDE_TITLES[i]?.title ?? `Side project ${i + 1}`}
+                      alt={info?.title ?? `Side project ${i + 1}`}
                       className="bento-images__cell-img"
                       loading="lazy"
                       draggable={false}
@@ -153,11 +197,8 @@ export function BentoSideProjects({
                   )}
                 </div>
               </div>
-              
-              <BentoLabel
-                title={SIDE_TITLES[i]?.title ?? ""}
-                sub={SIDE_TITLES[i]?.sub ?? ""}
-              />
+
+              <BentoLabel title={info?.title ?? ""} sub={info?.sub ?? ""} />
             </div>
           );
         })}

@@ -1,0 +1,54 @@
+---
+role: Diseñadora UX/UI y Desarrolladora Full-Stack (proyecto individual)
+tags:
+  - Diseño UX/UI
+  - Desarrollo Full-Stack
+  - Planificación con IA
+metrics: []
+awards: []
+---
+
+# Summary
+
+[Misu](https://misu-os.vercel.app) es un sistema de productividad diseñado para acompañar a personas con dificultades de atención: A partir del nivel de energía disponible, el sistema ajusta su apariencia y propone tareas acordes, integra herramientas de organización y concentración en un solo espacio.
+
+# Gallery
+
+¿Cómo organizarse cuando la energía y la capacidad de concentración no son iguales todos los días? Muchas herramientas de productividad parten de una base estática. MISU nace para proponer una nueva forma de organizarse: un sistema personal que se adapta al usuario. A partir del nivel de energía disponible, ajusta la interfaz y las recomendaciones de tareas, mientras reúne herramientas de planificación y estudio como temporizador pomodoro, organización semanal asistida por IA, música de ambiente, y más, en un espacio modular.
+
+# Features
+
+## Gestión de tareas
+
+Registro y seguimiento de tareas mediante categorías, nivel de energía requerido y fechas de entrega. Permite actualizar su estado y marcar actividades como completadas.
+
+## Planificación inteligente
+
+Planificador semanal interactivo para distribuir y reorganizar tareas mediante drag & drop. Incorpora Gemini API para generar propuestas de planificación automática, considerando la duración, las fechas de entrega y la energía disponible.
+
+## Widgets modulares
+
+Un espacio de trabajo personalizable mediante widgets arrastrables que integran herramientas como calendario, temporizador Pomodoro y música ambiental adaptada al nivel de energía.
+
+## Entorno de concentración
+
+Modo de enfoque que simplifica la interfaz, reduce los estímulos visuales y elimina elementos secundarios para minimizar las distracciones y facilitar la concentración.
+
+# El desafío
+
+Este fue uno de los desafíos más importantes a la hora de diseñar la experiencia de usuario: el nivel de energía del usuario debía una variable que atraviese y personalice toda la experiencia. El usuario puede indicar su energía en una escala de cuatro niveles. A partir de esa selección, el sistema adapta distintos aspectos de su comportamiento:
+
+- Visual design: la ambientación y la apariencia de la interfaz cambian para acompañar cada estado.
+- Interaction design: los widgets y herramientas disponibles se ajustan a las necesidades del momento.
+- Motion design: la intensidad de las animaciones se modifica para ofrecer una experiencia más adecuada al nivel de estimulación buscado.
+- Task recommendations: las sugerencias se recalculan para priorizar actividades compatibles con la energía disponible.
+
+# Desarrollo técnico
+
+MISU fue desarrollado sobre React bajo una arquitectura modular y desacoplada para separar responsabilidades y mantener una experiencia flexible. Su núcleo incorpora un motor de recomendación determinista que evalúa compatibilidad con nivel de energía y proximidad de vencimientos de tareas mediante reglas de decisión y penalizaciones. Cuando el usuario declara baja energía, el algoritmo limita dinámicamente la cantidad de tareas sugeridas y las horas de esfuerzo acumulado. En paralelo, el estado del sistema modifica los tokens visuales del DOM, adaptando la paleta cromática, el contraste, la velocidad de los shaders y la densidad de componentes en pantalla.
+Para resolver la procrastinación de tareas extensas, el planificador semanal integra Google Gemini API mediante un contrato de prompting estructurado. El servicio aplica chunking a tareas superiores a tres horas, distribuye la carga con un límite de seis horas diarias y permite reorganizar los bloques mediante drag & drop. La experiencia se complementa con síntesis de audio nativa mediante Web Audio 1API, que modula la frecuencia y resonancia de los sonidos de interacción según la energía del usuario y genera ruido blanco, rosa y marrón para favorecer la concentración.
+La persistencia sigue un enfoque local-first: prioriza la actualización inmediata de localStorage y sincroniza posteriormente las mutaciones con Supabase mediante escrituras con debounce. Esto permite que el sistema funcione sin conexión y se sincronice al recuperar la conectividad. La arquitectura también contempla la separación entre lógica de estado, interfaz e internacionalización, con soporte para español, inglés e italiano.
+
+# Impacto
+
+MISU es el resultado de convertir una dificultad cotidiana propia, en una oportunidad para explorar nuevas formas de diseñar tecnología. Este proyecto me permitió trabajar sobre el desarrollo de un producto digital completo: desde la identificación de una necesidad y el diseño de un software que la resuelva, hasta la implementación de una aplicación funcional con usuarios activos y soporte en tres idiomas -español, inglés e italiano.

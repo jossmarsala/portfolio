@@ -142,6 +142,33 @@
   opacity: 0.2;
 }
 
+/* ── Socials ── */
+.footer__bottom-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.footer__socials {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+.footer__social-link:hover {
+  color: var(--color-text);
+  opacity: 1;
+}
+
 /* ═══════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════ */

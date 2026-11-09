@@ -160,6 +160,7 @@
 .about-sidebar__actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-top: var(--space-sm);
   will-change: transform, opacity;
 }
@@ -206,4 +207,25 @@
 .about-sidebar__cta:hover .about-sidebar__cta-arrow {
   opacity: 1;
   transform: translate(2.5px, -2.5px);
+}
+
+/* ── Social links ── */
+.about-sidebar__socials {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.about-sidebar__social-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.about-sidebar__social-link:hover {
+  color: var(--color-text);
+  opacity: 1;
 }

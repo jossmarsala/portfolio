@@ -11,8 +11,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 // The 3 main images for the big bento grid
 const BENTO_IMAGES = [
-  "/projects/vitalia/videos/HERO.mp4",
-  "/projects/misu/videos/HERO.mp4",
+  "/projects/vitalia/videos/HERO_COVER.mp4",
+  "/projects/misu/videos/HERO_COVER.mp4",
   "/projects/gypsy/images/HERO.webp",
 ];
 
