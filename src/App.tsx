@@ -24,6 +24,12 @@ const CAROUSEL_IMAGES = [
   "/carousel/Asset 1.webp",
 ];
 
+/**
+ * Projects temporarily linking straight to their live site instead of opening
+ * the in-app case study. Remove a slug from this set to restore its case study.
+ */
+const DIRECT_LINK_SLUGS = new Set(["vitalia", "posdata", "ascii"]);
+
 // Register ScrollTrigger in main.tsx per refactor plan
 
 function getProjectSlugFromPath(path: string): string | null {
@@ -51,19 +57,37 @@ function getProjectSlugFromPath(path: string): string | null {
   return null;
 }
 
+function getDirectLinkUrl(slug: string | null): string | null {
+  if (!slug) return null;
+  const project = PROJECTS_DATA[slug];
+  if (!project || !DIRECT_LINK_SLUGS.has(project.slug)) return null;
+  return project.url ?? null;
+}
+
 function App() {
   const { lang, t } = useLang();
   const initialSlug = getProjectSlugFromPath(window.location.pathname);
-  const [loaderDone, setLoaderDone] = useState(() => Boolean(initialSlug));
+  const initialDirectLink = getDirectLinkUrl(initialSlug);
+  const [loaderDone, setLoaderDone] = useState(() =>
+    Boolean(initialSlug && !initialDirectLink),
+  );
 
   const handleLoaderComplete = useCallback(() => {
     setLoaderDone(true);
   }, []);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
     () => {
-      return initialSlug ? PROJECTS_DATA[initialSlug] || null : null;
+      if (!initialSlug || initialDirectLink) return null;
+      return PROJECTS_DATA[initialSlug] || null;
     },
   );
+
+  // Direct links to temporarily redirected projects open their live site.
+  useEffect(() => {
+    if (initialDirectLink) {
+      window.location.replace(initialDirectLink);
+    }
+  }, [initialDirectLink]);
 
   const [aboutOpen, setAboutOpen] = useState(false);
   const handleAboutOpen = useCallback(() => setAboutOpen(true), []);
@@ -82,7 +106,10 @@ function App() {
   useEffect(() => {
     const handlePopState = () => {
       const slug = getProjectSlugFromPath(window.location.pathname);
-      if (slug && PROJECTS_DATA[slug]) {
+      const directLink = getDirectLinkUrl(slug);
+      if (directLink) {
+        window.location.replace(directLink);
+      } else if (slug && PROJECTS_DATA[slug]) {
         setSelectedProject(PROJECTS_DATA[slug]);
       } else {
         setSelectedProject(null);
@@ -96,6 +123,12 @@ function App() {
   }, []);
 
   const handleProjectSelect = useCallback((slug: string) => {
+    const directLink = getDirectLinkUrl(slug);
+    if (directLink) {
+      window.open(directLink, "_blank", "noopener,noreferrer");
+      return;
+    }
+
     const project = PROJECTS_DATA[slug] || PROJECTS_DATA["vitalia"];
     if (!project) return;
     setSelectedProject(project);

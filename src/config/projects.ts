@@ -87,7 +87,7 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     year: "2026",
     imageUrl: "/projects/posdata/videos/HERO.mp4?v=2",
     videoUrl: "/projects/posdata/videos/HERO.mp4?v=2",
-    url: "https://posdata.studio",
+    url: "https://posdatastudio.vercel.app",
     highlightWords: ["archive", "editorial", "obsolescence"],
     galleryImages: [
       "https://assets.codepen.io/7558/bw-portrait-009.jpg",
@@ -104,7 +104,7 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     year: "2025",
     imageUrl: "/projects/lilium/videos/HERO.mp4",
     videoUrl: "/projects/lilium/videos/HERO.mp4",
-    url: "https://codepen.io",
+    url: "https://lilium-cyber.vercel.app",
     highlightWords: ["real-time", "volumetric", "monospace"],
     galleryImages: [
       "/projects/lilium/images/HERO.webp",
