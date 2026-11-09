@@ -10,7 +10,7 @@ awards: []
 
 # Summary
 
-Diseño y desarrollo de un ecosistema digital para [Gypsy](gypsy-joyas.vercel.app/), una marca de joyería artesanal. Se creó un catálogo de productos y un panel de administración a medida que centraliza la gestión del inventario y sincroniza el stock en tiempo real.
+Diseño y desarrollo de un ecosistema digital para [Gypsy](https://gypsy-joyas.vercel.app/), una marca de joyería artesanal. Se creó un catálogo de productos y un panel de administración a medida que centraliza la gestión del inventario y sincroniza el stock en tiempo real.
 
 # Gallery
 

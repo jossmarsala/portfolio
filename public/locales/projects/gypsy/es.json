@@ -5,7 +5,7 @@
     "CMS a Medida",
     "Catálogo E-Commerce"
   ],
-  "summary": "Diseño y desarrollo de un ecosistema digital para [Gypsy](gypsy-joyas.vercel.app/), una marca de joyería artesanal. Se creó un catálogo de productos y un panel de administración a medida que centraliza la gestión del inventario y sincroniza el stock en tiempo real.",
+  "summary": "Diseño y desarrollo de un ecosistema digital para [Gypsy](https://gypsy-joyas.vercel.app/), una marca de joyería artesanal. Se creó un catálogo de productos y un panel de administración a medida que centraliza la gestión del inventario y sincroniza el stock en tiempo real.",
   "role": "Full-Stack Developer & Diseñadora UI/UX",
   "galleryDescription": "La marca inicialmente operaba sólo a través de Instagram, por lo que el principal desafío técnico fue crear un catálogo digital oficial que fuera a la vez escalable y fácil de gestionar para la dueña de la marca. Construir un sitio web estático hubiera hecho ineficiente la actualización de la disponibilidad de productos, precios e imágenes. Para resolver esto, el proyecto se expandió para incluir un panel de administración interno hecho a medida y conectado directamente a una base de datos, creando un sistema autónomo donde las actualizaciones se ven reflejadas instantáneamente en el catálogo público",
   "bannerTitle": "",

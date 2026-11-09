@@ -2,8 +2,7 @@
 role: UX/UI Designer & Full-Stack Developer (solo project)
 tags:
   - UX/UI Design
-  - Full-Stack Dev
-  - Productivity Tool
+  - Full-Stack Development
   - AI Planning
 metrics: []
 awards: []
@@ -11,26 +10,40 @@ awards: []
 
 # Summary
 
-A personal productivity system designed for people living with attention deficits, cognitive overload, or variable energy levels. Instead of treating productivity as a fixed routine, [MISU](https://misu-os.vercel.app) adjusts the experience to your available capacity — select your energy level and the interface adapts its visual language, task recommendations, and focus environment.
+[Misu](https://misu-os.vercel.app) is a productivity system designed to support people with attention difficulties: based on the available energy level, the system adjusts its appearance and suggests suitable tasks, integrating organization and focus tools into a single space.
 
 # Gallery
 
-An energy-aware interface with four distinct visual states — each triggering a unique color palette, ambient audio, and curated task set. Desktop runs a bento grid; mobile reorganizes into sectioned navigation. Built to feel like an operating system for your brain.
+How do you organize yourself when your energy and ability to focus aren't the same every day? Many productivity tools start from a static baseline. MISU was created to propose a new way of organizing: a personal system that adapts to the user. Based on the available energy level, it adjusts the interface and task recommendations, while bringing together planning and study tools such as a Pomodoro timer, AI-assisted weekly planning, ambient music, and more, in a modular space.
 
 # Features
 
-## 01. Adapt, don't demand
+## 01. Task management
 
-Recommendations adjust to energy level, task type, estimated duration, and deadline urgency — reducing the cost of deciding what to do next without removing the user's ability to choose otherwise.
+Register and track tasks through categories, required energy level, and due dates. It lets you update their status and mark activities as completed.
 
-## 02. Make the next step visible
+## 02. Intelligent planning
 
-Instead of presenting all tasks as equally actionable, the scoring engine calculates a bounded selection that helps decide where to start. Low energy states also cap the number and total time of suggestions.
+An interactive weekly planner to distribute and rearrange tasks via drag & drop. It incorporates the Gemini API to generate automatic planning suggestions, considering duration, due dates, and available energy.
 
-## 03. Connect planning to execution
+## 03. Modular widgets
 
-The weekly planner (powered by Google Gemini API) coexists with the Pomodoro timer, ambient audio, Focus Shield, and a daily checklist — so the user can move from organizing to working in the same space.
+A customizable workspace with draggable widgets that integrate tools such as a calendar, Pomodoro timer, and ambient music adapted to the energy level.
 
-## 04. Ship, then iterate
+## 04. Focus environment
 
-Started as a personal tool and evolved into a published web app with public repository — authentication via Supabase, cloud sync, demo mode with example tasks, and support for English, Spanish, and Italian.
+A focus mode that simplifies the interface, reduces visual stimuli, and removes secondary elements to minimize distractions and make it easier to concentrate.
+
+# Technical development
+
+MISU was developed with React on a modular architecture. Its recommendation engine cross-references energy level with due dates, and the interface responds to the same state: it adjusts the visual palette, stimuli, and information density.
+
+The weekly planner incorporates Google Gemini API to split large tasks into blocks and order the daily workload via drag & drop. The sound experience is handled with Web Audio API, which generates environments such as white noise and adapts interaction sounds to the available energy.
+
+Persistence follows a local-first approach: localStorage and Supabase work together to preserve data and sync it, even offline. The architecture separates logic, interface, and internationalization, with support for Spanish, English, and Italian.
+
+# Impact
+
+MISU was born from turning a personal everyday difficulty into an opportunity to explore new ways of designing technology. The project allowed me to go through the full cycle of a digital product: from identifying a need and designing the software that solves it to implementing a functional application.
+
+Today MISU has active users and is available in Spanish, English, and Italian.
