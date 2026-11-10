@@ -64,7 +64,10 @@ export default function JosMarsalaLogo({
     const overlap = 0.4;
     if (i === 0) return { L: 0, R: Math.max(0, +(100 - s1 - overlap).toFixed(3)) };
     if (i === 1) return { L: Math.max(0, +(s1 - overlap).toFixed(3)), R: Math.max(0, +(100 - s2 - overlap).toFixed(3)) };
-    return { L: Math.max(0, +(s2 - overlap).toFixed(3)), R: 0 };
+    // The display face uses tight negative tracking (-0.1em), which pulls the
+    // final glyph inside the measured advance width. Extend the clip a few
+    // percent past the right edge so the last "a" keeps its full ink.
+    return { L: Math.max(0, +(s2 - overlap).toFixed(3)), R: -3 };
   };
 
   const renderText = () =>

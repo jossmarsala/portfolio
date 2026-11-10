@@ -13,23 +13,23 @@
   "processSteps": [
     {
       "index": "01",
-      "title": "Sincronización en tiempo real",
-      "description": "Conexión directa entre el panel en React, la API en Node/Express y PostgreSQL para que ningún cliente vea una pieza agotada como disponible. Cada cambio de estado se refleja al instante en el catálogo público."
+      "title": "Catálogo online sincronizado",
+      "description": "Catálogo digital conectado al panel de administración, donde los cambios en precios, imágenes y disponibilidad de los productos se reflejan automáticamente en la web pública."
     },
     {
       "index": "02",
-      "title": "Gestión multimedia integrada",
-      "description": "Carga directa de imágenes desde el panel de administración hacia Vercel Blob, optimizando el almacenamiento sin ensuciar el repositorio ni requerir edición previa externa."
+      "title": "Acceso privado y gestión centralizada",
+      "description": "Dashboard con autenticación para que la clienta pueda gestionar su catálogo de forma independiente y segura, manteniendo toda la información organizada y actualizada. disponibilidad, precios e imágenes asociadas."
     },
     {
       "index": "03",
-      "title": "Arquitectura híbrida eficiente",
-      "description": "Separación inteligente de responsabilidades entre un frontend público ligero en Vanilla JS —rápido y con SEO limpio— y un entorno administrativo potente en React + Vite."
+      "title": "Gestión de productos y stock",
+      "description": "Panel privado que permite administrar el inventario, actualizar precios, modificar o agregar productos y controlar su disponibilidad desde un único lugar."
     },
     {
       "index": "04",
-      "title": "Modelado de datos con Prisma",
-      "description": "Esquema estructurado para soportar atributos específicos de joyería: materiales, colecciones, estado de disponibilidad, precios e imágenes asociadas."
+      "title": "Administración multimedia",
+      "description": "Carga y actualización de imágenes directamente desde el panel, sin necesidad de modificar archivos manualmente ni intervenir en el código del sitio."
     }
   ],
   "awards": [],

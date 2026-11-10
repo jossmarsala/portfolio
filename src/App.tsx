@@ -20,8 +20,12 @@ const CAROUSEL_IMAGES = [
   "/carousel/images-portfolio-misu_catalog.png",
   "/carousel/images-portfolio-misu_designsystem.png",
   "/carousel/images-portfolio-misu_mockupphone.png",
+  "/optimized/carousel/6fe0ef207584933.68fe667546e9e.png",
   "/carousel/mockuplaptopmisu.png",
   "/carousel/Asset 1.webp",
+  "/projects/gypsy/images/gypsy__dashboard.webp",
+  "/projects/posdata/images/PROJECT_hero-image.webp",
+  "/projects/faro/HERO.webp",
 ];
 
 /**
@@ -423,14 +427,14 @@ function App() {
             {/* Hero title — only mounted after loader exits so DecryptedText
                 fires its "view" animation fresh when the page is revealed */}
             {loaderDone && (
-              <h1 ref={heroTitleRef} className="portfolio-title">
-                <JosMarsalaLogo />
-              </h1>
-            )}
-            {loaderDone && (
-              <p className="hero-tagline" key={lang}>
-                {t("hero_tagline")}
-              </p>
+              <div className="hero-editorial">
+                <h1 ref={heroTitleRef} className="portfolio-title">
+                  <JosMarsalaLogo />
+                </h1>
+                <p className="hero-tagline" key={lang}>
+                  {t("hero_tagline")}
+                </p>
+              </div>
             )}
           </ImageCircleCarousel>
         </div>

@@ -19,25 +19,36 @@
   transform-style: preserve-3d;
 }
 
+/* ── Hero editorial block: pinned strictly to bottom-right layout grid ── */
+.hero-editorial {
+  position: absolute;
+  /* Generous editorial gutter so the final glyph never crowds the viewport */
+  right: clamp(1.25rem, 3.8vw, 3.25rem);
+  bottom: calc(56px + clamp(0.75rem, 2vw, 1.5rem));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  z-index: 10;
+  pointer-events: auto;
+}
+
 /* ── Hero title — shared base ── */
 .portfolio-title {
   font-family: var(--font-family-main);
-  font-size: clamp(3.5rem, 18.5vw, 22.5rem);
-  text-align: center;
-  line-height: 0.82;
+  font-size: clamp(2.5rem, 6.8vw, 7.2rem);
+  text-align: right;
+  line-height: 0.84;
   font-weight: var(--font-weight-main);
   letter-spacing: var(--letter-spacing-main);
+  /* Room for the final glyph's ink, which overhangs its advance width because
+     of the negative tracking. Keeps the visual right edge on the grid. */
+  padding-right: 0.12em;
   margin: 0;
   transition: font-family 0.3s ease;
   white-space: nowrap !important;
   user-select: none;
   width: max-content;
-
-  /* Positioned slightly above center */
-  position: absolute;
-  top: 46%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   pointer-events: auto;
 }
 
@@ -56,21 +67,16 @@
 .hero-tagline {
   font-family: 'Roboto Mono', monospace;
   font-weight: 400;
-  font-size: clamp(0.85rem, 1.5vw, 1.4rem);
+  font-size: clamp(0.75rem, 1.1vw, 1.1rem);
   letter-spacing: 0.22em;
   text-transform: lowercase;
   color: var(--color-text-muted, rgba(0, 0, 0, 0.5));
   margin: 0;
+  margin-top: clamp(0.5rem, 1vw, 0.85rem);
+  text-align: right;
   user-select: none;
   white-space: nowrap;
   pointer-events: none;
-
-  /* Positioned closer below center where the name sits */
-  position: absolute;
-  top: calc(46% + clamp(1.8rem, 8.6vw, 10.6rem));
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
 
   /* Smooth fade-in on mount / language change */
   animation: tagline-fade-in 0.4s ease forwards;
@@ -79,11 +85,11 @@
 @keyframes tagline-fade-in {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(4px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 

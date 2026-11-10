@@ -18,18 +18,18 @@ La marca inicialmente operaba sólo a través de Instagram, por lo que el princi
 
 # Features
 
-## 01. Sincronización en tiempo real
+## Catálogo online sincronizado
 
-Conexión directa entre el panel en React, la API en Node/Express y PostgreSQL para que ningún cliente vea una pieza agotada como disponible. Cada cambio de estado se refleja al instante en el catálogo público.
+Catálogo digital conectado al panel de administración, donde los cambios en precios, imágenes y disponibilidad de los productos se reflejan automáticamente en la web pública.
 
-## 02. Gestión multimedia integrada
+## Acceso privado y gestión centralizada
 
-Carga directa de imágenes desde el panel de administración hacia Vercel Blob, optimizando el almacenamiento sin ensuciar el repositorio ni requerir edición previa externa.
+Dashboard con autenticación para que la clienta pueda gestionar su catálogo de forma independiente y segura, manteniendo toda la información organizada y actualizada. disponibilidad, precios e imágenes asociadas.
 
-## 03. Arquitectura híbrida eficiente
+## Gestión de productos y stock
 
-Separación inteligente de responsabilidades entre un frontend público ligero en Vanilla JS —rápido y con SEO limpio— y un entorno administrativo potente en React + Vite.
+Panel privado que permite administrar el inventario, actualizar precios, modificar o agregar productos y controlar su disponibilidad desde un único lugar.
 
-## 04. Modelado de datos con Prisma
+## Administración multimedia
 
-Esquema estructurado para soportar atributos específicos de joyería: materiales, colecciones, estado de disponibilidad, precios e imágenes asociadas.
+Carga y actualización de imágenes directamente desde el panel, sin necesidad de modificar archivos manualmente ni intervenir en el código del sitio.

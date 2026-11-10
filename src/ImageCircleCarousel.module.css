@@ -4,7 +4,7 @@
   min-height: 100vh;
   position: relative;
   overflow: visible;
-  perspective: 1600px;
+  perspective: 1200px; /* tighter FOV accentuates the 3D depth of the full-bleed ramp */
   transform-style: preserve-3d;
   background-color: transparent;
 }
@@ -27,23 +27,29 @@
   transform-style: preserve-3d;
 }
 
+/* ── Card — FlexCarousel-inspired proportions ── */
 .item {
   position: absolute;
-  width: var(--card-width, clamp(40px, 4.5vw, 70px));
-  height: var(--card-height, clamp(56px, 6.3vw, 98px));
+  /* Natural aspect ratio per image, driven by --card-aspect on load */
+  height: var(--card-height, clamp(126px, 14.4vw, 232px));
+  width: auto;
+  aspect-ratio: var(--card-aspect, 3 / 4);
   overflow: hidden;
   background-size: cover;
   background-position: center;
   top: 50%;
   left: 50%;
+  /* Crisp 6px corners */
+  border-radius: 6px;
   will-change: transform, filter, opacity;
   backface-visibility: hidden;
   transform-style: preserve-3d;
+  cursor: pointer;
+  user-select: none;
 }
 
 @media (max-width: 600px) {
   .item {
-    width: var(--card-width, clamp(55px, 14vw, 68px));
-    height: var(--card-height, clamp(77px, 19.6vw, 95px));
+    height: var(--card-height, clamp(92px, 26vw, 122px));
   }
 }
