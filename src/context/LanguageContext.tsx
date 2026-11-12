@@ -29,7 +29,7 @@ const TRANSLATIONS = {
 
     // About sidebar
     about_aria: "About me",
-    about_close: "ESC / CLOSE",
+    about_close: "CLOSE",
     about_bio_intro:
       "I am a digital product designer and developer. My approach integrates aesthetics, business strategy, and software engineering to accompany the entire lifecycle of a product. I am interested in building things with purpose: where",
     about_bio_keyword_design: "design",
@@ -64,7 +64,7 @@ const TRANSLATIONS = {
 
     // About sidebar
     about_aria: "Sobre mí",
-    about_close: "ESC / CERRAR",
+    about_close: "CERRAR",
     about_bio_intro:
       "Soy diseñadora y desarrolladora de productos digitales. Mi enfoque integra estética, estrategia de negocio e ingeniería de software para acompañar todo el ciclo de vida de un producto. Me interesa construir cosas con propósito: donde el",
     about_bio_keyword_design: "diseño",

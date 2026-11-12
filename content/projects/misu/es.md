@@ -46,4 +46,4 @@ La persistencia sigue un enfoque local-first: localStorage y Supabase trabajan j
 
 MISU nació de convertir una dificultad cotidiana propia en una oportunidad para explorar nuevas formas de diseñar tecnología. El proyecto me permitió recorrer el ciclo completo de un producto digital: desde identificar una necesidad y diseñar el software que la resuelve, hasta implementar una aplicación funcional.
 
-Hoy MISU tiene usuarios activos y está disponible en español, inglés e italiano.
+Hoy MISU tiene +10 usuarios activos y está disponible en español, inglés e italiano.

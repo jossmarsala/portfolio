@@ -60,9 +60,10 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     galleryAspectRatio: "3/4",
     processLabel: "features",
     galleryImages: [
+      "/optimized/carousel/misu__poster-carousel.png",
       "/projects/misu/images/images-portfolio-misu_catalog.png",
-      "/projects/misu/images/misu__gif.gif",
       "/projects/misu/images/images-portfolio-misu_designsystem.png",
+      "/projects/misu/images/misu__gif.gif",
     ],
   },
   gypsy: {

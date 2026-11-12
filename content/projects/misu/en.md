@@ -46,4 +46,4 @@ Persistence follows a local-first approach: localStorage and Supabase work toget
 
 MISU was born from turning a personal everyday difficulty into an opportunity to explore new ways of designing technology. The project allowed me to go through the full cycle of a digital product: from identifying a need and designing the software that solves it to implementing a functional application.
 
-Today MISU has active users and is available in Spanish, English, and Italian.
+Today MISU has 10+ active users and is available in Spanish, English, and Italian.

@@ -47,13 +47,7 @@ function renderGalleryMedia(src: string, className = "pv-separator__img") {
   if (isMediaVideo(src)) {
     const webmSrc = src.replace(/\.(mp4|mov)($|\?)/i, ".webm$2");
     return (
-      <video
-        className={className}
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
+      <video className={className} autoPlay loop muted playsInline>
         <source src={webmSrc} type="video/webm" />
         <source src={src} type="video/mp4" />
       </video>
@@ -358,8 +352,80 @@ export function ProjectView({
         );
       });
 
+      // Gallery cards (gypsy / misu portrait galleries): index-style sweep
+      // entrance — clip-path reveal + y/scale/opacity + inner image settle.
+      const galleryCards = Array.from(
+        scroller.querySelectorAll<HTMLElement>(
+          ".pv-trio-card, .pv-gallery-portrait__item",
+        ),
+      );
+      if (galleryCards.length) {
+        const galleryInner = galleryCards
+          .map((card) => card.querySelector<HTMLElement>(".pv-separator__img"))
+          .filter((el): el is HTMLElement => el !== null);
+
+        gsap.set(galleryCards, {
+          y: -40,
+          scale: 0.95,
+          opacity: 0,
+          clipPath: "inset(0% 0% 100% 0%)",
+        });
+        gsap.set(galleryInner, { scale: 1.12, willChange: "transform" });
+
+        const galleryTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: galleryCards[0],
+            start: "top 90%",
+            end: "center 55%",
+            scrub: 1.5,
+            scroller,
+          },
+        });
+
+        // Sweep reveal downwards, staggered across the row.
+        galleryTl.to(
+          galleryCards,
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 0.9,
+            ease: "expo.inOut",
+            stagger: 0.1,
+          },
+          0,
+        );
+
+        // Subtle entrance (y + scale + opacity).
+        galleryTl.to(
+          galleryCards,
+          {
+            y: 0,
+            scale: 1,
+            opacity: 1,
+            duration: 1.0,
+            ease: "back.out(1.2)",
+            stagger: 0.1,
+          },
+          0,
+        );
+
+        // Image zoom settling.
+        galleryTl.to(
+          galleryInner,
+          {
+            scale: 1,
+            duration: 1.2,
+            ease: "power2.out",
+            stagger: 0.1,
+          },
+          0.04,
+        );
+      }
+
       // Full-bleed image separators: clip-path sweep
-      const separators = scroller.querySelectorAll(".pv-separator");
+      // (gallery cards above already have their own index-style sweep)
+      const separators = scroller.querySelectorAll(
+        ".pv-separator:not(.pv-trio-card):not(.pv-gallery-portrait__item)",
+      );
       separators.forEach((el) => {
         gsap.fromTo(
           el,
@@ -529,9 +595,13 @@ export function ProjectView({
   const galleryImages = project.galleryImages ?? [];
   const isPortrait =
     project.galleryAspectRatio === "3/4" || project.slug === "misu";
+  // Portrait galleries use a 4-up first row when enough images exist,
+  // otherwise fall back to the original 3-up row.
+  const firstRowCount = Math.min(4, galleryImages.length);
   const portraitRows = useMemo(
-    () => (isPortrait ? getPortraitRows(galleryImages.slice(3)) : []),
-    [isPortrait, galleryImages],
+    () =>
+      isPortrait ? getPortraitRows(galleryImages.slice(firstRowCount)) : [],
+    [isPortrait, galleryImages, firstRowCount],
   );
   const hasProcess = (content?.processSteps?.length ?? 0) > 0;
   const hasMetrics = (content?.metrics?.length ?? 0) > 0;
@@ -566,7 +636,7 @@ export function ProjectView({
           <span className="project-view-close__label">
             <DecryptedText
               {...DECRYPTED_NAV}
-              text="esc / close"
+              text="close"
               className="project-view-close__revealed"
               encryptedClassName="project-view-close__encrypted"
             />
@@ -670,9 +740,13 @@ export function ProjectView({
           {galleryImages.length > 0 &&
             (isPortrait ? (
               <div className="pv-gallery-portrait">
-                {/* First Image Row: 3-Images Layout */}
-                <div className="pv-trio-grid">
-                  {galleryImages.slice(0, 3).map((src, idx) => (
+                {/* First Image Row: 4-Images Layout (falls back to 3) */}
+                <div
+                  className={`pv-trio-grid${
+                    firstRowCount === 4 ? " pv-trio-grid--quad" : ""
+                  }`}
+                >
+                  {galleryImages.slice(0, firstRowCount).map((src, idx) => (
                     <div key={idx} className="pv-separator pv-trio-card">
                       {renderGalleryMedia(src)}
                     </div>
