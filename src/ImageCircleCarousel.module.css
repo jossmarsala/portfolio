@@ -30,10 +30,10 @@
 /* ── Card — FlexCarousel-inspired proportions ── */
 .item {
   position: absolute;
-  /* Natural aspect ratio per image, driven by --card-aspect on load */
+  /* Every card is a fixed 3:4 frame; images are cropped to fill it */
   height: var(--card-height, clamp(126px, 14.4vw, 232px));
   width: auto;
-  aspect-ratio: var(--card-aspect, 3 / 4);
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   background-size: cover;
   background-position: center;

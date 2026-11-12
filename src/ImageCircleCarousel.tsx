@@ -38,17 +38,6 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
 
     if (totalCards === 0) return;
 
-    // Apply natural aspect ratios immediately for already-cached images.
-    cards.forEach((card) => {
-      const img = card.querySelector("img");
-      if (img?.complete && img.naturalWidth && img.naturalHeight) {
-        card.style.setProperty(
-          "--card-aspect",
-          `${img.naturalWidth} / ${img.naturalHeight}`,
-        );
-      }
-    });
-
     // ── Editorial scale system ──────────────────────────────────────────────
     // A single uniform stage scale drives the card size so every dimension of
     // the composition stays proportional across viewports. The cascade span
@@ -544,17 +533,6 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
                   pointerEvents: "none",
                 }}
                 draggable={false}
-                onLoad={(e) => {
-                  const img = e.currentTarget;
-                  const card = img.parentElement;
-                  if (!card || !img.naturalWidth || !img.naturalHeight) return;
-                  // Let each image keep its own aspect ratio instead of being
-                  // cropped into the fixed 3:4 card.
-                  card.style.setProperty(
-                    "--card-aspect",
-                    `${img.naturalWidth} / ${img.naturalHeight}`,
-                  );
-                }}
               />
             </div>
           ))}

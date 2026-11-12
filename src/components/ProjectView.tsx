@@ -6,9 +6,11 @@ import { PROJECTS_DATA } from "../config/projects";
 import DecryptedText from "../DecryptedText";
 import { DECRYPTED_NAV } from "../config/decryptedTextPresets";
 import Footer from "../Footer";
+import BentoLabel from "./BentoLabel";
 import { useLang } from "../context/LanguageContext";
 import { useProjectContent } from "../hooks/useProjectContent";
 import "./ProjectView.css";
+import "../BentoImages.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,6 +44,20 @@ function getPortraitRows(images: string[]): string[][] {
 }
 
 const isMediaVideo = (src: string) => /\.(mp4|webm|mov|ogg)($|\?)/i.test(src);
+
+function pickRandomProjects(currentSlug: string, count = 2): ProjectItem[] {
+  const pool = Object.values(PROJECTS_DATA).filter(
+    (item) => item.slug !== currentSlug,
+  );
+
+  // Fisher–Yates shuffle so each visit surfaces a fresh pair.
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+
+  return pool.slice(0, count);
+}
 
 function renderGalleryMedia(src: string, className = "pv-separator__img") {
   if (isMediaVideo(src)) {
@@ -214,6 +230,8 @@ export function ProjectView({
   const { content, status } = useProjectContent(project.slug, lang);
 
   const overlayRef = useRef<HTMLDivElement>(null);
+  const contentCardRef = useRef<HTMLDivElement>(null);
+  const footerWrapperRef = useRef<HTMLDivElement>(null);
   const leftColRef = useRef<HTMLDivElement>(null);
   const imageFrameRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLElement | null>(null);
@@ -352,39 +370,44 @@ export function ProjectView({
         );
       });
 
-      // Gallery cards (gypsy / misu portrait galleries): index-style sweep
-      // entrance — clip-path reveal + y/scale/opacity + inner image settle.
-      const galleryCards = Array.from(
+      // Gallery images: same sweep entrance as the index bento grid.
+      // Each gallery group (portrait row / editorial triad) reveals as one
+      // staggered unit when it scrolls into view.
+      const galleryGroups = Array.from(
         scroller.querySelectorAll<HTMLElement>(
-          ".pv-trio-card, .pv-gallery-portrait__item",
+          ".pv-trio-grid, .pv-gallery-portrait__row, .pv-gallery-triad",
         ),
       );
+      const galleryCards = galleryGroups.flatMap((group) =>
+        Array.from(group.querySelectorAll<HTMLElement>(".pv-gallery-card")),
+      );
       if (galleryCards.length) {
-        const galleryInner = galleryCards
-          .map((card) => card.querySelector<HTMLElement>(".pv-separator__img"))
-          .filter((el): el is HTMLElement => el !== null);
-
         gsap.set(galleryCards, {
           y: -40,
           scale: 0.95,
           opacity: 0,
           clipPath: "inset(0% 0% 100% 0%)",
         });
-        gsap.set(galleryInner, { scale: 1.12, willChange: "transform" });
+      }
+      galleryGroups.forEach((group) => {
+        const cards = Array.from(
+          group.querySelectorAll<HTMLElement>(".pv-gallery-card"),
+        );
+        if (!cards.length) return;
 
         const galleryTl = gsap.timeline({
           scrollTrigger: {
-            trigger: galleryCards[0],
-            start: "top 90%",
-            end: "center 55%",
+            trigger: group,
+            start: "top 75%",
+            end: "center 35%",
             scrub: 1.5,
             scroller,
           },
         });
 
-        // Sweep reveal downwards, staggered across the row.
+        // 1. Sweep reveal downwards (clip-path).
         galleryTl.to(
-          galleryCards,
+          cards,
           {
             clipPath: "inset(0% 0% 0% 0%)",
             duration: 0.9,
@@ -394,9 +417,9 @@ export function ProjectView({
           0,
         );
 
-        // Subtle entrance (y + scale + opacity).
+        // 2. Subtle entrance (y + scale + opacity).
         galleryTl.to(
-          galleryCards,
+          cards,
           {
             y: 0,
             scale: 1,
@@ -407,24 +430,12 @@ export function ProjectView({
           },
           0,
         );
-
-        // Image zoom settling.
-        galleryTl.to(
-          galleryInner,
-          {
-            scale: 1,
-            duration: 1.2,
-            ease: "power2.out",
-            stagger: 0.1,
-          },
-          0.04,
-        );
-      }
+      });
 
       // Full-bleed image separators: clip-path sweep
-      // (gallery cards above already have their own index-style sweep)
+      // (gallery images above already have their own bento-style sweep)
       const separators = scroller.querySelectorAll(
-        ".pv-separator:not(.pv-trio-card):not(.pv-gallery-portrait__item)",
+        ".pv-separator:not(.pv-gallery-card)",
       );
       separators.forEach((el) => {
         gsap.fromTo(
@@ -553,6 +564,53 @@ export function ProjectView({
           },
         );
       }
+
+      // More-work bento cards: index-style sweep entrance
+      const moreWorkCards = Array.from(
+        scroller.querySelectorAll<HTMLElement>(".see-more__bento-card"),
+      );
+      if (moreWorkCards.length) {
+        gsap.set(moreWorkCards, {
+          y: -40,
+          scale: 0.95,
+          opacity: 0,
+          clipPath: "inset(0% 0% 100% 0%)",
+        });
+
+        const moreWorkTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: moreWorkCards[0],
+            start: "top 92%",
+            end: "center 60%",
+            scrub: 1.5,
+            scroller,
+          },
+        });
+
+        moreWorkTl.to(
+          moreWorkCards,
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 0.9,
+            ease: "expo.inOut",
+            stagger: 0.1,
+          },
+          0,
+        );
+
+        moreWorkTl.to(
+          moreWorkCards,
+          {
+            y: 0,
+            scale: 1,
+            opacity: 1,
+            duration: 1.0,
+            ease: "back.out(1.2)",
+            stagger: 0.1,
+          },
+          0,
+        );
+      }
     }, scroller);
 
     return () => {
@@ -563,6 +621,64 @@ export function ProjectView({
       scrollCtx.revert();
     };
   }, []);
+
+  // Footer transition: shrink the white page above the footer exactly like the
+  // index works section does, revealing the grey footer wrapper behind it.
+  useEffect(() => {
+    const scroller = overlayRef.current;
+    const contentCard = contentCardRef.current;
+    const footerWrapper = footerWrapperRef.current;
+    if (!scroller || !contentCard || !footerWrapper) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: footerWrapper,
+        start: "top bottom",
+        end: "bottom bottom",
+        scrub: true,
+        scroller,
+      },
+    });
+
+    tl.fromTo(
+      contentCard,
+      {
+        scaleX: 1,
+        scaleY: 1,
+        transformOrigin: "bottom center",
+      },
+      {
+        scaleX: 0.94,
+        scaleY: 1,
+        transformOrigin: "bottom center",
+        ease: "power1.inOut",
+      },
+      0,
+    );
+
+    return () => {
+      tl.kill();
+      if (tl.scrollTrigger) tl.scrollTrigger.kill();
+    };
+  }, []);
+
+  // Content is fetched asynchronously, so the page grows after the scroll
+  // animations are created. Recalculate trigger positions once it settles.
+  useEffect(() => {
+    if (status !== "ready") return;
+    let cancelled = false;
+    const refresh = () => {
+      if (!cancelled) ScrollTrigger.refresh();
+    };
+    const raf = requestAnimationFrame(refresh);
+    const timeout = window.setTimeout(refresh, 300);
+    document.fonts?.ready.then(refresh);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timeout);
+    };
+  }, [status, lang]);
 
   const handleClose = () => {
     if (!overlayRef.current) {
@@ -593,6 +709,10 @@ export function ProjectView({
   };
 
   const galleryImages = project.galleryImages ?? [];
+  const moreProjects = useMemo(
+    () => pickRandomProjects(project.slug),
+    [project.slug],
+  );
   const isPortrait =
     project.galleryAspectRatio === "3/4" || project.slug === "misu";
   // Portrait galleries use a 4-up first row when enough images exist,
@@ -624,7 +744,7 @@ export function ProjectView({
       aria-label={`${project.title} project details`}
     >
       {/* ── Content card ── */}
-      <div className="pv-content-card">
+      <div ref={contentCardRef} className="pv-content-card">
         {/* ── Close ── */}
         <button
           ref={closeBtnRef}
@@ -747,7 +867,10 @@ export function ProjectView({
                   }`}
                 >
                   {galleryImages.slice(0, firstRowCount).map((src, idx) => (
-                    <div key={idx} className="pv-separator pv-trio-card">
+                    <div
+                      key={idx}
+                      className="pv-separator pv-trio-card pv-gallery-card"
+                    >
                       {renderGalleryMedia(src)}
                     </div>
                   ))}
@@ -781,7 +904,7 @@ export function ProjectView({
                     {row.map((src, imgIdx) => (
                       <div
                         key={imgIdx}
-                        className="pv-separator pv-gallery-portrait__item"
+                        className="pv-separator pv-gallery-portrait__item pv-gallery-card"
                       >
                         {renderGalleryMedia(src)}
                       </div>
@@ -791,16 +914,16 @@ export function ProjectView({
               </div>
             ) : (
               <div className="pv-gallery-triad">
-                <div className="pv-separator pv-gallery-triad__main">
+                <div className="pv-separator pv-gallery-triad__main pv-gallery-card">
                   {renderGalleryMedia(galleryImages[0])}
                 </div>
                 {galleryImages[1] && (
                   <div className="pv-gallery-triad__row">
-                    <div className="pv-separator pv-gallery-triad__sub">
+                    <div className="pv-separator pv-gallery-triad__sub pv-gallery-card">
                       {renderGalleryMedia(galleryImages[1])}
                     </div>
                     {galleryImages[2] && (
-                      <div className="pv-separator pv-gallery-triad__sub">
+                      <div className="pv-separator pv-gallery-triad__sub pv-gallery-card">
                         {renderGalleryMedia(galleryImages[2])}
                       </div>
                     )}
@@ -992,27 +1115,64 @@ export function ProjectView({
               <span className="see-more__label">more work</span>
             </div>
             <div className="see-more__col see-more__col--right">
-              <ul className="see-more__list" role="list">
-                {Object.values(PROJECTS_DATA).map((p) => (
-                  <li key={p.slug} className="see-more__item">
-                    <button
-                      className="see-more__link"
-                      onClick={() => {
-                        if (onProjectSelect) {
-                          onProjectSelect(p.slug);
-                          // Optional: scrollTo top
-                          if (overlayRef.current)
-                            overlayRef.current.scrollTo(0, 0);
+              <div className="see-more__bento">
+                {moreProjects.map((p) => {
+                  const mediaSrc = p.imageUrl;
+                  const mediaIsVideo = isMediaVideo(mediaSrc);
+
+                  const handleSelect = () => {
+                    if (!onProjectSelect) return;
+                    onProjectSelect(p.slug);
+                    overlayRef.current?.scrollTo(0, 0);
+                  };
+
+                  return (
+                    <div
+                      key={p.slug}
+                      className="see-more__bento-card"
+                      role={onProjectSelect ? "button" : undefined}
+                      tabIndex={onProjectSelect ? 0 : undefined}
+                      data-cursor-project={
+                        onProjectSelect ? "true" : undefined
+                      }
+                      onClick={handleSelect}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handleSelect();
                         }
                       }}
                       aria-label={`View ${p.title}`}
                     >
-                      <span className="see-more__title">{p.title}</span>
-                      <span className="see-more__year">{p.year}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+                      <div className="bento-images__cell see-more__bento-cell">
+                        <div className="bento-images__cell-frame">
+                          {mediaIsVideo ? (
+                            <video
+                              key={mediaSrc}
+                              src={mediaSrc}
+                              className="bento-images__cell-img"
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                            />
+                          ) : (
+                            <img
+                              src={mediaSrc}
+                              alt={p.title}
+                              className="bento-images__cell-img"
+                              loading="lazy"
+                              draggable={false}
+                            />
+                          )}
+                        </div>
+                      </div>
+
+                      <BentoLabel title={p.title} sub={p.year} />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -1021,7 +1181,7 @@ export function ProjectView({
       {/* /pv-content-card */}
 
       {/* ── Footer wrapper ── */}
-      <div className="pv-footer-wrapper">
+      <div ref={footerWrapperRef} className="pv-footer-wrapper">
         <Footer scroller="#project-view-scroller" />
       </div>
     </div>
