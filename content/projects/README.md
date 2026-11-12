@@ -11,7 +11,7 @@ content/projects/
 │   └── es.md   # Spanish content
 ```
 
-Supported slugs match those defined in `src/config/projects.ts` (`vitalia`, `misu`, `gypsy`, `posdata`, `lilium`, `faro`).
+Supported slugs match those defined in `src/config/projects.ts` (`vitalia`, `misu`, `gypsy`, `posdata`, `lilium`).
 
 ---
 

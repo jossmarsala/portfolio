@@ -152,19 +152,19 @@ export function BentoSideProjects({
                       aria-hidden="true"
                     >
                       <line
-                        x1="5"
-                        y1="3"
-                        x2="5"
-                        y2="21"
+                        x1="24"
+                        y1="15"
+                        x2="24"
+                        y2="33"
                         stroke="currentColor"
                         strokeWidth="1.5"
                         strokeLinecap="round"
                       />
                       <line
-                        x1="3"
-                        y1="5"
-                        x2="21"
-                        y2="5"
+                        x1="15"
+                        y1="24"
+                        x2="33"
+                        y2="24"
                         stroke="currentColor"
                         strokeWidth="1.5"
                         strokeLinecap="round"

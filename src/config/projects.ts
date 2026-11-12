@@ -116,20 +116,4 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     ],
     processImageUrl: "https://assets.codepen.io/7558/bw-portrait-009.jpg",
   },
-  faro: {
-    slug: "faro",
-    title: "faro stock manager",
-    year: "2026",
-    imageUrl: "https://assets.codepen.io/7558/bw-portrait-001.jpg",
-    url: "https://faro.app",
-    highlightWords: ["frictionless", "cockpit", "lightning-fast"],
-    galleryImages: [
-      "https://assets.codepen.io/7558/bw-portrait-001.jpg",
-      "https://assets.codepen.io/7558/bw-portrait-002.jpg",
-      "https://assets.codepen.io/7558/bw-portrait-003.jpg",
-      "https://assets.codepen.io/7558/bw-portrait-008.jpg",
-      "https://assets.codepen.io/7558/bw-portrait-010.jpg",
-    ],
-    processImageUrl: "https://assets.codepen.io/7558/bw-portrait-009.jpg",
-  },
 };
