@@ -18,14 +18,14 @@ const CAROUSEL_IMAGES = [
   "/carousel/gypsy__designsystem.webp",
   "/carousel/gypsy__mockupphone.webp",
   "/carousel/images-portfolio-misu_catalog.png",
-  "public/optimized/carousel/lilium__carousel.png",
+  "/optimized/carousel/lilium__carousel.png",
   "/carousel/images-portfolio-misu_mockupphone.png",
   "/optimized/carousel/6fe0ef207584933.68fe667546e9e.png",
   "/carousel/mockuplaptopmisu.png",
   "/carousel/Asset 1.webp",
-  "public/carousel/images-portfolio-misu_designsystem.png",
-  "public/optimized/carousel/misu__poster-carousel.png",
-  "public/carousel/vitalia__carousel.png",
+  "/carousel/images-portfolio-misu_designsystem.png",
+  "/optimized/carousel/misu__poster-carousel.png",
+  "/carousel/vitalia__carousel.png",
 ];
 
 /**
