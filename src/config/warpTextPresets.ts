@@ -35,9 +35,11 @@ export const WARP_HEADLINE_PROPS: Partial<WarpTextProps> = {
  */
 export const WARP_FOOTER_HEADLINE_PROPS: Partial<WarpTextProps> = {
   ...WARP_HEADLINE_PROPS,
-  fontSize: "clamp(3.2rem, 11vw, 13rem)",
+  /* Higher minimum keeps "let's / talk." filling phone widths instead of
+     leaving a vast gap between the two columns. Desktop scale is unchanged. */
+  fontSize: "clamp(4rem, 11vw, 13rem)",
   style: {
     ...WARP_HEADLINE_PROPS.style,
-    height: "clamp(160px, 24vw, 340px)",
+    height: "clamp(130px, 24vw, 340px)",
   },
 } as const;

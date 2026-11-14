@@ -2,7 +2,9 @@ import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ProjectItem } from "../config/projects";
-import { PROJECTS_DATA } from "../config/projects";
+import { getProjectOgImage, PROJECTS_DATA } from "../config/projects";
+import { absoluteUrl, SITE } from "../config/site";
+import { toMetaDescription, useSeo } from "../lib/seo";
 import DecryptedText from "../DecryptedText";
 import { DECRYPTED_NAV } from "../config/decryptedTextPresets";
 import Footer from "../Footer";
@@ -228,6 +230,32 @@ export function ProjectView({
 }: ProjectViewProps) {
   const { lang } = useLang();
   const { content, status } = useProjectContent(project.slug, lang);
+
+  useSeo({
+    title: `${project.title} — Jos Marsala`,
+    description: content?.summary
+      ? toMetaDescription(content.summary)
+      : `${project.title} (${project.year}) — a design and development case study by Jos Marsala.`,
+    path: `/projects/${project.slug}`,
+    image: getProjectOgImage(project),
+    type: "article",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      name: project.title,
+      dateCreated: project.year,
+      url: project.url ?? absoluteUrl(`/projects/${project.slug}`),
+      image: absoluteUrl(getProjectOgImage(project)),
+      creator: {
+        "@type": "Person",
+        name: SITE.name,
+        url: absoluteUrl("/"),
+      },
+      ...(content?.summary
+        ? { abstract: toMetaDescription(content.summary, 300) }
+        : {}),
+    },
+  });
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentCardRef = useRef<HTMLDivElement>(null);

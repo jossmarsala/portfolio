@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/parse-projects.js && tsc -b && vite build",
+    "build": "node scripts/parse-projects.js && tsc -b && vite build && node scripts/generate-seo-files.js",
     "parse:projects": "node scripts/parse-projects.js",
     "parse:projects:watch": "node scripts/parse-projects.js --watch",
+    "seo:generate": "node scripts/generate-seo-files.js",
     "lint": "oxlint",
     "preview": "vite preview",
     "optimize:images": "bash scripts/optimize-images.sh",
@@ -21,6 +22,7 @@
     "ogl": "^1.0.11",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.5",
     "three": "^0.186.0"
   },
   "devDependencies": {

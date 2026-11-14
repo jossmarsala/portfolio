@@ -135,7 +135,7 @@
 
 .about-sidebar__bio {
   font-family: var(--font-family-main);
-  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
   font-weight: 450;
   letter-spacing: -0.01em;
   line-height: 1.45;
@@ -145,10 +145,18 @@
   will-change: transform, opacity;
 }
 
+.about-sidebar__bio-para {
+  margin: 0;
+}
+
+.about-sidebar__bio-para + .about-sidebar__bio-para {
+  margin-top: 0.9em;
+}
+
 /* Highlighted keywords matching the site's signature style */
 .about-sidebar__bio .about-keyword {
   color: var(--color-text-accent);
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .about-sidebar__bio .about-keyword-enc {

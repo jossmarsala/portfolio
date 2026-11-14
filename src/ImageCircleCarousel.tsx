@@ -11,17 +11,36 @@ import {
 interface ImageCircleCarouselProps {
   images: string[];
   children?: React.ReactNode;
+  /** Fires as the first card begins to appear in the centered stack. */
+  onImagesStart?: () => void;
+  /**
+   * Fires once every image has loaded and the centered intro stack is fully
+   * visible (right before the cards spread into their diagonal positions).
+   */
+  onIntroComplete?: () => void;
 }
 
 export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
   images,
   children,
+  onImagesStart,
+  onIntroComplete,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const parallaxContainerRef = useRef<HTMLDivElement>(null);
   const rotationContainerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const hoveredCardRef = useRef<number | null>(null);
+
+  const onImagesStartRef = useRef(onImagesStart);
+  useEffect(() => {
+    onImagesStartRef.current = onImagesStart;
+  }, [onImagesStart]);
+
+  const onIntroCompleteRef = useRef(onIntroComplete);
+  useEffect(() => {
+    onIntroCompleteRef.current = onIntroComplete;
+  }, [onIntroComplete]);
 
   useEffect(() => {
     if (
@@ -103,7 +122,13 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
       mountCardGlass(card, images[i], { distort: 1.35, chroma: 0.32 });
     });
 
-    const tl = gsap.timeline({ delay: 1 });
+    // Paused until every image is decoded so cards never fade in blank.
+    const tl = gsap.timeline({ delay: 2.2, paused: true });
+    let cancelled = false;
+
+    // Position 0 is the first frame after the opening pause: the first card
+    // starts fading in right here.
+    tl.call(() => onImagesStartRef.current?.(), [], 0);
 
     // Intro animation: stack appearance
     for (let i = 0; i < totalCards; i++) {
@@ -209,6 +234,10 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
 
     // Spread to diagonal
     tl.addLabel("spread");
+
+    // All cards have finished appearing in the centered stack. Let the loader
+    // know it can release while the cards fan out into the diagonal.
+    tl.call(() => onIntroCompleteRef.current?.(), [], "spread");
     // Stage-relative horizontal footing: positive = right from viewport centre.
     const getFinalCenterOffsetX = () => Math.round(48 * getStageScale());
     // Push the cascade just above centre, scaling the lift with the viewport so
@@ -481,7 +510,30 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
     window.addEventListener("mouseleave", handleMouseLeave);
     containerRef.current?.addEventListener("mouseleave", handleMouseLeave);
 
+    // Wait for the hero imagery before playing the intro so the staggered
+    // appearance always reveals actual images, never empty frames.
+    const preload = (src: string) =>
+      new Promise<void>((resolve) => {
+        let settled = false;
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          window.clearTimeout(timeout);
+          resolve();
+        };
+        const timeout = window.setTimeout(finish, 5000);
+        const image = new Image();
+        image.onload = finish;
+        image.onerror = finish;
+        image.src = src;
+      });
+
+    void Promise.all(images.map(preload)).then(() => {
+      if (!cancelled) tl.play();
+    });
+
     return () => {
+      cancelled = true;
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mouseleave", handleMouseLeave);

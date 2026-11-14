@@ -310,27 +310,40 @@ export function AboutSidebar({ isOpen, onClose }: AboutSidebarProps) {
         <div className="about-sidebar__body">
           {/* Bio statement — re-keyed on lang so DecryptedText re-animates with translated words */}
           <blockquote ref={bioRef} className="about-sidebar__bio" key={lang}>
-            {t("about_bio_intro")}{" "}
-            <DecryptedText
-              text={t("about_bio_keyword_design")}
-              parentClassName="about-keyword"
-              encryptedClassName="about-keyword-enc"
-              animateOn="inViewHover"
-              speed={45}
-              maxIterations={12}
-              sequential={true}
-            />{" "}
-            {t("about_bio_and")}{" "}
-            <DecryptedText
-              text={t("about_bio_keyword_tech")}
-              parentClassName="about-keyword"
-              encryptedClassName="about-keyword-enc"
-              animateOn="inViewHover"
-              speed={45}
-              maxIterations={12}
-              sequential={true}
-            />{" "}
-            {t("about_bio_outro")}
+            <p className="about-sidebar__bio-para">
+              {t("about_bio_intro")}
+              <DecryptedText
+                text={t("about_bio_kw_engineering")}
+                parentClassName="about-keyword"
+                encryptedClassName="about-keyword-enc"
+                animateOn="inViewHover"
+                speed={45}
+                maxIterations={12}
+                sequential={true}
+              />
+              {", "}
+              <DecryptedText
+                text={t("about_bio_kw_design")}
+                parentClassName="about-keyword"
+                encryptedClassName="about-keyword-enc"
+                animateOn="inViewHover"
+                speed={45}
+                maxIterations={12}
+                sequential={true}
+              />
+              {t("about_bio_between")}
+              <DecryptedText
+                text={t("about_bio_kw_business")}
+                parentClassName="about-keyword"
+                encryptedClassName="about-keyword-enc"
+                animateOn="inViewHover"
+                speed={45}
+                maxIterations={12}
+                sequential={true}
+              />
+              {t("about_bio_outro")}
+            </p>
+            <p className="about-sidebar__bio-para">{t("about_bio_second")}</p>
           </blockquote>
 
           {/* Minimalist Bracketed CTA matching ProjectView & web design */}

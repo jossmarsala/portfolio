@@ -13,6 +13,8 @@ import {
   DECRYPTED_NAV_SLOW,
 } from "./config/decryptedTextPresets";
 import { useLang } from "./context/LanguageContext";
+import { useAppShell } from "./context/AppShellContext";
+import { useSectionNavigation } from "./hooks/useSectionNavigation";
 import "./Footer.css";
 
 // Map nav label keys to translation keys
@@ -36,6 +38,9 @@ export function Footer({ scroller, onAboutClick }: FooterProps = {}) {
   const midRowRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const { t } = useLang();
+  const { openAbout } = useAppShell();
+  const navigateToSection = useSectionNavigation();
+  const handleAboutClick = onAboutClick ?? openAbout;
 
   useEffect(() => {
     const footer = footerRef.current;
@@ -129,14 +134,14 @@ export function Footer({ scroller, onAboutClick }: FooterProps = {}) {
                     className="footer__nav-link"
                     aria-label={translatedLabel}
                     role={isAbout ? "button" : undefined}
-                    onClick={
-                      isAbout
-                        ? (e) => {
-                            e.preventDefault();
-                            onAboutClick?.();
-                          }
-                        : undefined
-                    }
+                    onClick={(event) => {
+                      event.preventDefault();
+                      if (isAbout) {
+                        handleAboutClick();
+                        return;
+                      }
+                      navigateToSection(href);
+                    }}
                   >
                     <DecryptedText
                       {...DECRYPTED_NAV}

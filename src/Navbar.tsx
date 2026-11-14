@@ -3,6 +3,7 @@ import DecryptedText from "./DecryptedText";
 import { NAV_LINKS } from "./config/navLinks";
 import { DECRYPTED_NAV } from "./config/decryptedTextPresets";
 import { useLang } from "./context/LanguageContext";
+import { useSectionNavigation } from "./hooks/useSectionNavigation";
 import "./Navbar.css";
 
 interface NavbarProps {
@@ -19,6 +20,7 @@ const NAV_TRANSLATION_KEYS: Record<string, "nav_work" | "nav_about" | "nav_resum
 export function Navbar({ onAboutClick }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const { lang, toggleLang, t } = useLang();
+  const navigateToSection = useSectionNavigation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -61,14 +63,14 @@ export function Navbar({ onAboutClick }: NavbarProps) {
                 className="navbar__link"
                 aria-label={translatedLabel}
                 role={isAbout ? "button" : undefined}
-                onClick={
-                  isAbout
-                    ? (e) => {
-                        e.preventDefault();
-                        onAboutClick?.();
-                      }
-                    : undefined
-                }
+                onClick={(event) => {
+                  event.preventDefault();
+                  if (isAbout) {
+                    onAboutClick?.();
+                    return;
+                  }
+                  navigateToSection(href);
+                }}
               >
                 <DecryptedText
                   {...DECRYPTED_NAV}

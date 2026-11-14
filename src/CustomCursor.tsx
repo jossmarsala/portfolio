@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { useLang } from "./context/LanguageContext";
 import "./CustomCursor.css";
 
 const checkSupport = () => {
@@ -19,6 +20,7 @@ const angleDiff = (from: number, to: number): number => {
 };
 
 const CustomCursor: React.FC = () => {
+  const { t } = useLang();
   const bigBallRef = useRef<HTMLDivElement>(null);
   const smallBallRef = useRef<HTMLDivElement>(null);
   const ellipseRef = useRef<SVGEllipseElement>(null);
@@ -84,6 +86,7 @@ const CustomCursor: React.FC = () => {
     let isHoveringLink = false;
     let isHoveringProject = false;
     let isHoveringImage = false;
+    let hasPointerPosition = false;
     let activeProjectEl: HTMLElement | null = null;
     let activeLink: HTMLElement | null = null;
 
@@ -248,6 +251,7 @@ const CustomCursor: React.FC = () => {
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
+      hasPointerPosition = true;
       lastMoveTime = performance.now();
 
       if (!isVisible) {
@@ -364,6 +368,7 @@ const CustomCursor: React.FC = () => {
 
     // Handle mouse leaving/entering the viewport completely
     const handleDocumentMouseLeave = () => {
+      leaveProject();
       isVisible = false;
       gsap.to([bigBall, smallBall], { autoAlpha: 0, duration: 0.3 });
     };
@@ -374,6 +379,45 @@ const CustomCursor: React.FC = () => {
         gsap.to([bigBall, smallBall], { autoAlpha: 1, duration: 0.3 });
       }
     };
+
+    // ── Project hover reconciliation (observer pattern) ─────────────────────
+    // Route changes, filtered grids and scrolling can remove or move a project
+    // out from under the pointer without firing mouseout. Re-check the actual
+    // hover target so the badge can never outlive its project.
+    const reconcileProjectHover = () => {
+      if (!isHoveringProject) return;
+
+      // The hovered card can be unmounted mid-interaction (route change).
+      if (!activeProjectEl?.isConnected) {
+        leaveProject();
+        return;
+      }
+
+      if (!hasPointerPosition) return;
+
+      const hoveredProject = (document
+        .elementFromPoint(mouseX, mouseY)
+        ?.closest?.("[data-cursor-project]") ?? null) as HTMLElement | null;
+
+      if (hoveredProject === activeProjectEl) return;
+
+      leaveProject();
+      if (hoveredProject) {
+        if (isHoveringImage) isHoveringImage = false;
+        enterProject(hoveredProject);
+      }
+    };
+
+    const projectHoverObserver = new MutationObserver(reconcileProjectHover);
+    projectHoverObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+    // Capture scroll events from any scroll container, not just the window.
+    window.addEventListener("scroll", reconcileProjectHover, {
+      passive: true,
+      capture: true,
+    });
 
     window.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseover", handleMouseOver);
@@ -419,6 +463,8 @@ const CustomCursor: React.FC = () => {
     rafId = requestAnimationFrame(tick);
 
     return () => {
+      projectHoverObserver.disconnect();
+      window.removeEventListener("scroll", reconcileProjectHover, true);
       window.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseover", handleMouseOver);
       document.removeEventListener("mouseout", handleMouseOut);
@@ -460,7 +506,7 @@ const CustomCursor: React.FC = () => {
 
         {/* Badge Pill Layer: morphs/expands from the oval when hovering a project */}
         <div ref={pillLayerRef} className="cursor-pill-badge">
-          <span className="cursor-badge-text">see work</span>
+          <span className="cursor-badge-text">{t("cursor_see_work")}</span>
           <svg
             className="cursor-badge-arrow"
             width="10"

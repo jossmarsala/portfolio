@@ -31,6 +31,12 @@ export interface ProjectItem {
   processLabel?: "process" | "features";
 }
 
+/**
+ * Projects temporarily linking straight to their live site instead of opening
+ * the in-app case study. Remove a slug from this set to restore its case study.
+ */
+export const DIRECT_LINK_SLUGS = new Set(["vitalia", "posdata", "ascii"]);
+
 export const PROJECTS_DATA: Record<string, ProjectItem> = {
   vitalia: {
     slug: "vitalia",
@@ -117,3 +123,35 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     processImageUrl: "https://assets.codepen.io/7558/bw-portrait-009.jpg",
   },
 };
+
+/** Case-study slugs derived from the single source of truth. */
+export const PROJECT_SLUGS = Object.keys(PROJECTS_DATA);
+
+/** Case-insensitive project lookup for route params. */
+export function getProject(slug: string | undefined | null): ProjectItem | undefined {
+  if (!slug) return undefined;
+  return PROJECTS_DATA[slug.toLowerCase()];
+}
+
+/** Live-site target for projects that temporarily bypass the case study. */
+export function getDirectLinkUrl(slug: string | null | undefined): string | null {
+  const project = getProject(slug);
+  if (!project || !DIRECT_LINK_SLUGS.has(project.slug)) return null;
+  return project.url ?? null;
+}
+
+/** Picks a non-video image suitable for Open Graph / Twitter cards. */
+export function getProjectOgImage(project: ProjectItem): string {
+  const isVideo = (src: string) => /\.(mp4|webm|mov|ogg)($|\?)/i.test(src);
+
+  if (!isVideo(project.imageUrl)) return project.imageUrl;
+
+  const galleryImage = project.galleryImages?.find((src) => !isVideo(src));
+  if (galleryImage) return galleryImage;
+
+  if (project.processImageUrl && !isVideo(project.processImageUrl)) {
+    return project.processImageUrl;
+  }
+
+  return project.imageUrl;
+}

@@ -138,3 +138,11 @@
   z-index: 2;
   background-color: transparent;
 }
+
+/* On phones the footer sizes to its content (see Footer.css), so its wrapper
+   must not force a full viewport of empty grey below it. */
+@media (max-width: 600px) {
+  .footer-section-wrapper {
+    min-height: 0;
+  }
+}

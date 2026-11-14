@@ -25,25 +25,31 @@ const TRANSLATIONS = {
     works_headline_right: "work.",
     works_editorial_link: "about me\u00a0→",
     works_editorial_text:
-      "I'm a software development student with 3+ years of experience across two fields: design and code. I engineer systems and businesses that look and work beautifully.",
+      "Software developer and digital designer with 3+ years of experience. I build digital systems and businesses that blend engineering, high-impact design and business strategy.",
 
     // About sidebar
     about_aria: "About me",
     about_close: "CLOSE",
     about_bio_intro:
-      "I am a digital product designer and developer. My approach integrates aesthetics, business strategy, and software engineering to accompany the entire lifecycle of a product. I am interested in building things with purpose: where",
-    about_bio_keyword_design: "design",
-    about_bio_and: "and",
-    about_bio_keyword_tech: "technology",
-    about_bio_outro: "function as parts of the same system.",
+      "I'm Jos, digital product designer and software developer with 3 years of experience. My work combines ",
+    about_bio_kw_engineering: "engineering",
+    about_bio_kw_design: "design",
+    about_bio_between: ", and ",
+    about_bio_kw_business: "business",
+    about_bio_outro: " strategy.",
+    about_bio_second:
+      "I have a background in Software Development and hold diplomas in Multimedia Design and Cybersecurity. In 2024 I was national runner-up in the Informatics Olympiads with my team and, since then, I have led and developed 10+ projects that integrate full-stack programming, cybersecurity, and product vision.",
     about_bio:
-      "I am a digital product designer and developer. My approach integrates aesthetics, business strategy, and software engineering to accompany the entire lifecycle of a product. I am interested in building things with purpose: where design and technology function as parts of the same system.",
+      "I'm Jos, digital product designer and software developer with 3 years of experience. My work combines engineering, design, and business strategy.\n\nI have an academic background in Software Development and hold diplomas in Multimedia Design and Cybersecurity. In 2024 I was national runner-up in the Informatics Olympiads with my team and, since then, I have led and developed 10+ projects that integrate full-stack programming, cybersecurity, and business vision.",
     about_cta: "let's talk",
 
     // Footer
     footer_headline_left: "let's",
     footer_headline_right: "talk.",
     footer_sig_role: "designer & developer",
+
+    // Custom cursor
+    cursor_see_work: "see work",
   },
   es: {
     // Navbar
@@ -60,25 +66,31 @@ const TRANSLATIONS = {
     works_headline_right: "trabajo.",
     works_editorial_link: "sobre mí\u00a0→",
     works_editorial_text:
-      "Soy estudiante de Desarrollo de Software con más de 3 años de experiencia combinando diseño y programación. Creo sistemas y negocios digitales que destacan por su estética y funcionalidad.",
+      "Soy desarrolladora de software y diseñadora digital con más de 3 años de experiencia. Construyo productos digitales que integran ingeniería, diseño y estrategia de negocio.",
 
     // About sidebar
     about_aria: "Sobre mí",
     about_close: "CERRAR",
     about_bio_intro:
-      "Soy diseñadora y desarrolladora de productos digitales. Mi enfoque integra estética, estrategia de negocio e ingeniería de software para acompañar todo el ciclo de vida de un producto. Me interesa construir cosas con propósito: donde el",
-    about_bio_keyword_design: "diseño",
-    about_bio_and: "y la",
-    about_bio_keyword_tech: "tecnología",
-    about_bio_outro: "funcionen como partes de un mismo sistema.",
+      "Soy Jos. Diseñadora de productos digitales y desarrolladora de software con 3 años de experiencia. Mi trabajo combina ",
+    about_bio_kw_engineering: "ingeniería",
+    about_bio_kw_design: "diseño",
+    about_bio_between: " y estrategia de ",
+    about_bio_kw_business: "negocio",
+    about_bio_outro: ".",
+    about_bio_second:
+      "Cuento con formación en Desarrollo de Software y soy diplomada en Diseño Multimedial y Ciberseguridad. En 2024 fui subcampeona nacional en las Olimpíadas de Informática con mi equipo y, desde entonces, he liderado y desarrollado +10 proyectos que integran programación full-stack, seguridad informática y visión de producto.",
     about_bio:
-      "Soy diseñadora y desarrolladora de productos digitales. Mi enfoque integra estética, estrategia de negocio e ingeniería de software para acompañar todo el ciclo de vida de un producto. Me interesa construir cosas con propósito: donde el diseño y la tecnología funcionen como partes de un mismo sistema.",
+      "Soy Jos. Diseñadora de productos digitales y desarrolladora de software con 3 años de experiencia. Mi trabajo combina ingeniería, diseño y estrategia de negocio.\n\nCuento con formación en Desarrollo de Software y soy diplomada en Diseño Multimedial y Ciberseguridad. En 2024 fui subcampeona nacional en las Olimpíadas de Informática con mi equipo y, desde entonces, he liderado y desarrollado +10 proyectos que integran programación full-stack, seguridad informática y visión de producto.",
     about_cta: "hablemos",
 
     // Footer
     footer_headline_left: "let's",
     footer_headline_right: "talk.",
     footer_sig_role: "diseñadora & desarrolladora",
+
+    // Custom cursor
+    cursor_see_work: "ver trabajo",
   },
 } as const;
 

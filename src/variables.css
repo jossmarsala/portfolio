@@ -74,7 +74,7 @@
   --z-index-modal: 300;
   --z-index-popover: 400;
   --z-index-tooltip: 500;
-  --z-index-loader: 9999;
+  --z-index-loader: 100050;
   --z-index-navbar: 10000;
 }
 

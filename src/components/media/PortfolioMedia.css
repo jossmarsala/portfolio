@@ -1,0 +1,39 @@
+.portfolio-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-surface-alt, #ededed);
+}
+
+.portfolio-media__image,
+.portfolio-media__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portfolio-media__image {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.portfolio-media__video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 320ms ease;
+}
+
+.portfolio-media__video[data-visible="true"] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-media__video {
+    transition: none;
+  }
+}

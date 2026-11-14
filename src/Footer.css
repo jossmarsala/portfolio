@@ -6,11 +6,12 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   flex: 1;
   background-color: transparent; /* Changed from #ffffff to inherit grey background from wrapper */
   box-sizing: border-box;
   padding: calc(48px + clamp(0.75rem, 2vw, 1.5rem)) clamp(1.5rem, 6vw, 5rem)
-    clamp(2rem, 3.5vw, 3rem);
+    max(clamp(2rem, 3.5vw, 3rem), env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -169,19 +170,101 @@
   opacity: 1;
 }
 
+/* Consistent keyboard focus for all footer links */
+.footer__nav-link:focus-visible,
+.footer__contact:focus-visible,
+.footer__social-link:focus-visible {
+  outline: 1px solid var(--color-text);
+  outline-offset: 4px;
+}
+
 /* ═══════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════ */
 @media (max-width: 600px) {
+  /* Phones: let the footer size to its content instead of stretching over a
+     full viewport, which previously stranded the bottom bar far from the
+     signature and left huge dead zones. */
+  .footer {
+    min-height: 0;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    gap: clamp(1.75rem, 7vw, 2.5rem);
+    padding: calc(48px + 0.75rem) 1.25rem max(1.75rem, env(safe-area-inset-bottom));
+  }
+
+  .footer__warp-headline.warp-headline {
+    margin-bottom: 0;
+  }
+
   .footer__mid {
     flex-direction: column;
     align-items: flex-start;
-    gap: 2rem;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .footer__sig {
+    gap: 0.5rem;
+  }
+
+  .footer__sig-role {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+
+  .footer__nav {
+    width: 100%;
   }
 
   .footer__nav-list {
-    align-items: flex-start;
     flex-direction: row;
-    gap: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.25rem 1.75rem;
+  }
+
+  .footer__nav-link {
+    padding: 0.4rem 0;
+  }
+
+  /* Bottom bar: year + socials share the first row, contact gets a full row
+     so the email never collides with the icons. */
+  .footer__bottom {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: 1rem;
+    row-gap: 0.85rem;
+    padding-top: 1.25rem;
+  }
+
+  .footer__year {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .footer__bottom-right {
+    display: contents;
+  }
+
+  .footer__socials {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    gap: 0.5rem;
+  }
+
+  .footer__social-link {
+    padding: 0.4rem;
+    margin: -0.4rem;
+  }
+
+  .footer__contact {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
   }
 }

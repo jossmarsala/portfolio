@@ -1,18 +1,28 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import "./App.css";
-import ImageCircleCarousel from "./ImageCircleCarousel";
-import Navbar from "./Navbar";
-import Loader from "./Loader";
-import CustomCursor from "./CustomCursor";
-import WorksSection from "./components/WorksSection";
-import Footer from "./Footer";
-import JosMarsalaLogo from "./JosMarsalaLogo";
-import ProjectView from "./components/ProjectView";
-import AboutSidebar from "./AboutSidebar";
-import { PROJECTS_DATA } from "./config/projects";
-import type { ProjectItem } from "./config/projects";
-import { useLang } from "./context/LanguageContext";
+import "@/App.css";
+import Loader from "@/Loader";
+import JosMarsalaLogo from "@/JosMarsalaLogo";
+import RouteFallback from "@/components/ui/RouteFallback";
+import { getDirectLinkUrl, getProject } from "@/config/projects";
+import { SITE } from "@/config/site";
+import { useAppShell } from "@/context/AppShellContext";
+import { useLang } from "@/context/LanguageContext";
+import { useSeo } from "@/lib/seo";
+
+// Heavy, route-local bundles: WebGL carousel, scroll-animated works grid and the
+// WebGL footer headline. None of these block the hero paint.
+const ImageCircleCarousel = lazy(() => import("@/ImageCircleCarousel"));
+const WorksSection = lazy(() => import("@/components/WorksSection"));
+const Footer = lazy(() => import("@/Footer"));
 
 const CAROUSEL_IMAGES = [
   "/carousel/gypsy__designsystem.webp",
@@ -28,133 +38,115 @@ const CAROUSEL_IMAGES = [
   "/carousel/vitalia__carousel.png",
 ];
 
-/**
- * Projects temporarily linking straight to their live site instead of opening
- * the in-app case study. Remove a slug from this set to restore its case study.
- */
-const DIRECT_LINK_SLUGS = new Set(["vitalia", "posdata", "ascii"]);
-
-// Register ScrollTrigger in main.tsx per refactor plan
-
-function getProjectSlugFromPath(path: string): string | null {
-  const cleanPath = path.replace(/\/+$/, "").replace(/^\/+/, "");
-  if (!cleanPath) return null;
-
-  // Match /project/:slug or /projects/:slug
-  const match = cleanPath.match(/^(?:project|projects)\/([a-zA-Z0-9_-]+)$/i);
-  if (match && match[1]) {
-    const slug = match[1].toLowerCase();
-    if (PROJECTS_DATA[slug]) return slug;
-  }
-
-  // Match /:slug directly
-  const directSlug = cleanPath.toLowerCase();
-  if (PROJECTS_DATA[directSlug]) {
-    return directSlug;
-  }
-
-  // If path is "project" or "projects" without slug, fallback to first project
-  if (directSlug === "project" || directSlug === "projects") {
-    return "vitalia";
-  }
-
-  return null;
+interface HomeLocationState {
+  scrollTo?: string;
 }
 
-function getDirectLinkUrl(slug: string | null): string | null {
-  if (!slug) return null;
-  const project = PROJECTS_DATA[slug];
-  if (!project || !DIRECT_LINK_SLUGS.has(project.slug)) return null;
-  return project.url ?? null;
-}
-
-function App() {
+function HomePage() {
   const { lang, t } = useLang();
-  const initialSlug = getProjectSlugFromPath(window.location.pathname);
-  const initialDirectLink = getDirectLinkUrl(initialSlug);
-  const [loaderDone, setLoaderDone] = useState(() =>
-    Boolean(initialSlug && !initialDirectLink),
-  );
+  const { loaderDone, completeLoader, openAbout } = useAppShell();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const requestedScroll =
+    (location.state as HomeLocationState | null)?.scrollTo ?? null;
 
-  const handleLoaderComplete = useCallback(() => {
-    setLoaderDone(true);
+  // The loader holds its split "jos" until every carousel image has appeared
+  // in the centered stack, keeping the intro reveal seamless.
+  const [carouselIntroDone, setCarouselIntroDone] = useState(false);
+  const [imagesAppearing, setImagesAppearing] = useState(false);
+  const handleCarouselIntroComplete = useCallback(() => {
+    setCarouselIntroDone(true);
   }, []);
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
-    () => {
-      if (!initialSlug || initialDirectLink) return null;
-      return PROJECTS_DATA[initialSlug] || null;
-    },
-  );
+  const handleImagesStart = useCallback(() => {
+    setImagesAppearing(true);
+  }, []);
 
-  // Direct links to temporarily redirected projects open their live site.
-  useEffect(() => {
-    if (initialDirectLink) {
-      window.location.replace(initialDirectLink);
-    }
-  }, [initialDirectLink]);
+  useSeo({
+    title: SITE.title,
+    description: SITE.description,
+    path: "/",
+  });
 
-  const [aboutOpen, setAboutOpen] = useState(false);
-  const handleAboutOpen = useCallback(() => setAboutOpen(true), []);
-  const handleAboutClose = useCallback(() => setAboutOpen(false), []);
-
-  // Sync document title with active project or home portfolio
-  useEffect(() => {
-    if (selectedProject) {
-      document.title = `${selectedProject.title} — Jos Marsala`;
-    } else {
-      document.title = "Jos Marsala";
-    }
-  }, [selectedProject]);
-
-  // Support browser forward/back navigation
-  useEffect(() => {
-    const handlePopState = () => {
-      const slug = getProjectSlugFromPath(window.location.pathname);
+  const handleProjectSelect = useCallback(
+    (slug: string) => {
       const directLink = getDirectLinkUrl(slug);
       if (directLink) {
-        window.location.replace(directLink);
-      } else if (slug && PROJECTS_DATA[slug]) {
-        setSelectedProject(PROJECTS_DATA[slug]);
-      } else {
-        setSelectedProject(null);
+        window.open(directLink, "_blank", "noopener,noreferrer");
+        return;
       }
-    };
 
-    window.addEventListener("popstate", handlePopState);
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, []);
+      const project = getProject(slug) ?? getProject("vitalia");
+      if (!project) return;
 
-  const handleProjectSelect = useCallback((slug: string) => {
-    const directLink = getDirectLinkUrl(slug);
-    if (directLink) {
-      window.open(directLink, "_blank", "noopener,noreferrer");
-      return;
-    }
-
-    const project = PROJECTS_DATA[slug] || PROJECTS_DATA["vitalia"];
-    if (!project) return;
-    setSelectedProject(project);
-
-    const newPath = `/${project.slug}`;
-    if (window.location.pathname !== newPath) {
-      window.history.pushState({ slug: project.slug }, "", newPath);
-    }
-  }, []);
-
-  const handleProjectClose = useCallback(() => {
-    setSelectedProject(null);
-    if (window.location.pathname !== "/") {
-      window.history.pushState(null, "", "/");
-    }
-  }, []);
+      navigate(`/projects/${project.slug}`);
+    },
+    [navigate],
+  );
 
   // Refs for scroll-driven 3D animation
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
   const worksSectionRef = useRef<HTMLElement>(null);
   const isHeroTransitionActiveRef = useRef(true);
+
+  // Scroll to a section requested by a cross-route link (e.g. closing a case
+  // study returns to #work).
+  useEffect(() => {
+    if (!requestedScroll || !loaderDone) return;
+
+    let frame = 0;
+    const startedAt = performance.now();
+
+    const tryScroll = () => {
+      const element = document.getElementById(requestedScroll);
+      if (element) {
+        const reduced = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        element.scrollIntoView({
+          behavior: reduced ? "auto" : "smooth",
+          block: "start",
+        });
+        navigate(location.pathname, { replace: true, state: null });
+        return;
+      }
+
+      if (performance.now() - startedAt < 3000) {
+        frame = requestAnimationFrame(tryScroll);
+      }
+    };
+
+    frame = requestAnimationFrame(tryScroll);
+    return () => cancelAnimationFrame(frame);
+  }, [
+    requestedScroll,
+    loaderDone,
+    navigate,
+    location.pathname,
+  ]);
+
+  // Warm the case-study chunk once the home page is idle. Navigation stays
+  // instant without pulling the full ProjectView bundle into the entry chunk.
+  useEffect(() => {
+    if (!loaderDone) return;
+
+    const preload = () => {
+      void import("@/pages/ProjectPage");
+    };
+
+    const idleWindow = window as Window & {
+      requestIdleCallback?: (cb: () => void, options?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    if (idleWindow.requestIdleCallback) {
+      const id = idleWindow.requestIdleCallback(preload, { timeout: 2500 });
+      return () => idleWindow.cancelIdleCallback?.(id);
+    }
+
+    const timeout = window.setTimeout(preload, 1500);
+    return () => window.clearTimeout(timeout);
+  }, [loaderDone]);
 
   // Lock scroll completely while the loader is active
   useEffect(() => {
@@ -411,11 +403,6 @@ function App() {
 
   return (
     <>
-      {loaderDone && <CustomCursor />}
-      {loaderDone && <Navbar onAboutClick={handleAboutOpen} />}
-      {loaderDone && (
-        <AboutSidebar isOpen={aboutOpen} onClose={handleAboutClose} />
-      )}
       {/* ── Hero section: fixed height so About slides over it ── */}
       <section className="hero-section">
         {/* Full-screen background carousel — always mounted so it's
@@ -423,24 +410,40 @@ function App() {
             Title is rendered as children inside the carousel's 3D context
             so cards naturally depth-sort above and below the text. */}
         <div className="carousel-wrapper" ref={carouselWrapperRef}>
-          <ImageCircleCarousel images={CAROUSEL_IMAGES}>
-            {/* Hero title — only mounted after loader exits so DecryptedText
-                fires its "view" animation fresh when the page is revealed */}
-            {loaderDone && (
-              <div className="hero-editorial">
-                <h1 ref={heroTitleRef} className="portfolio-title">
-                  <JosMarsalaLogo />
-                </h1>
-                <p className="hero-tagline" key={lang}>
-                  {t("hero_tagline")}
-                </p>
-              </div>
-            )}
-          </ImageCircleCarousel>
+          <Suspense
+            fallback={
+              <RouteFallback variant="hero" label="loading visual" bare />
+            }
+          >
+            <ImageCircleCarousel
+              images={CAROUSEL_IMAGES}
+              onImagesStart={handleImagesStart}
+              onIntroComplete={handleCarouselIntroComplete}
+            >
+              {/* Hero title — only mounted after loader exits so DecryptedText
+                  fires its "view" animation fresh when the page is revealed */}
+              {loaderDone && (
+                <div className="hero-editorial">
+                  <h1 ref={heroTitleRef} className="portfolio-title">
+                    <JosMarsalaLogo />
+                  </h1>
+                  <p className="hero-tagline" key={lang}>
+                    {t("hero_tagline")}
+                  </p>
+                </div>
+              )}
+            </ImageCircleCarousel>
+          </Suspense>
         </div>
 
         {/* Cinematic intro loader */}
-        {!loaderDone && <Loader onComplete={handleLoaderComplete} />}
+        {!loaderDone && (
+          <Loader
+            ready={carouselIntroDone}
+            imagesAppearing={imagesAppearing}
+            onComplete={completeLoader}
+          />
+        )}
       </section>
 
       {/* ── Content Wrapper: slides over hero on scroll ── */}
@@ -451,30 +454,28 @@ function App() {
           id="work"
           ref={worksSectionRef}
         >
-          <WorksSection
-            triggerOnce={true}
-            onProjectSelect={handleProjectSelect}
-            onAboutClick={handleAboutOpen}
-          />
+          <Suspense
+            fallback={<RouteFallback variant="section" label="loading work" />}
+          >
+            <WorksSection
+              triggerOnce={true}
+              onProjectSelect={handleProjectSelect}
+              onAboutClick={openAbout}
+            />
+          </Suspense>
         </section>
 
         {/* ── Footer section ── */}
         <section className="footer-section-wrapper" id="footer">
-          <Footer onAboutClick={handleAboutOpen} />
+          <Suspense
+            fallback={<RouteFallback variant="section" label="loading footer" />}
+          >
+            <Footer onAboutClick={openAbout} />
+          </Suspense>
         </section>
       </div>
-
-      {/* ── Project Details Modal / View (Wireframe layout) ── */}
-      {selectedProject && (
-        <ProjectView
-          key={selectedProject.slug}
-          project={selectedProject}
-          onClose={handleProjectClose}
-          onProjectSelect={handleProjectSelect}
-        />
-      )}
     </>
   );
 }
 
-export default App;
+export default HomePage;

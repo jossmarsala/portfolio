@@ -1133,3 +1133,11 @@ a.pv-quote-link.cursor-link-active::after,
     max-width: 100%;
   }
 }
+
+/* On phones the footer is content-height (see Footer.css); keep the grey
+   wrapper from stretching a full viewport below it. */
+@media (max-width: 600px) {
+  .pv-footer-wrapper {
+    min-height: 0;
+  }
+}
