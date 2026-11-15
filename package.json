@@ -12,7 +12,9 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "optimize:images": "bash scripts/optimize-images.sh",
-    "optimize:videos": "bash scripts/optimize-videos.sh"
+    "optimize:videos": "bash scripts/optimize-videos.sh",
+    "optimize:cdn": "node scripts/optimize-cdn-assets.mjs",
+    "upload:cdn": "node scripts/upload-cdn-assets.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -30,9 +32,11 @@
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
+    "@vercel/blob": "^2.9.0",
     "@vitejs/plugin-react": "^6.1.0",
     "js-yaml": "^5.5.0",
     "oxlint": "^1.79.0",
+    "sharp": "^0.35.5",
     "typescript": "~6.0.2",
     "vite": "^8.2.2"
   }

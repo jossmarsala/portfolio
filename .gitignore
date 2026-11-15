@@ -25,3 +25,15 @@ dist-ssr
 .vercel
 .env*
 !.env.example
+
+# Heavy source media. Optimized once with `npm run optimize:cdn`, uploaded to
+# Vercel Blob with `npm run upload:cdn`. The generated map in
+# src/config/cdn-assets-map.json is committed; these working folders are not.
+cdn-assets/
+cdn-assets-optimized/
+cdn-assets-upload-report.json
+
+# Legacy local media output, superseded by the Vercel Blob CDN.
+public/projects/
+public/carousel/
+public/optimized/

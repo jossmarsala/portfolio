@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-11-15T03:06:16.607Z",
+  "baseUrl": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com",
+  "prefix": "portfolio",
+  "assets": {
+    "ABOUT.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/ABOUT.webp",
+    "GYPSY__design-tokens.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/GYPSY__design-tokens.webp",
+    "GYPSY__responsive-mockup.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/GYPSY__responsive-mockup.webp",
+    "GYPSY_mockup-phone.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/GYPSY_mockup-phone.webp",
+    "LILIUM__app-showcase.webm": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/LILIUM__app-showcase.webm",
+    "LILIUM__design-tokens.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/LILIUM__design-tokens.webp",
+    "LILIUM__hero-cover.webm": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/LILIUM__hero-cover.webm",
+    "LILIUM__mockup-book.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/LILIUM__mockup-book.webp",
+    "MISU__app-showcase.webm": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__app-showcase.webm",
+    "MISU__design-tokens.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__design-tokens.webp",
+    "MISU__energies-show.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__energies-show.webp",
+    "MISU__hero-cover.mp4": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__hero-cover.mp4",
+    "MISU__hero-video.webm": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__hero-video.webm",
+    "MISU__logo-show.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__logo-show.webp",
+    "MISU__mockup-computer.gif": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__mockup-computer.gif",
+    "MISU__mockup-poster.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__mockup-poster.webp",
+    "MISU__mockup-responsive.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__mockup-responsive.webp",
+    "MISU__widgets-show.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/MISU__widgets-show.webp",
+    "POSDATA__hero-video.mp4": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/POSDATA__hero-video.mp4",
+    "VITALIA__hero-cover.mp4": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/VITALIA__hero-cover.mp4",
+    "VITALIA__mascot-show.webp": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/VITALIA__mascot-show.webp",
+    "VITALIA_hero-cover.webm": "https://q0nedygsetmoaqy4.public.blob.vercel-storage.com/portfolio/VITALIA_hero-cover.webm"
+  }
+}

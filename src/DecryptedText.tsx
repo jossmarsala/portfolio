@@ -1,9 +1,8 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { motion } from 'motion/react';
-import type { HTMLMotionProps } from 'motion/react';
+import type { HTMLAttributes } from 'react';
 import './DecryptedText.css';
 
-export interface DecryptedTextProps extends HTMLMotionProps<'span'> {
+export interface DecryptedTextProps extends HTMLAttributes<HTMLSpanElement> {
   text: string;
   speed?: number;
   maxIterations?: number;
@@ -440,7 +439,7 @@ export function DecryptedText({
   const combinedParentClassName = ['decrypted-text-wrapper', parentClassName].filter(Boolean).join(' ');
 
   return (
-    <motion.span
+    <span
       className={combinedParentClassName}
       ref={containerRef}
       {...animateProps}
@@ -471,7 +470,7 @@ export function DecryptedText({
           );
         })}
       </span>
-    </motion.span>
+    </span>
   );
 }
 

@@ -301,6 +301,16 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
     let lastTimeScaleTarget = 1;
     let rotationTween: gsap.core.Tween;
 
+    // The infinite rotation is decorative; park it whenever the tab is hidden
+    // or the hero has scrolled out of view.
+    let isPageVisible = !document.hidden;
+    let isContainerVisible = true;
+    const syncRotationPlayback = () => {
+      if (!rotationTween) return;
+      if (isPageVisible && isContainerVisible) rotationTween.play();
+      else rotationTween.pause();
+    };
+
     tl.add(() => {
       rotationTween = gsap.to(rotationProxy, {
         angle: Math.PI * 2,
@@ -432,10 +442,14 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
           }
         },
       });
+      syncRotationPlayback();
     });
+
+    syncRotationPlayback();
 
     // Mouse tracking: smoothly updates mouse coordinates without tilting whole carousel
     const handleMouseMove = (e: MouseEvent) => {
+      if (!isPageVisible || !isContainerVisible) return;
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
       const x = clientX - innerWidth / 2;
@@ -510,6 +524,24 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
     window.addEventListener("mouseleave", handleMouseLeave);
     containerRef.current?.addEventListener("mouseleave", handleMouseLeave);
 
+    const handleVisibilityChange = () => {
+      isPageVisible = !document.hidden;
+      syncRotationPlayback();
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    let visibilityObserver: IntersectionObserver | undefined;
+    if ("IntersectionObserver" in window && containerRef.current) {
+      visibilityObserver = new IntersectionObserver(
+        (entries) => {
+          isContainerVisible = entries.some((entry) => entry.isIntersecting);
+          syncRotationPlayback();
+        },
+        { threshold: 0 },
+      );
+      visibilityObserver.observe(containerRef.current);
+    }
+
     // Wait for the hero imagery before playing the intro so the staggered
     // appearance always reveals actual images, never empty frames.
     const preload = (src: string) =>
@@ -538,6 +570,8 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mouseleave", handleMouseLeave);
       containerRef.current?.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      visibilityObserver?.disconnect();
 
       const rotationNode = rotationContainerRef.current;
 

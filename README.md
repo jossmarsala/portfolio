@@ -88,14 +88,16 @@ direct-link projects. `VITE_SITE_URL` overrides the default production origin
 
 ### Media
 
-`PortfolioMedia` is the standard wrapper for project media:
+Project media is optimized once and served from **Vercel Blob**. The generated
+map in `src/config/cdn-assets-map.json` is the single source of truth:
 
 ```tsx
 import { PortfolioMedia } from "@/components/media/PortfolioMedia";
+import { cdnAsset } from "@/config/cdn-assets";
 
 <PortfolioMedia
-  imageSrc="/projects/misu/images/hero.webp"
-  videoSrc="/projects/misu/videos/hero.webm"
+  imageSrc={cdnAsset("MISU__mockup-poster.webp")}
+  videoSrc={cdnAsset("MISU__app-showcase.webm")}
   alt="Misu catalog screen"
 />
 ```
@@ -104,11 +106,16 @@ import { PortfolioMedia } from "@/components/media/PortfolioMedia";
 - Falls back to the image on error, autoplay rejection or unsupported codec.
 - Never mounts video when `prefers-reduced-motion: reduce` is set.
 - Only the image is eager; video is `preload="none"` until in view.
-- All paths resolve through `mediaUrl()`: set `VITE_MEDIA_BASE_URL` to serve the
-  same tree from a CDN, and absolute URLs continue to pass through untouched.
+- Absolute Blob URLs pass through `mediaUrl()` untouched; set
+  `VITE_MEDIA_BASE_URL` only for media that is still served from `public/`.
 
 The component is intentionally not yet wired into existing galleries — swap
 `<img>` / `<video>` instances over when the new imagery is ready.
+
+To add or replace media: drop the source files in `cdn-assets/`, run
+`npm run optimize:cdn`, then `npm run upload:cdn`, and reference the result with
+`cdnAsset(...)`. Both working folders are gitignored; only the generated map and
+scripts are committed.
 
 ### Lazy loading
 

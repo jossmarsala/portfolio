@@ -17,6 +17,12 @@ interface LoaderProps {
 
 /** Keep the split word visible long enough for the split + oval to read. */
 const MIN_SPLIT_MS = 1300;
+/**
+ * The loader is decorative: it never waits on the hero imagery. It releases
+ * itself once the minimum split has played, so a slow image or chunk can't
+ * trap the page behind the intro.
+ */
+const TIMEBOX_MS = MIN_SPLIT_MS;
 /** Sweep duration before the loader is removed. */
 const COMPOSE_MS = 10;
 const EXIT_MS = 400;
@@ -30,6 +36,7 @@ export function Loader({
 }: LoaderProps) {
   const [phase, setPhase] = useState<Phase>("enter");
   const [timedOut, setTimedOut] = useState(false);
+  const [timeBoxed, setTimeBoxed] = useState(false);
   const mountedAtRef = useRef(0);
   const hasStartedExitRef = useRef(false);
 
@@ -44,6 +51,13 @@ export function Loader({
     return () => clearTimeout(timer);
   }, []);
 
+  // Time-box the decorative intro: it exits after the minimum split even if the
+  // hero imagery is still loading.
+  useEffect(() => {
+    const timer = setTimeout(() => setTimeBoxed(true), TIMEBOX_MS);
+    return () => clearTimeout(timer);
+  }, []);
+
   // If the hero never reports back (chunk failure, stalled image), release the
   // loader anyway so the page remains reachable.
   useEffect(() => {
@@ -51,7 +65,7 @@ export function Loader({
     return () => clearTimeout(timer);
   }, []);
 
-  const canExit = ready || timedOut;
+  const canExit = ready || timeBoxed || timedOut;
 
   useEffect(() => {
     if (!canExit || hasStartedExitRef.current) return;

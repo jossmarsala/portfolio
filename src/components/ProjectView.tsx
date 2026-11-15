@@ -4,6 +4,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ProjectItem } from "../config/projects";
 import { getProjectOgImage, PROJECTS_DATA } from "../config/projects";
 import { absoluteUrl, SITE } from "../config/site";
+import { cdnAsset } from "../config/cdn-assets";
+import { mediaUrl } from "../lib/media";
 import { toMetaDescription, useSeo } from "../lib/seo";
 import DecryptedText from "../DecryptedText";
 import { DECRYPTED_NAV } from "../config/decryptedTextPresets";
@@ -46,7 +48,6 @@ function getPortraitRows(images: string[]): string[][] {
 }
 
 const isMediaVideo = (src: string) => /\.(mp4|webm|mov|ogg)($|\?)/i.test(src);
-
 function pickRandomProjects(currentSlug: string, count = 2): ProjectItem[] {
   const pool = Object.values(PROJECTS_DATA).filter(
     (item) => item.slug !== currentSlug,
@@ -62,16 +63,15 @@ function pickRandomProjects(currentSlug: string, count = 2): ProjectItem[] {
 }
 
 function renderGalleryMedia(src: string, className = "pv-separator__img") {
+  const resolved = mediaUrl(src);
+
   if (isMediaVideo(src)) {
-    const webmSrc = src.replace(/\.(mp4|mov)($|\?)/i, ".webm$2");
     return (
-      <video className={className} autoPlay loop muted playsInline>
-        <source src={webmSrc} type="video/webm" />
-        <source src={src} type="video/mp4" />
-      </video>
+      <video className={className} src={resolved} autoPlay loop muted playsInline />
     );
   }
-  return <img src={src} alt="" className={className} draggable={false} />;
+
+  return <img src={resolved} alt="" className={className} draggable={false} />;
 }
 
 function renderExtraSectionContent(raw: string) {
@@ -816,7 +816,7 @@ export function ProjectView({
                 <video
                   key={project.videoUrl || project.imageUrl}
                   ref={imageRef as any}
-                  src={project.videoUrl || project.imageUrl}
+                  src={mediaUrl(project.videoUrl || project.imageUrl)}
                   className="project-view-image"
                   autoPlay
                   loop
@@ -826,7 +826,7 @@ export function ProjectView({
               ) : (
                 <img
                   ref={imageRef as any}
-                  src={project.imageUrl}
+                  src={mediaUrl(project.imageUrl)}
                   alt={project.title}
                   className="project-view-image"
                   loading="eager"
@@ -1021,7 +1021,7 @@ export function ProjectView({
               <div className="pv-separator pv-banner-black">
                 <div className="pv-banner-black__inner">
                   {renderGalleryMedia(
-                    "/projects/misu/videos/misu__app-screen.mp4",
+                    cdnAsset("MISU__app-showcase.webm"),
                     "pv-banner-black__video",
                   )}
                 </div>
@@ -1145,7 +1145,7 @@ export function ProjectView({
             <div className="see-more__col see-more__col--right">
               <div className="see-more__bento">
                 {moreProjects.map((p) => {
-                  const mediaSrc = p.imageUrl;
+                  const mediaSrc = mediaUrl(p.imageUrl);
                   const mediaIsVideo = isMediaVideo(mediaSrc);
 
                   const handleSelect = () => {

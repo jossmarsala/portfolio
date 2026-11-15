@@ -7,12 +7,13 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import gsap from "gsap";
 import "@/App.css";
 import Loader from "@/Loader";
 import JosMarsalaLogo from "@/JosMarsalaLogo";
+import DeferredMount from "@/components/ui/DeferredMount";
 import RouteFallback from "@/components/ui/RouteFallback";
 import { getDirectLinkUrl, getProject } from "@/config/projects";
+import { cdnAsset } from "@/config/cdn-assets";
 import { SITE } from "@/config/site";
 import { useAppShell } from "@/context/AppShellContext";
 import { useLang } from "@/context/LanguageContext";
@@ -25,17 +26,17 @@ const WorksSection = lazy(() => import("@/components/WorksSection"));
 const Footer = lazy(() => import("@/Footer"));
 
 const CAROUSEL_IMAGES = [
-  "/carousel/gypsy__designsystem.webp",
-  "/carousel/gypsy__mockupphone.webp",
-  "/carousel/images-portfolio-misu_catalog.png",
-  "/optimized/carousel/lilium__carousel.png",
-  "/carousel/images-portfolio-misu_mockupphone.png",
-  "/optimized/carousel/6fe0ef207584933.68fe667546e9e.png",
-  "/carousel/mockuplaptopmisu.png",
-  "/carousel/Asset 1.webp",
-  "/carousel/images-portfolio-misu_designsystem.png",
-  "/optimized/carousel/misu__poster-carousel.png",
-  "/carousel/vitalia__carousel.png",
+  cdnAsset("GYPSY__design-tokens.webp"),
+  cdnAsset("GYPSY_mockup-phone.webp"),
+  cdnAsset("MISU__energies-show.webp"),
+  cdnAsset("LILIUM__mockup-book.webp"),
+  cdnAsset("MISU__mockup-responsive.webp"),
+  cdnAsset("MISU__logo-show.webp"),
+  cdnAsset("LILIUM__design-tokens.webp"),
+  cdnAsset("MISU__mockup-computer.gif"),
+  cdnAsset("MISU__design-tokens.webp"),
+  cdnAsset("MISU__mockup-poster.webp"),
+  cdnAsset("VITALIA__mascot-show.webp"),
 ];
 
 interface HomeLocationState {
@@ -211,72 +212,102 @@ function HomePage() {
   useEffect(() => {
     if (!loaderDone) return;
 
-    const handleScroll = () => {
-      const heroHeight = window.innerHeight;
-      const PEEK_HEIGHT = 48;
-      const heroScrollDistance = Math.max(1, heroHeight - PEEK_HEIGHT);
+    let cancelled = false;
+    let teardown: (() => void) | undefined;
+    let frame = 0;
 
-      // Clamp progress between 0 and 1 so overscroll (negative scrollY) never produces negative values
-      const progress = Math.min(
-        1,
-        Math.max(0, window.scrollY / heroScrollDistance),
-      );
+    // GSAP loads after the shell has painted; the scroll listeners are only
+    // attached once the library is ready.
+    void import("gsap").then(({ default: gsap }) => {
+      if (cancelled) return;
 
-      // ── Works Section: smoothly scale up horizontally without rounded corners ──
-      if (worksSectionRef.current) {
-        if (progress < 1) {
-          isHeroTransitionActiveRef.current = true;
-          // Smoothstep easing for a fluid, natural horizontal expansion
-          const smoothProgress = progress * progress * (3 - 2 * progress);
-          const worksScaleX = 0.94 + smoothProgress * (1 - 0.94);
-          gsap.set(worksSectionRef.current, {
-            scaleX: worksScaleX,
-            scaleY: 1,
-            transformOrigin: "top center",
-            force3D: true,
-          });
-        } else if (isHeroTransitionActiveRef.current) {
-          isHeroTransitionActiveRef.current = false;
-          gsap.set(worksSectionRef.current, {
-            scaleX: 1,
-            scaleY: 1,
-            transformOrigin: "top center",
+      const handleScroll = () => {
+        const heroHeight = window.innerHeight;
+        const PEEK_HEIGHT = 48;
+        const heroScrollDistance = Math.max(1, heroHeight - PEEK_HEIGHT);
+
+        // Clamp progress between 0 and 1 so overscroll (negative scrollY) never produces negative values
+        const progress = Math.min(
+          1,
+          Math.max(0, window.scrollY / heroScrollDistance),
+        );
+
+        // ── Works Section: smoothly scale up horizontally without rounded corners ──
+        if (worksSectionRef.current) {
+          if (progress < 1) {
+            isHeroTransitionActiveRef.current = true;
+            // Smoothstep easing for a fluid, natural horizontal expansion
+            const smoothProgress = progress * progress * (3 - 2 * progress);
+            const worksScaleX = 0.94 + smoothProgress * (1 - 0.94);
+            gsap.set(worksSectionRef.current, {
+              scaleX: worksScaleX,
+              scaleY: 1,
+              transformOrigin: "top center",
+              force3D: true,
+            });
+          } else if (isHeroTransitionActiveRef.current) {
+            isHeroTransitionActiveRef.current = false;
+            gsap.set(worksSectionRef.current, {
+              scaleX: 1,
+              scaleY: 1,
+              transformOrigin: "top center",
+            });
+          }
+        }
+
+        // ── Carousel: 3D FOV exit + pronounced blur ──
+        if (carouselWrapperRef.current) {
+          const scale = 1 - progress * 0.12; // subtler scale-down
+          const translateZ = progress * -60; // subtler push back in Z space
+          const blur = progress * 14; // increased blur effect for leaving carousel images (up to 14px)
+
+          gsap.set(carouselWrapperRef.current, {
+            scale,
+            z: translateZ,
+            // We remove opacity fade out here so the title doesn't fade out either
+            filter: blur > 0.05 ? `blur(${blur.toFixed(1)}px)` : "none",
+            transformOrigin: "center center",
           });
         }
-      }
 
-      // ── Carousel: 3D FOV exit + pronounced blur ──
-      if (carouselWrapperRef.current) {
-        const scale = 1 - progress * 0.12; // subtler scale-down
-        const translateZ = progress * -60; // subtler push back in Z space
-        const blur = progress * 14; // increased blur effect for leaving carousel images (up to 14px)
+        // ── Hero title: just subtle blur, no opacity fade out ──
+        const titleBlur = progress * 6;
+        const titleFilterVal =
+          titleBlur > 0.05 ? `blur(${titleBlur}px)` : "none";
 
-        gsap.set(carouselWrapperRef.current, {
-          scale,
-          z: translateZ,
-          // We remove opacity fade out here so the title doesn't fade out either
-          filter: blur > 0.05 ? `blur(${blur.toFixed(1)}px)` : "none",
-          transformOrigin: "center center",
+        if (heroTitleRef.current) {
+          gsap.set(heroTitleRef.current, {
+            filter: titleFilterVal,
+            opacity: 1,
+          });
+        }
+      };
+
+      // Coalesce scroll/resize work into one frame.
+      const scheduleScroll = () => {
+        if (frame) return;
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          handleScroll();
         });
-      }
+      };
 
-      // ── Hero title: just subtle blur, no opacity fade out ──
-      const titleBlur = progress * 6;
-      const titleFilterVal = titleBlur > 0.05 ? `blur(${titleBlur}px)` : "none";
+      window.addEventListener("scroll", scheduleScroll, { passive: true });
+      window.addEventListener("resize", scheduleScroll, { passive: true });
+      // Run once on mount to set initial state
+      handleScroll();
 
-      if (heroTitleRef.current) {
-        gsap.set(heroTitleRef.current, { filter: titleFilterVal, opacity: 1 });
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll, { passive: true });
-    // Run once on mount to set initial state
-    handleScroll();
+      teardown = () => {
+        window.removeEventListener("scroll", scheduleScroll);
+        window.removeEventListener("resize", scheduleScroll);
+        if (frame) cancelAnimationFrame(frame);
+      };
+    });
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      cancelled = true;
+      teardown?.();
+      if (frame) cancelAnimationFrame(frame);
     };
   }, [loaderDone]);
 
@@ -364,41 +395,54 @@ function HomePage() {
   useEffect(() => {
     if (!loaderDone) return;
 
-    const worksSection =
-      worksSectionRef.current || document.getElementById("work");
-    const footerWrapper = document.getElementById("footer");
+    let cancelled = false;
+    let teardown: (() => void) | undefined;
 
-    if (worksSection && footerWrapper) {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: footerWrapper,
-          start: "top bottom",
-          end: "bottom bottom",
-          scrub: true,
-        },
-      });
+    // ScrollTrigger is only pulled in with this deferred GSAP import.
+    void import("@/lib/gsap").then(({ gsap }) => {
+      if (cancelled) return;
 
-      tl.fromTo(
-        worksSection,
-        {
-          scaleX: 1,
-          scaleY: 1,
-          transformOrigin: "bottom center",
-        },
-        {
-          scaleX: 0.94,
-          scaleY: 1,
-          transformOrigin: "bottom center",
-          ease: "power1.inOut",
-        },
-        0,
-      );
+      const worksSection =
+        worksSectionRef.current || document.getElementById("work");
+      const footerWrapper = document.getElementById("footer");
 
-      return () => {
-        tl.kill();
-        if (tl.scrollTrigger) tl.scrollTrigger.kill();
-      };
-    }
+      if (worksSection && footerWrapper) {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: footerWrapper,
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: true,
+          },
+        });
+
+        tl.fromTo(
+          worksSection,
+          {
+            scaleX: 1,
+            scaleY: 1,
+            transformOrigin: "bottom center",
+          },
+          {
+            scaleX: 0.94,
+            scaleY: 1,
+            transformOrigin: "bottom center",
+            ease: "power1.inOut",
+          },
+          0,
+        );
+
+        teardown = () => {
+          tl.kill();
+          if (tl.scrollTrigger) tl.scrollTrigger.kill();
+        };
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      teardown?.();
+    };
   }, [loaderDone]);
 
   return (
@@ -454,24 +498,30 @@ function HomePage() {
           id="work"
           ref={worksSectionRef}
         >
-          <Suspense
-            fallback={<RouteFallback variant="section" label="loading work" />}
-          >
-            <WorksSection
-              triggerOnce={true}
-              onProjectSelect={handleProjectSelect}
-              onAboutClick={openAbout}
-            />
-          </Suspense>
+          <DeferredMount mode="idle" idleTimeout={1000}>
+            <Suspense
+              fallback={<RouteFallback variant="section" label="loading work" />}
+            >
+              <WorksSection
+                triggerOnce={true}
+                onProjectSelect={handleProjectSelect}
+                onAboutClick={openAbout}
+              />
+            </Suspense>
+          </DeferredMount>
         </section>
 
         {/* ── Footer section ── */}
         <section className="footer-section-wrapper" id="footer">
-          <Suspense
-            fallback={<RouteFallback variant="section" label="loading footer" />}
-          >
-            <Footer onAboutClick={openAbout} />
-          </Suspense>
+          <DeferredMount mode="viewport" rootMargin="50% 0px 50% 0px">
+            <Suspense
+              fallback={
+                <RouteFallback variant="section" label="loading footer" />
+              }
+            >
+              <Footer onAboutClick={openAbout} />
+            </Suspense>
+          </DeferredMount>
         </section>
       </div>
     </>

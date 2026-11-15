@@ -1,0 +1,25 @@
+/* Logo column reveal — CSS replacement for the former motion/react animation. */
+.jos-logo-column {
+  animation-name: jos-logo-column-clip, jos-logo-column-fade;
+  animation-fill-mode: both;
+}
+
+@keyframes jos-logo-column-clip {
+  from {
+    clip-path: inset(100% var(--jos-logo-r) -80% var(--jos-logo-l));
+    transform: translateY(8px);
+  }
+  to {
+    clip-path: inset(-80% var(--jos-logo-r) -80% var(--jos-logo-l));
+    transform: translateY(0);
+  }
+}
+
+@keyframes jos-logo-column-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

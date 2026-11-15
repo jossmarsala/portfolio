@@ -430,6 +430,13 @@ const CustomCursor: React.FC = () => {
     // rAF loop — lerps rotation with inertia every frame for standard oval
     let rafId: number;
     const tick = () => {
+      // Browsers already throttle background tabs, but skipping the work keeps
+      // the loop from doing pointless writes when the tab is hidden.
+      if (document.hidden) {
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
+
       if (!isHoveringProject) {
         const dx = mouseX - prevMouseX;
         const dy = mouseY - prevMouseY;

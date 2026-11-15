@@ -1,5 +1,5 @@
-import { motion } from "motion/react";
-import { useRef, useLayoutEffect, useState } from "react";
+import { useRef, useLayoutEffect, useState, type CSSProperties } from "react";
+import "./JosMarsalaLogo.css";
 
 export interface JosMarsalaLogoProps {
   isJosPortfolio?: boolean;
@@ -8,12 +8,10 @@ export interface JosMarsalaLogoProps {
 
 // Per-column animation personality
 const COL = [
-  { delay: 0.03, dur: 1.15, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
-  { delay: 0.14, dur: 1.05, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
-  { delay: 0.28, dur: 1.25, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+  { delay: 0.03, dur: 1.15, ease: "cubic-bezier(0.16, 1, 0.3, 1)" },
+  { delay: 0.14, dur: 1.05, ease: "cubic-bezier(0.16, 1, 0.3, 1)" },
+  { delay: 0.28, dur: 1.25, ease: "cubic-bezier(0.16, 1, 0.3, 1)" },
 ];
-
-const V = 80; // vertical overflow safe-zone (% — never clips ascenders/descenders)
 
 export default function JosMarsalaLogo({
   isJosPortfolio,
@@ -119,42 +117,39 @@ export default function JosMarsalaLogo({
         COL.map(({ delay, dur, ease }, colIndex) => {
           const { L, R } = bounds(colIndex);
           return (
-            <motion.span
+            <span
               key={colIndex}
-              style={{
-                display: "inline-flex",
-                position: colIndex === 0 ? "relative" : "absolute",
-                top: 0,
-                left: 0,
-                width: colIndex === 0 ? "auto" : "100%",
-                height: "100%",
-                pointerEvents: colIndex === 0 ? "auto" : "none",
-                willChange: "clip-path, opacity, transform",
-                overflow: "visible",
-              }}
-              initial={{
-                clipPath: `inset(100% ${R}% ${-V}% ${L}%)`,
-                opacity: 0,
-                y: 8,
-              }}
-              animate={{
-                clipPath: `inset(${-V}% ${R}% ${-V}% ${L}%)`,
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                clipPath: { duration: dur, delay, ease },
-                opacity: { duration: dur * 0.6, delay, ease: "easeOut" },
-                y: { duration: dur, delay, ease },
-              }}
-              onAnimationComplete={
+              className="jos-logo-column"
+              style={
+                {
+                  display: "inline-flex",
+                  position: colIndex === 0 ? "relative" : "absolute",
+                  top: 0,
+                  left: 0,
+                  width: colIndex === 0 ? "auto" : "100%",
+                  height: "100%",
+                  pointerEvents: colIndex === 0 ? "auto" : "none",
+                  willChange: "clip-path, opacity, transform",
+                  overflow: "visible",
+                  "--jos-logo-l": `${L}%`,
+                  "--jos-logo-r": `${R}%`,
+                  animationDuration: `${dur}s, ${dur * 0.6}s`,
+                  animationDelay: `${delay}s, ${delay}s`,
+                  animationTimingFunction: `${ease}, ease-out`,
+                } as CSSProperties
+              }
+              onAnimationEnd={
                 colIndex === COL.length - 1
-                  ? () => onScrambleNext?.()
+                  ? (event) => {
+                      if (event.animationName === "jos-logo-column-clip") {
+                        onScrambleNext?.();
+                      }
+                    }
                   : undefined
               }
             >
               {renderText()}
-            </motion.span>
+            </span>
           );
         })}
     </span>

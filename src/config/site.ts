@@ -1,3 +1,5 @@
+import { cdnAsset } from "./cdn-assets";
+
 /**
  * Production fallback when VITE_SITE_URL is not configured. Keep this in sync
  * with the fallback in scripts/generate-seo-files.js.
@@ -18,7 +20,7 @@ export const SITE = {
   title: "Jos Marsala — Designer & Developer",
   description:
     "Portfolio of Jos Marsala, a digital product designer and developer building systems and brands where design and technology work as one.",
-  defaultImage: "/ABOUT.png",
+  defaultImage: cdnAsset("ABOUT.webp"),
   locale: "en_US",
   twitterHandle: "",
   url: configuredUrl,
