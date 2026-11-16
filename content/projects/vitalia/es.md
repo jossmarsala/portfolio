@@ -20,7 +20,7 @@ awards:
 
 # Summary
 
-Vitalia es una plataforma que convierte los perfiles y las preferencias de sus usuarios en un sistema de recomendaciones de bienestar, conectando el cuidado físico, mental y nutricional en un solo espacio
+Vitalia es una plataforma que convierte los perfiles y las preferencias de sus usuarios en un sistema de recomendaciones de bienestar, conectando el cuidado físico, mental y nutricional en un solo espacio.
 
 # Gallery
 

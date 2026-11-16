@@ -321,15 +321,6 @@ export function parseAllProjects({ silent = false } = {}) {
     const targetPath = path.join(targetDir, `${lang}.json`);
     fs.writeFileSync(targetPath, JSON.stringify(jsonOutput, null, 2) + "\n", "utf8");
     compiled.push({ slug, lang, targetPath });
-
-    // Handle lilium / ascii alias
-    if (slug === "lilium") {
-      const asciiDir = path.join(OUTPUT_DIR, "ascii");
-      fs.mkdirSync(asciiDir, { recursive: true });
-      const asciiPath = path.join(asciiDir, `${lang}.json`);
-      fs.writeFileSync(asciiPath, JSON.stringify(jsonOutput, null, 2) + "\n", "utf8");
-      compiled.push({ slug: "ascii", lang, targetPath: asciiPath });
-    }
   }
 
   if (!silent) {

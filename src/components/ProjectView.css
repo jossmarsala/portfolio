@@ -1096,7 +1096,7 @@ a.pv-quote-link.cursor-link-active::after,
   will-change: transform, opacity, clip-path;
 }
 
-.see-more__bento-cell {
+.see-more__bento .see-more__bento-cell {
   aspect-ratio: 4 / 3;
 }
 

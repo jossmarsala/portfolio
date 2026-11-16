@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BentoLabel from "./components/BentoLabel";
 import useParallaxItem from "./hooks/useParallaxItem";
+import { useLang } from "./context/LanguageContext";
 
 import "./BentoImages.css";
 
@@ -10,8 +11,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 const SIDE_TITLES = [
   { title: "posdata studio", sub: "2026", slug: "posdata" },
-  { title: "lilium cyber", sub: "2025", slug: "ascii" },
-  { title: "tu nuevo proyecto", sub: "", slug: "__cta__" },
+  { title: "lilium cyber", sub: "2025", slug: "lilium" },
+  { title: "", sub: "", slug: "__cta__" },
 ];
 
 interface BentoSideProjectsProps {
@@ -29,6 +30,7 @@ export function BentoSideProjects({
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imgRefs = useRef<(HTMLElement | null)[]>([]);
   const heroTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const { t } = useLang();
 
   useParallaxItem(itemRefs, imgRefs, { hoverScale: 1.01 });
 
@@ -110,6 +112,9 @@ export function BentoSideProjects({
         {images.slice(0, 3).map((src, i) => {
           const info = SIDE_TITLES[i];
           const isCTA = info?.slug === "__cta__";
+          const displayTitle = isCTA
+            ? t("bento_new_project")
+            : (info?.title ?? "");
           const isVideo = !isCTA && /\.(mp4|webm|mov|ogg)($|\?)/i.test(src);
 
           const handleClick = () => {
@@ -189,7 +194,7 @@ export function BentoSideProjects({
                         imgRefs.current[i] = el;
                       }}
                       src={src}
-                      alt={info?.title ?? `Side project ${i + 1}`}
+                      alt={displayTitle || `Side project ${i + 1}`}
                       className="bento-images__cell-img"
                       loading="lazy"
                       draggable={false}
@@ -198,7 +203,7 @@ export function BentoSideProjects({
                 </div>
               </div>
 
-              <BentoLabel title={info?.title ?? ""} sub={info?.sub ?? ""} />
+              <BentoLabel title={displayTitle} sub={info?.sub ?? ""} />
             </div>
           );
         })}

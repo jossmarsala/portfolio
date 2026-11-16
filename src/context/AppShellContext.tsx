@@ -7,6 +7,9 @@ export interface AppShellContextValue {
   aboutOpen: boolean;
   openAbout: () => void;
   closeAbout: () => void;
+  resumeOpen: boolean;
+  openResume: () => void;
+  closeResume: () => void;
 }
 
 const noop = () => {};
@@ -17,6 +20,9 @@ export const AppShellContext = createContext<AppShellContextValue>({
   aboutOpen: false,
   openAbout: noop,
   closeAbout: noop,
+  resumeOpen: false,
+  openResume: noop,
+  closeResume: noop,
 });
 
 export function useAppShell(): AppShellContextValue {

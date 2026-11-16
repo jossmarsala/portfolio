@@ -39,7 +39,6 @@ export function DecryptedText({
   ...props
 }: DecryptedTextProps) {
   const [currentText, setCurrentText] = useState(propText);
-  const [pendingText, setPendingText] = useState<string | null>(null);
   const text = currentText;
 
   const containerRef = useRef<HTMLSpanElement>(null);
@@ -386,44 +385,52 @@ export function DecryptedText({
 
   useEffect(() => {
     const prev = prevPropsRef.current;
-    if (prev.text !== propText || prev.animateOn !== animateOn) {
-      prevPropsRef.current = { text: propText, animateOn };
-      if (prev.text !== propText && hasAnimated) {
-        if (isDecrypted) {
-          // eslint-disable-next-line
-          setPendingText(propText);
-          triggerReverse();
+    if (prev.text === propText && prev.animateOn === animateOn) return;
+    prevPropsRef.current = { text: propText, animateOn };
+
+    if (prev.text !== propText) {
+      // Commit the new copy immediately so a later hover decrypts the word in
+      // the active language instead of replaying the previous one. Previously
+      // this was deferred until a reverse animation finished, which left the
+      // internal text stale (e.g. English hover revealing Spanish).
+      setCurrentText(propText);
+      setRevealedIndices(new Set());
+      setJustRevealedIndices(new Set());
+      setDirection('forward');
+      setIsAnimating(false);
+
+      if (animateOn === 'view' || animateOn === 'inViewHover') {
+        if (hasAnimated) {
+          setDisplayText(propText);
+          setIsDecrypted(true);
         } else {
-          setCurrentText(propText);
-        }
-      } else if (animateOn === 'click') {
-        encryptInstantly();
-      } else if (animateOn === 'view' || animateOn === 'inViewHover') {
-        if (!hasAnimated) {
-          const emptySet = new Set<number>();
-          setRevealedIndices(emptySet);
-          setDisplayText(shuffleText(propText, emptySet));
+          setDisplayText(shuffleText(propText, new Set()));
           setIsDecrypted(false);
         }
       } else {
         setDisplayText(propText);
         setIsDecrypted(true);
-        setRevealedIndices(new Set());
-        setDirection('forward');
       }
+      return;
     }
-  }, [animateOn, propText, encryptInstantly, shuffleText, hasAnimated, triggerReverse, isDecrypted]);
 
-  useEffect(() => {
-    if (!isAnimating && !isDecrypted && pendingText !== null) {
-      // eslint-disable-next-line
-      setCurrentText(pendingText);
-      setPendingText(null);
-      setTimeout(() => {
-        triggerDecrypt();
-      }, 50);
+    // Only the animation mode changed; keep the text as-is.
+    if (animateOn === 'click') {
+      encryptInstantly();
+    } else if (animateOn === 'view' || animateOn === 'inViewHover') {
+      if (!hasAnimated) {
+        const emptySet = new Set<number>();
+        setRevealedIndices(emptySet);
+        setDisplayText(shuffleText(propText, emptySet));
+        setIsDecrypted(false);
+      }
+    } else {
+      setDisplayText(propText);
+      setIsDecrypted(true);
+      setRevealedIndices(new Set());
+      setDirection('forward');
     }
-  }, [isAnimating, isDecrypted, pendingText, triggerDecrypt]);
+  }, [animateOn, propText, encryptInstantly, shuffleText, hasAnimated]);
 
   const animateProps =
     animateOn === 'hover' || animateOn === 'inViewHover'

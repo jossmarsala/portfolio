@@ -156,24 +156,22 @@
   width: clamp(24px, 2.8vw, 36px);
 }
 
-/* A small mark that settles into the gap after the split. */
+/* Mark appears instantly in the gap as the text starts splitting. */
 .loader--split .loader__mark {
-  animation: loader-oval-in 0.5s 0.56s cubic-bezier(0.16, 1, 0.3, 1) both;
+  opacity: 1;
 }
 
 /*
-  Hold the cursor's tilted oval pose through the entrance so the mark reads
-  clearly, then begin the continuous spin after it settles.
+  Pendulum: the oval rocks back and forth around its own centre — the dot sits
+  on the pivot axis, so it stays fixed while the ellipse tilts like a balance
+  arm. Sine easing (cubic-bezier 0.37/0.63) keeps the velocity profile physical
+  instead of mechanical: fastest through level, easing to a stop at each tilt.
 */
 .loader--split .loader__mark .oval-spinner__mark {
-  animation: loader-oval-spin 1.4s linear 1.05s infinite both;
-}
-
-/* The dot fades up just after the oval settles. */
-.loader--split .loader__mark .oval-spinner__dot {
   transform-box: view-box;
-  transform-origin: 24px 24px;
-  animation: loader-oval-dot 0.4s 0.82s ease-out both;
+  transform-origin: 50% 50%;
+  animation: loader-oval-pendulum 0.9s cubic-bezier(0.37, 0, 0.63, 1)
+    infinite alternate both;
 }
 
 /* Clear out the moment the carousel cards start fading in. */
@@ -187,17 +185,6 @@
   animation: loader-oval-out 0.22s ease-out both;
 }
 
-@keyframes loader-oval-in {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) translateY(10px) scale(0.94);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) translateY(0) scale(1);
-  }
-}
-
 @keyframes loader-oval-out {
   from {
     opacity: 1;
@@ -209,47 +196,23 @@
   }
 }
 
-@keyframes loader-oval-dot {
+@keyframes loader-oval-pendulum {
   from {
-    opacity: 0;
-    transform: scale(0.6);
+    transform: rotate(-48deg);
   }
   to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes loader-oval-spin {
-  from {
-    transform: rotate(-40deg);
-  }
-  to {
-    transform: rotate(320deg);
+    transform: rotate(48deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Still reveal the mark, just without the motion or spin. */
+  /* Still reveal the mark, just without motion. */
   .loader--split .loader__mark {
-    animation: loader-oval-fade 0.35s 0.5s ease-out both;
+    opacity: 1;
   }
 
   .loader--split .loader__mark .oval-spinner__mark {
     animation: none;
-  }
-
-  .loader--split .loader__mark .oval-spinner__dot {
-    animation: none;
-  }
-}
-
-@keyframes loader-oval-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 

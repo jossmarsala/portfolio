@@ -3,13 +3,21 @@ import { Navigate, useParams } from "react-router-dom";
 import RouteFallback from "@/components/ui/RouteFallback";
 import NotFoundPage from "@/pages/NotFoundPage";
 import { getProject } from "@/config/projects";
+import { useLang } from "@/context/LanguageContext";
 
 const ProjectPage = lazy(() => import("@/pages/ProjectPage"));
 
 export function ProjectRoute() {
+  const { t } = useLang();
+
   return (
     <Suspense
-      fallback={<RouteFallback variant="overlay" label="loading case study" />}
+      fallback={
+        <RouteFallback
+          variant="overlay"
+          label={t("loading_case_study")}
+        />
+      }
     >
       <ProjectPage />
     </Suspense>

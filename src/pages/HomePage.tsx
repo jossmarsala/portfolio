@@ -27,15 +27,15 @@ const Footer = lazy(() => import("@/Footer"));
 
 const CAROUSEL_IMAGES = [
   cdnAsset("GYPSY__design-tokens.webp"),
-  cdnAsset("GYPSY_mockup-phone.webp"),
+  cdnAsset("MISU__mockup-poster.webp"),
   cdnAsset("MISU__energies-show.webp"),
   cdnAsset("LILIUM__mockup-book.webp"),
-  cdnAsset("MISU__mockup-responsive.webp"),
+  cdnAsset("GYPSY_mockup-phone.webp"),
   cdnAsset("MISU__logo-show.webp"),
-  cdnAsset("LILIUM__design-tokens.webp"),
-  cdnAsset("MISU__mockup-computer.gif"),
+  cdnAsset("MISU__mockup-responsive.webp"),
   cdnAsset("MISU__design-tokens.webp"),
-  cdnAsset("MISU__mockup-poster.webp"),
+  cdnAsset("MISU__mockup-computer.gif"),
+  cdnAsset("LILIUM__design-tokens.webp"),
   cdnAsset("VITALIA__mascot-show.webp"),
 ];
 
@@ -119,12 +119,7 @@ function HomePage() {
 
     frame = requestAnimationFrame(tryScroll);
     return () => cancelAnimationFrame(frame);
-  }, [
-    requestedScroll,
-    loaderDone,
-    navigate,
-    location.pathname,
-  ]);
+  }, [requestedScroll, loaderDone, navigate, location.pathname]);
 
   // Warm the case-study chunk once the home page is idle. Navigation stays
   // instant without pulling the full ProjectView bundle into the entry chunk.
@@ -136,7 +131,10 @@ function HomePage() {
     };
 
     const idleWindow = window as Window & {
-      requestIdleCallback?: (cb: () => void, options?: { timeout: number }) => number;
+      requestIdleCallback?: (
+        cb: () => void,
+        options?: { timeout: number },
+      ) => number;
       cancelIdleCallback?: (id: number) => void;
     };
 
@@ -456,7 +454,7 @@ function HomePage() {
         <div className="carousel-wrapper" ref={carouselWrapperRef}>
           <Suspense
             fallback={
-              <RouteFallback variant="hero" label="loading visual" bare />
+              <RouteFallback variant="hero" label={t("loading_visual")} bare />
             }
           >
             <ImageCircleCarousel
@@ -500,7 +498,9 @@ function HomePage() {
         >
           <DeferredMount mode="idle" idleTimeout={1000}>
             <Suspense
-              fallback={<RouteFallback variant="section" label="loading work" />}
+              fallback={
+                <RouteFallback variant="section" label={t("loading_work")} />
+              }
             >
               <WorksSection
                 triggerOnce={true}
@@ -516,7 +516,7 @@ function HomePage() {
           <DeferredMount mode="viewport" rootMargin="50% 0px 50% 0px">
             <Suspense
               fallback={
-                <RouteFallback variant="section" label="loading footer" />
+                <RouteFallback variant="section" label={t("loading_footer")} />
               }
             >
               <Footer onAboutClick={openAbout} />

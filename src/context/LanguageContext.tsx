@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useState,
+  useEffect,
   useCallback,
   type ReactNode,
 } from "react";
@@ -16,6 +17,13 @@ const TRANSLATIONS = {
     nav_about: "about",
     nav_resume: "resume",
     lang_toggle_label: "Switch to Spanish",
+
+    // Resume preview
+    resume_aria: "Resume preview",
+    resume_close: "close",
+    resume_download: "download pdf",
+    resume_downloading: "preparing pdf…",
+    resume_error: "The PDF could not be generated. Please try again.",
 
     // Hero
     hero_tagline: "i design. i develop.",
@@ -43,6 +51,30 @@ const TRANSLATIONS = {
       "I'm Jos, digital product designer and software developer with 3 years of experience. My work combines engineering, design, and business strategy.\n\nI have an academic background in Software Development and hold diplomas in Multimedia Design and Cybersecurity. In 2024 I was national runner-up in the Informatics Olympiads with my team and, since then, I have led and developed 10+ projects that integrate full-stack programming, cybersecurity, and business vision.",
     about_cta: "let's talk",
 
+    // Bento side projects
+    bento_new_project: "your new project",
+
+    // Project view
+    project_close: "close",
+    project_process: "process",
+    project_features: "features",
+    project_impact: "impact",
+    project_problem_solution: "problem & solution",
+    project_problem_solution_indexed: "00 - [problem & solution]",
+    project_more_work: "more work",
+
+    // Loading states
+    loading_visual: "loading visual",
+    loading_work: "loading work",
+    loading_footer: "loading footer",
+    loading_case_study: "loading case study",
+    loading_redirecting: "redirecting",
+
+    // 404
+    not_found_title: "this page doesn't exist.",
+    not_found_copy: "The case study may have moved, or the link was mistyped.",
+    not_found_back: "back to work",
+
     // Footer
     footer_headline_left: "let's",
     footer_headline_right: "talk.",
@@ -55,8 +87,15 @@ const TRANSLATIONS = {
     // Navbar
     nav_work: "trabajo",
     nav_about: "sobre mí",
-    nav_resume: "cv",
+    nav_resume: "currículum",
     lang_toggle_label: "Cambiar a inglés",
+
+    // Resume preview
+    resume_aria: "Vista previa del currículum",
+    resume_close: "cerrar",
+    resume_download: "descargar pdf",
+    resume_downloading: "preparando pdf…",
+    resume_error: "No se pudo generar el PDF. Intentá de nuevo.",
 
     // Hero
     hero_tagline: "diseñadora y desarrolladora.",
@@ -84,9 +123,34 @@ const TRANSLATIONS = {
       "Soy Jos. Diseñadora de productos digitales y desarrolladora de software con 3 años de experiencia. Mi trabajo combina ingeniería, diseño y estrategia de negocio.\n\nCuento con formación en Desarrollo de Software y soy diplomada en Diseño Multimedial y Ciberseguridad. En 2024 fui subcampeona nacional en las Olimpíadas de Informática con mi equipo y, desde entonces, he liderado y desarrollado +10 proyectos que integran programación full-stack, seguridad informática y visión de producto.",
     about_cta: "hablemos",
 
+    // Bento side projects
+    bento_new_project: "tu nuevo proyecto",
+
+    // Project view
+    project_close: "cerrar",
+    project_process: "proceso",
+    project_features: "características",
+    project_impact: "impacto",
+    project_problem_solution: "problemática y solución",
+    project_problem_solution_indexed: "00 - [problemática y solución]",
+    project_more_work: "más trabajo",
+
+    // Loading states
+    loading_visual: "cargando visual",
+    loading_work: "cargando trabajo",
+    loading_footer: "cargando pie de página",
+    loading_case_study: "cargando caso de estudio",
+    loading_redirecting: "redirigiendo",
+
+    // 404
+    not_found_title: "esta página no existe.",
+    not_found_copy:
+      "El caso de estudio puede haberse movido o el enlace está mal escrito.",
+    not_found_back: "volver al trabajo",
+
     // Footer
-    footer_headline_left: "let's",
-    footer_headline_right: "talk.",
+    footer_headline_left: "ideemos",
+    footer_headline_right: "algo.",
     footer_sig_role: "diseñadora & desarrolladora",
 
     // Custom cursor
@@ -120,6 +184,12 @@ function detectDeviceLang(): Lang {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>(detectDeviceLang);
+
+  // Keep the document language in sync with the active locale so screen
+  // readers and browser translation prompts use the right language.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   const toggleLang = useCallback(() => {
     setLang((prev) => (prev === "en" ? "es" : "en"));

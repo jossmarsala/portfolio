@@ -23,6 +23,8 @@ export interface ProjectItem {
   year: string;
   imageUrl: string;
   videoUrl?: string;
+  /** Full-width showcase video rendered before the extra narrative sections. */
+  bannerVideoUrl?: string;
   url?: string;
   highlightWords?: string[];
   // Media
@@ -37,7 +39,7 @@ export interface ProjectItem {
  * Projects temporarily linking straight to their live site instead of opening
  * the in-app case study. Remove a slug from this set to restore its case study.
  */
-export const DIRECT_LINK_SLUGS = new Set(["vitalia", "posdata", "ascii"]);
+export const DIRECT_LINK_SLUGS = new Set(["vitalia", "posdata"]);
 
 export const PROJECTS_DATA: Record<string, ProjectItem> = {
   vitalia: {
@@ -63,6 +65,7 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     year: "2026",
     imageUrl: cdnAsset("MISU__hero-video.webm"),
     videoUrl: cdnAsset("MISU__hero-video.webm"),
+    bannerVideoUrl: cdnAsset("MISU__app-showcase.webm"),
     url: "https://misu-os.vercel.app",
     highlightWords: ["energy", "adaptive", "focus"],
     galleryAspectRatio: "3/4",
@@ -107,22 +110,22 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
     ],
     processImageUrl: "https://assets.codepen.io/7558/bw-portrait-001.jpg",
   },
-  ascii: {
-    slug: "ascii",
-    title: "lilium cyber",
+  lilium: {
+    slug: "lilium",
+    title: "lilium",
     year: "2025",
     imageUrl: cdnAsset("LILIUM__hero-cover.webm"),
     videoUrl: cdnAsset("LILIUM__hero-cover.webm"),
+    bannerVideoUrl: cdnAsset("LILIUM__app-showcase.webm"),
     url: "https://lilium-cyber.vercel.app",
-    highlightWords: ["real-time", "volumetric", "monospace"],
+    highlightWords: ["cyber range", "playbook", "Linux"],
+    galleryAspectRatio: "3/4",
+    processLabel: "features",
     galleryImages: [
-      cdnAsset("LILIUM__app-showcase.webm"),
       cdnAsset("LILIUM__mockup-book.webp"),
-      "https://assets.codepen.io/7558/bw-portrait-003.jpg",
-      "https://assets.codepen.io/7558/bw-portrait-008.jpg",
-      "https://assets.codepen.io/7558/bw-portrait-010.jpg",
+      cdnAsset("LILIUM__app-showcase.webm"),
+      cdnAsset("LILIUM__design-tokens.webp"),
     ],
-    processImageUrl: "https://assets.codepen.io/7558/bw-portrait-009.jpg",
   },
 };
 
@@ -130,13 +133,17 @@ export const PROJECTS_DATA: Record<string, ProjectItem> = {
 export const PROJECT_SLUGS = Object.keys(PROJECTS_DATA);
 
 /** Case-insensitive project lookup for route params. */
-export function getProject(slug: string | undefined | null): ProjectItem | undefined {
+export function getProject(
+  slug: string | undefined | null,
+): ProjectItem | undefined {
   if (!slug) return undefined;
   return PROJECTS_DATA[slug.toLowerCase()];
 }
 
 /** Live-site target for projects that temporarily bypass the case study. */
-export function getDirectLinkUrl(slug: string | null | undefined): string | null {
+export function getDirectLinkUrl(
+  slug: string | null | undefined,
+): string | null {
   const project = getProject(slug);
   if (!project || !DIRECT_LINK_SLUGS.has(project.slug)) return null;
   return project.url ?? null;

@@ -1,0 +1,193 @@
+/* =========================================
+   ResumeModal — minimal preview shell
+   ========================================= */
+
+.resume-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100020;
+  font-family: var(--font-family-secondary, "Roboto Mono", monospace);
+  animation: resume-modal-fade 0.32s ease both;
+}
+
+.resume-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(14px) saturate(0.9);
+  -webkit-backdrop-filter: blur(14px) saturate(0.9);
+  cursor: pointer;
+}
+
+/* ── Corner controls ─────────────────────────────────────────────────── */
+
+.resume-modal__chrome {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: clamp(14px, 2.2vw, 28px);
+  pointer-events: none;
+}
+
+.resume-modal__close,
+.resume-modal__download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  appearance: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 6px 0;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: lowercase;
+  cursor: pointer;
+  opacity: 0.66;
+  pointer-events: auto;
+  transition: opacity 0.2s ease;
+}
+
+.resume-modal__close:hover,
+.resume-modal__close:focus-visible,
+.resume-modal__download:hover:not(:disabled),
+.resume-modal__download:focus-visible:not(:disabled) {
+  opacity: 1;
+  outline: none;
+}
+
+.resume-modal__bracket {
+  opacity: 0.45;
+}
+
+.resume-modal__download {
+  font-weight: 500;
+}
+
+.resume-modal__download-arrow {
+  font-size: 1.1em;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.resume-modal__download--working {
+  cursor: progress;
+  opacity: 0.45;
+}
+
+/* ── Preview viewport ────────────────────────────────────────────────── */
+
+.resume-modal__viewport {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: clamp(56px, 7vh, 84px) clamp(16px, 2.2vw, 28px)
+    clamp(24px, 3vh, 36px);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.resume-modal__viewport::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.resume-modal__viewport::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+}
+
+.resume-modal__canvas {
+  position: relative;
+  flex: 0 0 auto;
+  margin: auto;
+  background: #ffffff;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.18),
+    0 32px 90px rgba(0, 0, 0, 0.55);
+  animation: resume-sheet-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.resume-modal__scale {
+  width: 793px;
+  height: 1122px;
+  transform-origin: top left;
+  will-change: transform;
+}
+
+/* Keep crisp hairlines while the sheet is scaled down. */
+.resume-modal__scale .resume-sheet {
+  box-shadow: none;
+}
+
+.resume-modal__error {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(18px, 3vh, 32px);
+  z-index: 3;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 8px 14px;
+  background: #ffffff;
+  border: 1px solid #111111;
+  color: #111111;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Motion ──────────────────────────────────────────────────────────── */
+
+@keyframes resume-modal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes resume-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resume-modal,
+  .resume-modal__canvas {
+    animation: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .resume-modal__chrome {
+    padding: 14px;
+  }
+
+  .resume-modal__viewport {
+    padding-top: 52px;
+    padding-bottom: 20px;
+  }
+}
+
+@media print {
+  .resume-modal {
+    display: none !important;
+  }
+}

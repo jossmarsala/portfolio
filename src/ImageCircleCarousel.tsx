@@ -63,7 +63,7 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
     // and arc are derived from the live viewport below.
     const REFERENCE_WIDTH = 1440;
     const REFERENCE_HEIGHT = 900;
-    const REFERENCE_CARD_HEIGHT = 206;
+    const REFERENCE_CARD_HEIGHT = 228;
 
     const getStageScale = () =>
       Math.max(

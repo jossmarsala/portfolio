@@ -8,6 +8,7 @@ import "./Navbar.css";
 
 interface NavbarProps {
   onAboutClick?: () => void;
+  onResumeClick?: () => void;
 }
 
 // Map each navLinks label key to its translation key
@@ -17,7 +18,7 @@ const NAV_TRANSLATION_KEYS: Record<string, "nav_work" | "nav_about" | "nav_resum
   resume: "nav_resume",
 };
 
-export function Navbar({ onAboutClick }: NavbarProps) {
+export function Navbar({ onAboutClick, onResumeClick }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const { lang, toggleLang, t } = useLang();
   const navigateToSection = useSectionNavigation();
@@ -59,14 +60,18 @@ export function Navbar({ onAboutClick }: NavbarProps) {
           return (
             <li key={label} className="navbar__item">
               <a
-                href={isAbout ? undefined : href}
+                href={isAbout || label === "resume" ? undefined : href}
                 className="navbar__link"
                 aria-label={translatedLabel}
-                role={isAbout ? "button" : undefined}
+                role={isAbout || label === "resume" ? "button" : undefined}
                 onClick={(event) => {
                   event.preventDefault();
                   if (isAbout) {
                     onAboutClick?.();
+                    return;
+                  }
+                  if (label === "resume") {
+                    onResumeClick?.();
                     return;
                   }
                   navigateToSection(href);

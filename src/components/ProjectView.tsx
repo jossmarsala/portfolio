@@ -4,7 +4,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ProjectItem } from "../config/projects";
 import { getProjectOgImage, PROJECTS_DATA } from "../config/projects";
 import { absoluteUrl, SITE } from "../config/site";
-import { cdnAsset } from "../config/cdn-assets";
 import { mediaUrl } from "../lib/media";
 import { toMetaDescription, useSeo } from "../lib/seo";
 import DecryptedText from "../DecryptedText";
@@ -228,7 +227,7 @@ export function ProjectView({
   onClose,
   onProjectSelect,
 }: ProjectViewProps) {
-  const { lang } = useLang();
+  const { lang, t } = useLang();
   const { content, status } = useProjectContent(project.slug, lang);
 
   useSeo({
@@ -461,9 +460,11 @@ export function ProjectView({
       });
 
       // Full-bleed image separators: clip-path sweep
-      // (gallery images above already have their own bento-style sweep)
+      // (gallery images above already have their own bento-style sweep).
+      // The showcase banner is excluded so it is always visible, even if
+      // ScrollTrigger positions are recalculated while it is already in view.
       const separators = scroller.querySelectorAll(
-        ".pv-separator:not(.pv-gallery-card)",
+        ".pv-separator:not(.pv-gallery-card):not(.pv-banner-black)",
       );
       separators.forEach((el) => {
         gsap.fromTo(
@@ -778,13 +779,13 @@ export function ProjectView({
           ref={closeBtnRef}
           className="project-view-close"
           onClick={handleClose}
-          aria-label="Close project view"
+          aria-label={t("project_close")}
         >
           <span className="project-view-close__bracket">[</span>
           <span className="project-view-close__label">
             <DecryptedText
               {...DECRYPTED_NAV}
-              text="close"
+              text={t("project_close")}
               className="project-view-close__revealed"
               encryptedClassName="project-view-close__encrypted"
             />
@@ -909,7 +910,7 @@ export function ProjectView({
                   <div className="pv-gallery-triad__caption pv-reveal">
                     <div className="pv-gallery-triad__caption-inner">
                       <span className="pv-gallery-triad__caption-index">
-                        Problemática y solución
+                        {t("project_problem_solution")}
                       </span>
                       <div className="pv-gallery-triad__caption-text">
                         {content.galleryDescription
@@ -961,7 +962,7 @@ export function ProjectView({
                   <div className="pv-gallery-triad__caption pv-reveal">
                     <div className="pv-gallery-triad__caption-inner">
                       <span className="pv-gallery-triad__caption-index">
-                        00 - [problemática y solución]
+                        {t("project_problem_solution_indexed")}
                       </span>
                       <p className="pv-gallery-triad__caption-text">
                         {content.galleryDescription}
@@ -986,14 +987,16 @@ export function ProjectView({
                       style={{ padding: 0, maxWidth: "none" }}
                     >
                       <span className="pv-gallery-triad__caption-index">
-                        features
+                        {t("project_features")}
                       </span>
                     </div>
                   </div>
                 ) : (
                   <div className="pv-label pv-reveal">
                     <span className="pv-label__index">02</span>
-                    <span className="pv-label__text">process</span>
+                    <span className="pv-label__text">
+                      {t("project_process")}
+                    </span>
                   </div>
                 )}
                 <div className="pv-process">
@@ -1015,13 +1018,13 @@ export function ProjectView({
             </section>
           )}
 
-          {/* ── MISU APP SCREEN BANNER ── */}
-          {project.slug === "misu" && (
+          {/* ── FULL-WIDTH APP SHOWCASE BANNER ── */}
+          {project.bannerVideoUrl && (
             <>
               <div className="pv-separator pv-banner-black">
                 <div className="pv-banner-black__inner">
                   {renderGalleryMedia(
-                    cdnAsset("MISU__app-showcase.webm"),
+                    project.bannerVideoUrl,
                     "pv-banner-black__video",
                   )}
                 </div>
@@ -1031,7 +1034,7 @@ export function ProjectView({
                 <div className="pv-gallery-triad__caption pv-reveal">
                   <div className="pv-gallery-triad__caption-inner">
                     <span className="pv-gallery-triad__caption-index">
-                      {content.bannerTitle || "Problemática y solución"}
+                      {content.bannerTitle || t("project_problem_solution")}
                     </span>
                     <div className="pv-gallery-triad__caption-text">
                       {content.bannerDescription
@@ -1086,7 +1089,9 @@ export function ProjectView({
               <div className="pv-section__inner">
                 <div className="pv-label pv-reveal">
                   <span className="pv-label__index">03</span>
-                  <span className="pv-label__text">impact</span>
+                  <span className="pv-label__text">
+                    {t("project_impact")}
+                  </span>
                 </div>
 
                 {/* Metrics row */}
@@ -1140,7 +1145,9 @@ export function ProjectView({
             aria-label="More projects"
           >
             <div className="see-more__col see-more__col--left">
-              <span className="see-more__label">more work</span>
+              <span className="see-more__label">
+                {t("project_more_work")}
+              </span>
             </div>
             <div className="see-more__col see-more__col--right">
               <div className="see-more__bento">

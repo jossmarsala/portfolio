@@ -4,6 +4,7 @@ import ProjectView from "@/components/ProjectView";
 import RouteFallback from "@/components/ui/RouteFallback";
 import NotFoundPage from "@/pages/NotFoundPage";
 import { getDirectLinkUrl, getProject } from "@/config/projects";
+import { useLang } from "@/context/LanguageContext";
 
 /**
  * Case-study route. The entire ProjectView tree (GSAP timelines, gallery,
@@ -12,6 +13,7 @@ import { getDirectLinkUrl, getProject } from "@/config/projects";
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { t } = useLang();
   const project = getProject(slug);
   const directLink = project ? getDirectLinkUrl(project.slug) : null;
 
@@ -25,7 +27,9 @@ export default function ProjectPage() {
   }
 
   if (directLink) {
-    return <RouteFallback variant="overlay" label="redirecting" />;
+    return (
+      <RouteFallback variant="overlay" label={t("loading_redirecting")} />
+    );
   }
 
   const handleSelectProject = (nextSlug: string) => {

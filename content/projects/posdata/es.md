@@ -1,23 +1,23 @@
 ---
-role: Founder · Brand Designer · UX/UI Designer · Creative Developer
+role: Fundadora · Diseñadora de Marca · Diseñadora UX/UI · Desarrolladora Creativa
 tags:
   - Estrategia de Marca
   - Diseño Editorial
   - UX/UI e Interacción
-  - Motion Design
+  - Diseño de Movimiento
 metrics:
   - value: '4'
-    label: Verticales B2B definidos
+    label: Verticales B2B definidas
   - value: '4'
     label: Pilares editoriales de contenido
   - value: 1px
-    label: Detalle de retícula brutalist
+    label: Detalle de retícula brutalista
 awards: []
 ---
 
 # Summary
 
-Un estudio independiente de diseño y software nacido en el borde entre la sensibilidad editorial y la ingeniería.    Construido para organizaciones que valoran el prestigio estético pero sufren de obsolescencia digital.
+Un estudio independiente de diseño y software nacido en el borde entre la sensibilidad editorial y la ingeniería. Construido para organizaciones que valoran el prestigio estético pero sufren de obsolescencia digital.
 
 # Gallery
 

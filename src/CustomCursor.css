@@ -6,6 +6,20 @@
   }
 }
 
+/* ── Hide the custom cursor while the intro oval mark is loading ────────── */
+/* The loader's spinning oval is drawn where the pointer would be, so the real
+   oval + dot step aside and the mark reads as the mouse itself. */
+body.loader-oval-active .cursor-big-ball,
+body.loader-oval-active .cursor-small-ball {
+  display: none;
+}
+
+/* ── Hide oval on CV / resume section (only dot is shown) ────────────────── */
+body.resume-open .cursor-big-ball,
+body:has(.resume-modal) .cursor-big-ball {
+  display: none !important;
+}
+
 /* ── Big oval ────────────────────────────────────────────────────────────── */
 /* ── Big ball (Morphs between oval and 'see more' pill badge) ────────────── */
 .cursor-big-ball {
@@ -16,7 +30,7 @@
   height: 30px;
   mix-blend-mode: difference;
   pointer-events: none;
-  z-index: 100002;
+  z-index: 100030;
   opacity: 0;
   display: flex;
   align-items: center;
@@ -114,7 +128,7 @@ body.is-hovering-project .cursor-badge-arrow {
   height: 10px;
   mix-blend-mode: difference;
   pointer-events: none;
-  z-index: 100004;
+  z-index: 100035;
   opacity: 0;
   display: flex;
   align-items: center;

@@ -38,7 +38,7 @@ export function Footer({ scroller, onAboutClick }: FooterProps = {}) {
   const midRowRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const { t } = useLang();
-  const { openAbout } = useAppShell();
+  const { openAbout, openResume } = useAppShell();
   const navigateToSection = useSectionNavigation();
   const handleAboutClick = onAboutClick ?? openAbout;
 
@@ -130,14 +130,18 @@ export function Footer({ scroller, onAboutClick }: FooterProps = {}) {
               return (
                 <li key={label} className="footer__nav-item">
                   <a
-                    href={isAbout ? undefined : href}
+                    href={isAbout || label === "resume" ? undefined : href}
                     className="footer__nav-link"
                     aria-label={translatedLabel}
-                    role={isAbout ? "button" : undefined}
+                    role={isAbout || label === "resume" ? "button" : undefined}
                     onClick={(event) => {
                       event.preventDefault();
                       if (isAbout) {
                         handleAboutClick();
+                        return;
+                      }
+                      if (label === "resume") {
+                        openResume();
                         return;
                       }
                       navigateToSection(href);

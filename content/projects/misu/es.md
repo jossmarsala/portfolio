@@ -10,27 +10,27 @@ awards: []
 
 # Summary
 
-[Misu](https://misu-os.vercel.app) es un sistema de productividad diseñado para acompañar a personas con dificultades de atención: A partir del nivel de energía disponible, el sistema ajusta su apariencia y propone tareas acordes, integra herramientas de organización y concentración en un solo espacio.
+[Misu](https://misu-os.vercel.app) es un sistema de productividad diseñado para acompañar a personas con dificultades de atención: a partir del nivel de energía disponible, el sistema ajusta su apariencia y propone tareas acordes, e integra herramientas de organización y concentración en un solo espacio.
 
 # Gallery
 
 ¿Cómo organizarse cuando la energía y la capacidad de concentración no son iguales todos los días? Muchas herramientas de productividad parten de una base estática. MISU nace para proponer una nueva forma de organizarse: un sistema personal que se adapta al usuario. A partir del nivel de energía disponible, ajusta la interfaz y las recomendaciones de tareas, mientras reúne herramientas de planificación y estudio como temporizador pomodoro, organización semanal asistida por IA, música de ambiente, y más, en un espacio modular.
 
-# Features
+# Características
 
-## Gestión de tareas
+## 01. Gestión de tareas
 
 Registro y seguimiento de tareas mediante categorías, nivel de energía requerido y fechas de entrega. Permite actualizar su estado y marcar actividades como completadas.
 
-## Planificación inteligente
+## 02. Planificación inteligente
 
 Planificador semanal interactivo para distribuir y reorganizar tareas mediante drag & drop. Incorpora Gemini API para generar propuestas de planificación automática, considerando la duración, las fechas de entrega y la energía disponible.
 
-## Widgets modulares
+## 03. Widgets modulares
 
 Un espacio de trabajo personalizable mediante widgets arrastrables que integran herramientas como calendario, temporizador Pomodoro y música ambiental adaptada al nivel de energía.
 
-## Entorno de concentración
+## 04. Entorno de concentración
 
 Modo de enfoque que simplifica la interfaz, reduce los estímulos visuales y elimina elementos secundarios para minimizar las distracciones y facilitar la concentración.
 

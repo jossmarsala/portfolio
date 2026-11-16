@@ -1,42 +1,49 @@
 ---
-role: Creative Developer
+role: Product Designer & Full-Stack Developer
 tags:
-  - Creative Coding
-  - WebGL Shaders
-  - ASCII Rendering
+  - Cybersecurity Education
+  - Cyber Range
+  - Learning Platform
 metrics:
-  - value: 60fps
-    label: Render Target
-  - value: 10k+
-    label: Codepen Views
 awards:
-  - name: Developer Award
-    issuer: Awwwards
-    year: '2025'
 ---
 
 # Summary
 
-An interactive digital sandbox translating real-time 3D geometry and volumetric lighting into monospace typographic raster animations.
+[Lilium](https://lilium-cyber.vercel.app) is a cybersecurity learning platform with interactive labs, for students and small and mid-sized businesses. The proposal brings together a 6-module technical playbook, a simulated operating system, and a Linux kernel emulated in the browser, so users can learn without setting up virtual machines.
 
 # Gallery
 
-Shader experiments probing the boundaries between typographic glyph density, luminance thresholds, and interactive 3D spatial transformations.
+People starting out in cybersecurity run into a specific obstacle: preparing a practice environment and understanding security standards is often harder than studying them. Building on my final project for the Diploma in Cybersecurity, I co-developed the theoretical content and independently designed and built the platform. The goal was to bring theory and practice into a single space: a place to learn from scratch what security controls are, why they exist, and how to run Linux commands directly in the browser, without installing a virtual machine.
 
-# Process
+# Features
 
-## 01. Research
+## 01. Interactive labs
 
-Investigating legacy ASCII rendering techniques and modern WebGL shader capabilities.
+To let anyone practice without configuring a development environment, I integrated an interface that simulates a desktop with windows, applications, and a terminal. On that foundation I built a lab system with progressive challenges and added a Linux terminal emulated in the browser, so users can run commands and experiment without installing virtual machines.
 
-## 02. Shader Dev
+## 02. Technical documentation
 
-Writing custom fragment shaders to map luminance values to specific monospace characters.
+The playbook had to support learning and stay connected to practice, not just be text. So I designed modular documentation with explanations, code blocks, lists, diagrams, and examples, presented progressively and later applied in the labs. I also built a PDF export so the material can be consulted outside the platform.
 
-## 03. 3D Integration
+## 03. Informational page
 
-Applying the ASCII post-processing pipeline to complex 3D scenes and lighting setups.
+I designed and built a landing page that presents Lilium's proposal and explains how it works. Through animated, interactive diagrams and short explanations, I translated complex cybersecurity concepts into a clear, accessible visual experience, even for those approaching the subject for the first time.
 
-## 04. Optimization
+## 04. The L.I.L.I.U.M. framework
 
-Fine-tuning performance to ensure smooth 60fps rendering across various devices.
+The playbook is organized into six modules that form the acronym L.I.L.I.U.M., each covering a stage of the security process within a company. Developing it involved research, content selection, and review, drawing on industry standards. I also personally tested the documented commands and procedures before adding them to the platform.
+
+# Technical development
+
+I built the platform on React, TypeScript, and Vite, combining two custom engines: a build-time documentation compiler and a simulated operating system in the browser.
+
+Rather than relying on external libraries to process text, I wrote a parser from scratch that reads Markdown files and transforms custom directives — such as interactive step lists, directory trees, and critical alerts — into a typed JSON schema; the interface consumes that JSON and connects it to custom React components.
+
+For the labs, I integrated a desktop window manager with an x86 emulator in WebAssembly (v86) that boots a real Linux kernel inside the browser, with no cloud server costs.
+
+# Impact
+
+Building Lilium was an extensive process that joined technical cybersecurity research with software engineering. Each of the six modules required learning content along the way and cross-referencing international frameworks — including NIST CSF, CIS Controls, and MITRE ATT&CK — to ensure every explanation had real technical rigor. That level of detail resulted in a final grade of 100/100 in the Diploma in Cybersecurity.
+
+Beyond the academic achievement, the project solved two concrete adoption problems: it turned hundreds of pages of complex regulations into an operational guide ready to use in any small company without a dedicated budget, and it removed the infrastructure barrier for students, who can now practice auditing, hardening, and incident response from the browser without risking damage to their own machines. On top of that, it brought significant personal growth in knowledge and judgment within the field.

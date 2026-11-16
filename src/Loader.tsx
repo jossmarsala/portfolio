@@ -8,7 +8,8 @@ interface LoaderProps {
   onComplete: () => void;
   /**
    * When false, the split text stays open and the loader holds instead of
-   * composing away. The home page sets this once the hero images have appeared.
+   * composing away. The home page sets this as the hero cards start to spread,
+   * so "jos" only leaves once the centered stack is complete.
    */
   ready?: boolean;
   /** Hide the oval mark as soon as the carousel images begin to appear. */
@@ -17,17 +18,17 @@ interface LoaderProps {
 
 /** Keep the split word visible long enough for the split + oval to read. */
 const MIN_SPLIT_MS = 1300;
-/**
- * The loader is decorative: it never waits on the hero imagery. It releases
- * itself once the minimum split has played, so a slow image or chunk can't
- * trap the page behind the intro.
- */
-const TIMEBOX_MS = MIN_SPLIT_MS;
 /** Sweep duration before the loader is removed. */
 const COMPOSE_MS = 10;
-const EXIT_MS = 400;
-/** Safety valve: never trap the page behind the loader. */
-const FALLBACK_MS = 8000;
+/** Matches the split sweep in Loader.css so the word finishes leaving. */
+const EXIT_MS = 700;
+/**
+ * Safety valve only: the split "jos" is held until the hero cards have stacked
+ * in the middle and begin to spread. The worst-case intro (5s image preload +
+ * 2.2s opening pause + staggered card appearance) is under 9s, so this only
+ * fires when the carousel never reports back.
+ */
+const FALLBACK_MS = 12000;
 
 export function Loader({
   onComplete,
@@ -36,7 +37,6 @@ export function Loader({
 }: LoaderProps) {
   const [phase, setPhase] = useState<Phase>("enter");
   const [timedOut, setTimedOut] = useState(false);
-  const [timeBoxed, setTimeBoxed] = useState(false);
   const mountedAtRef = useRef(0);
   const hasStartedExitRef = useRef(false);
 
@@ -51,12 +51,21 @@ export function Loader({
     return () => clearTimeout(timer);
   }, []);
 
-  // Time-box the decorative intro: it exits after the minimum split even if the
-  // hero imagery is still loading.
+  // While the oval mark is on screen it stands in for the pointer, so the
+  // custom cursor is hidden (see CustomCursor.css) and the spinning mark reads
+  // as the mouse itself. Hand control back once the mark has faded out.
   useEffect(() => {
-    const timer = setTimeout(() => setTimeBoxed(true), TIMEBOX_MS);
-    return () => clearTimeout(timer);
+    document.body.classList.add("loader-oval-active");
+    return () => document.body.classList.remove("loader-oval-active");
   }, []);
+
+  useEffect(() => {
+    if (!imagesAppearing) return;
+    const timer = setTimeout(() => {
+      document.body.classList.remove("loader-oval-active");
+    }, 220);
+    return () => clearTimeout(timer);
+  }, [imagesAppearing]);
 
   // If the hero never reports back (chunk failure, stalled image), release the
   // loader anyway so the page remains reachable.
@@ -65,7 +74,7 @@ export function Loader({
     return () => clearTimeout(timer);
   }, []);
 
-  const canExit = ready || timeBoxed || timedOut;
+  const canExit = ready || timedOut;
 
   useEffect(() => {
     if (!canExit || hasStartedExitRef.current) return;

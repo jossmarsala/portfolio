@@ -31,7 +31,7 @@
 .item {
   position: absolute;
   /* Every card is a fixed 3:4 frame; images are cropped to fill it */
-  height: var(--card-height, clamp(126px, 14.4vw, 232px));
+  height: var(--card-height, clamp(140px, 16vw, 258px));
   width: auto;
   aspect-ratio: 3 / 4;
   overflow: hidden;
@@ -40,7 +40,7 @@
   top: 50%;
   left: 50%;
   /* Crisp 6px corners */
-  border-radius: 6px;
+  border-radius: 3px;
   will-change: transform, filter, opacity;
   backface-visibility: hidden;
   transform-style: preserve-3d;
@@ -50,6 +50,6 @@
 
 @media (max-width: 600px) {
   .item {
-    height: var(--card-height, clamp(92px, 26vw, 122px));
+    height: var(--card-height, clamp(102px, 28.5vw, 136px));
   }
 }

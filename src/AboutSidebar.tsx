@@ -3,10 +3,10 @@ import gsap from "gsap";
 import DecryptedText from "./DecryptedText";
 import { DECRYPTED_NAV } from "./config/decryptedTextPresets";
 import { useLang } from "./context/LanguageContext";
-import { cdnAsset } from "./config/cdn-assets";
+import { PROFILE_PHOTO_URL } from "./config/profile";
 import "./AboutSidebar.css";
 
-const portraitImg = cdnAsset("ABOUT.webp");
+const portraitImg = PROFILE_PHOTO_URL;
 
 interface AboutSidebarProps {
   isOpen: boolean;

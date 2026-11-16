@@ -59,7 +59,7 @@
 
 .portfolio-title .tilted-o {
   display: inline-block !important;
-  transform: translate(0.03em, -0.01em) rotate(40deg) scaleX(0.9) !important;
+  transform: translate(0.06em, -0.01em) rotate(40deg) scaleX(0.9) !important;
   transform-origin: center;
 }
 
