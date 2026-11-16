@@ -10,6 +10,7 @@ import DecryptedText from "../DecryptedText";
 import { DECRYPTED_NAV } from "../config/decryptedTextPresets";
 import Footer from "../Footer";
 import BentoLabel from "./BentoLabel";
+import SourceVideo from "./media/SourceVideo";
 import { useLang } from "../context/LanguageContext";
 import { useProjectContent } from "../hooks/useProjectContent";
 import "./ProjectView.css";
@@ -62,15 +63,28 @@ function pickRandomProjects(currentSlug: string, count = 2): ProjectItem[] {
 }
 
 function renderGalleryMedia(src: string, className = "pv-separator__img") {
-  const resolved = mediaUrl(src);
-
   if (isMediaVideo(src)) {
     return (
-      <video className={className} src={resolved} autoPlay loop muted playsInline />
+      <SourceVideo
+        className={className}
+        src={src}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+      />
     );
   }
 
-  return <img src={resolved} alt="" className={className} draggable={false} />;
+  return (
+    <img
+      src={mediaUrl(src)}
+      alt=""
+      className={className}
+      draggable={false}
+    />
+  );
 }
 
 function renderExtraSectionContent(raw: string) {
@@ -814,15 +828,16 @@ export function ProjectView({
             <div ref={imageFrameRef} className="project-view-image-frame">
               {project.videoUrl ||
               /\.(mp4|webm|mov|ogg)($|\?)/i.test(project.imageUrl) ? (
-                <video
+                <SourceVideo
                   key={project.videoUrl || project.imageUrl}
                   ref={imageRef as any}
-                  src={mediaUrl(project.videoUrl || project.imageUrl)}
+                  src={project.videoUrl || project.imageUrl}
                   className="project-view-image"
                   autoPlay
                   loop
                   muted
                   playsInline
+                  preload="auto"
                 />
               ) : (
                 <img
@@ -1182,9 +1197,9 @@ export function ProjectView({
                       <div className="bento-images__cell see-more__bento-cell">
                         <div className="bento-images__cell-frame">
                           {mediaIsVideo ? (
-                            <video
+                            <SourceVideo
                               key={mediaSrc}
-                              src={mediaSrc}
+                              src={p.imageUrl}
                               className="bento-images__cell-img"
                               autoPlay
                               loop

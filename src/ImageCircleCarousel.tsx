@@ -10,6 +10,10 @@ import {
 
 interface ImageCircleCarouselProps {
   images: string[];
+  /** Accessible descriptions, indexed like `images`. */
+  imageAlts?: string[];
+  /** Makes each card act as a link to the project it showcases. */
+  onImageSelect?: (index: number) => void;
   children?: React.ReactNode;
   /** Fires as the first card begins to appear in the centered stack. */
   onImagesStart?: () => void;
@@ -22,6 +26,8 @@ interface ImageCircleCarouselProps {
 
 export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
   images,
+  imageAlts,
+  onImageSelect,
   children,
   onImagesStart,
   onIntroComplete,
@@ -592,36 +598,57 @@ export const ImageCircleCarousel: React.FC<ImageCircleCarouselProps> = ({
     <div className={styles.container} ref={containerRef}>
       <div className={styles.parallaxContainer} ref={parallaxContainerRef}>
         <div className={styles.rotationContainer} ref={rotationContainerRef}>
-          {images.map((src, index) => (
-            <div
-              key={index}
-              className={styles.item}
-              ref={(el) => {
-                if (el) cardsRef.current[index] = el;
-              }}
-              onMouseEnter={() => {
-                hoveredCardRef.current = index;
-              }}
-              onMouseLeave={() => {
-                if (hoveredCardRef.current === index) {
-                  hoveredCardRef.current = null;
-                }
-              }}
-            >
-              <img
-                src={src}
-                alt={`Carousel item ${index}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                  pointerEvents: "none",
+          {images.map((src, index) => {
+            const alt = imageAlts?.[index] ?? `Carousel item ${index + 1}`;
+            const handleSelect = onImageSelect
+              ? () => onImageSelect(index)
+              : undefined;
+
+            return (
+              <div
+                key={index}
+                className={styles.item}
+                ref={(el) => {
+                  if (el) cardsRef.current[index] = el;
                 }}
-                draggable={false}
-              />
-            </div>
-          ))}
+                role={handleSelect ? "link" : undefined}
+                tabIndex={handleSelect ? 0 : undefined}
+                aria-label={handleSelect ? `Open ${alt}` : undefined}
+                onClick={handleSelect}
+                onKeyDown={
+                  handleSelect
+                    ? (event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          handleSelect();
+                        }
+                      }
+                    : undefined
+                }
+                onMouseEnter={() => {
+                  hoveredCardRef.current = index;
+                }}
+                onMouseLeave={() => {
+                  if (hoveredCardRef.current === index) {
+                    hoveredCardRef.current = null;
+                  }
+                }}
+              >
+                <img
+                  src={src}
+                  alt={alt}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                    pointerEvents: "none",
+                  }}
+                  draggable={false}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
       {/* Rendered inside the 3D context so it depth-sorts naturally with cards */}

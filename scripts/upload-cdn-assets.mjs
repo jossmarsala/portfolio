@@ -13,12 +13,14 @@
  *   npm run upload:cdn -- --dry-run     # preview only, no uploads
  *   npm run upload:cdn                  # upload + write map
  *   npm run upload:cdn -- --prefix portfolio --concurrency 3
+ *   npm run upload:cdn -- --merge       # keep entries already in the map
  *
  * Requires BLOB_READ_WRITE_TOKEN in .env.local (or .env).
  * The token is passed explicitly so VERCEL_OIDC_TOKEN cannot take over.
  */
 
 import { put } from "@vercel/blob";
+import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -74,11 +76,12 @@ function fmtBytes(bytes) {
 }
 
 function parseArgs(argv) {
-  const args = { ...DEFAULTS, dryRun: false };
+  const args = { ...DEFAULTS, dryRun: false, merge: false };
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--dry-run") args.dryRun = true;
+    else if (arg === "--merge") args.merge = true;
     else if (arg === "--src") args.src = argv[++i];
     else if (arg === "--prefix") args.prefix = argv[++i];
     else if (arg === "--map") args.map = argv[++i];
@@ -95,6 +98,7 @@ function parseArgs(argv) {
           "Usage: node scripts/upload-cdn-assets.mjs [options]",
           "",
           "  --dry-run              Print the upload plan without uploading",
+          "  --merge                Keep assets already listed in the existing map",
           "  --src <dir>            Source folder (default: cdn-assets-optimized)",
           "  --prefix <path>        Blob pathname prefix (default: portfolio)",
           "  --map <file>           JSON map output (default: src/config/cdn-assets-map.json)",
@@ -287,17 +291,27 @@ async function main() {
   const baseUrl = new URL(uploaded[0].url).origin;
   const generatedAt = new Date().toISOString();
 
+  const mapPath = path.resolve(ROOT, args.map);
+  const reportPath = path.resolve(ROOT, args.report);
+
+  // `--merge` preserves assets uploaded in earlier runs (e.g. the bento set)
+  // instead of replacing the whole map with whatever is in the source folder.
+  let previous = null;
+  if (args.merge && existsSync(mapPath)) {
+    previous = JSON.parse(await fs.readFile(mapPath, "utf8"));
+  }
+
   const map = {
     generatedAt,
-    baseUrl,
+    baseUrl: previous?.baseUrl ?? baseUrl,
     prefix: args.prefix,
-    assets,
+    assets: { ...(previous?.assets ?? {}), ...assets },
   };
 
   const report = {
     generatedAt,
     store: "josmarsala-media",
-    baseUrl,
+    baseUrl: map.baseUrl,
     prefix: args.prefix,
     cacheControlMaxAge: args.cacheControlMaxAge,
     summary: {
@@ -308,8 +322,6 @@ async function main() {
     items: [...uploaded].sort((a, b) => a.file.localeCompare(b.file)),
   };
 
-  const mapPath = path.resolve(ROOT, args.map);
-  const reportPath = path.resolve(ROOT, args.report);
   await writeJsonAtomic(mapPath, map);
   await writeJsonAtomic(reportPath, report);
 

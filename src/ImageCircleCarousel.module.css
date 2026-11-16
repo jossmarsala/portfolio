@@ -48,6 +48,11 @@
   user-select: none;
 }
 
+.item:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
 @media (max-width: 600px) {
   .item {
     height: var(--card-height, clamp(102px, 28.5vw, 136px));

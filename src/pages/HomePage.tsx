@@ -25,19 +25,70 @@ const ImageCircleCarousel = lazy(() => import("@/ImageCircleCarousel"));
 const WorksSection = lazy(() => import("@/components/WorksSection"));
 const Footer = lazy(() => import("@/Footer"));
 
-const CAROUSEL_IMAGES = [
-  cdnAsset("GYPSY__design-tokens.webp"),
-  cdnAsset("MISU__mockup-poster.webp"),
-  cdnAsset("MISU__energies-show.webp"),
-  cdnAsset("LILIUM__mockup-book.webp"),
-  cdnAsset("GYPSY_mockup-phone.webp"),
-  cdnAsset("MISU__logo-show.webp"),
-  cdnAsset("MISU__mockup-responsive.webp"),
-  cdnAsset("MISU__design-tokens.webp"),
-  cdnAsset("MISU__mockup-computer.gif"),
-  cdnAsset("LILIUM__design-tokens.webp"),
-  cdnAsset("VITALIA__mascot-show.webp"),
+/**
+ * Every carousel card routes to the project it showcases. Keep the slug next to
+ * the image so reordering the carousel can never detach a card from its route.
+ */
+const CAROUSEL_ITEMS = [
+  {
+    src: cdnAsset("GYPSY__design-tokens.webp"),
+    slug: "gypsy",
+    alt: "gypsy joyas design tokens",
+  },
+  {
+    src: cdnAsset("MISU__mockup-poster.webp"),
+    slug: "misu",
+    alt: "misu poster mockup",
+  },
+  {
+    src: cdnAsset("MISU__energies-show.webp"),
+    slug: "misu",
+    alt: "misu energies screen",
+  },
+  {
+    src: cdnAsset("LILIUM__mockup-book.webp"),
+    slug: "lilium",
+    alt: "lilium book mockup",
+  },
+  {
+    src: cdnAsset("GYPSY_mockup-phone.webp"),
+    slug: "gypsy",
+    alt: "gypsy joyas phone mockup",
+  },
+  {
+    src: cdnAsset("MISU__logo-show.webp"),
+    slug: "misu",
+    alt: "misu logo showcase",
+  },
+  {
+    src: cdnAsset("MISU__mockup-responsive.webp"),
+    slug: "misu",
+    alt: "misu responsive mockup",
+  },
+  {
+    src: cdnAsset("MISU__design-tokens.webp"),
+    slug: "misu",
+    alt: "misu design tokens",
+  },
+  {
+    src: cdnAsset("MISU__mockup-computer.gif"),
+    slug: "misu",
+    alt: "misu computer mockup",
+  },
+  {
+    src: cdnAsset("LILIUM__design-tokens.webp"),
+    slug: "lilium",
+    alt: "lilium design tokens",
+  },
+  {
+    src: cdnAsset("VITALIA__mascot-show.webp"),
+    slug: "vitalia",
+    alt: "vitalia mascot showcase",
+  },
 ];
+
+const CAROUSEL_IMAGES = CAROUSEL_ITEMS.map((item) => item.src);
+const CAROUSEL_ALTS = CAROUSEL_ITEMS.map((item) => item.alt);
 
 interface HomeLocationState {
   scrollTo?: string;
@@ -459,6 +510,10 @@ function HomePage() {
           >
             <ImageCircleCarousel
               images={CAROUSEL_IMAGES}
+              imageAlts={CAROUSEL_ALTS}
+              onImageSelect={(index) =>
+                handleProjectSelect(CAROUSEL_ITEMS[index].slug)
+              }
               onImagesStart={handleImagesStart}
               onIntroComplete={handleCarouselIntroComplete}
             >

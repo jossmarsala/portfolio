@@ -117,6 +117,31 @@ To add or replace media: drop the source files in `cdn-assets/`, run
 `cdnAsset(...)`. Both working folders are gitignored; only the generated map and
 scripts are committed.
 
+#### Bento tiles (index page)
+
+The index bentos are the one exception to the "full-quality master" rule: a tile
+is at most ~450 CSS px wide, so shipping the 1080p case-study masters made the
+grid wait on megabytes of video. `npm run optimize:bento` builds a dedicated
+set from the same masters:
+
+- `BENTO__<PROJECT>.mp4` — 720–1440 px wide (per-tile width in the script),
+  CRF 30, 24 fps, no audio, `+faststart` so playback starts on the first bytes.
+- `BENTO__<PROJECT>.webp` — a poster frame, picked up automatically by
+  `SourceVideo` because it sits next to the video under the same basename.
+- `BENTO__GYPSY.webp` — the still tile, resized from the 4501 px master.
+
+```bash
+npm run optimize:bento
+npm run upload:cdn -- --merge   # keeps the rest of the map intact
+```
+
+`src/config/bento-media.ts` lists the resulting tiles; `preload="auto"` starts
+buffering as soon as the works section mounts (at idle, seconds before it can be
+scrolled to) and the poster paints immediately, so the grid is never a row of
+black boxes. `vite.config.ts` also injects `<link rel="preload" as="image">` tags
+for the posters straight from the CDN map, so the stills are already decoded by
+the time the grid appears.
+
 ### Lazy loading
 
 - Case studies (`ProjectPage`) are a separate chunk, prefetched on idle.
@@ -146,4 +171,5 @@ Vercel project environment.
 | `npm run seo:generate`     | Regenerate sitemap/robots from `dist`       |
 | `npm run optimize:images`  | Batch image optimization                    |
 | `npm run optimize:videos`  | Batch video optimization                    |
+| `npm run optimize:bento`   | Tile-sized videos + posters for the index bentos |
 | `npm run lint`             | Oxlint                                      |

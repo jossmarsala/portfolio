@@ -5,27 +5,10 @@ import BentoImages from "../BentoImages";
 import BentoSideProjects from "../BentoSideProjects";
 import WarpHeadline from "./WarpHeadline";
 import { useLang } from "../context/LanguageContext";
-import { cdnAsset } from "../config/cdn-assets";
+import { BENTO_MAIN_MEDIA, BENTO_SIDE_MEDIA } from "../config/bento-media";
 import "../styles/WorksSection.css";
 
 gsap.registerPlugin(ScrollTrigger);
-
-// The 3 main images for the big bento grid
-const BENTO_IMAGES = [
-  cdnAsset("VITALIA__hero-cover.mp4"),
-  cdnAsset("MISU__hero-cover.mp4"),
-  cdnAsset("GYPSY_mockup-phone.webp"),
-];
-
-// Side-project placeholders
-const SIDE_IMAGES = [
-  cdnAsset("POSDATA__hero-video.mp4"), // col 1 — posdata studio
-  cdnAsset("LILIUM__hero-cover.webm"), // col 2 — lilium cyber
-  "https://assets.codepen.io/7558/bw-portrait-001.jpg", // col 3 top — compact
-  "https://assets.codepen.io/7558/bw-portrait-002.jpg", // col 3 bottom — compact
-  "https://assets.codepen.io/7558/bw-portrait-008.jpg",
-  "https://assets.codepen.io/7558/bw-portrait-010.jpg",
-];
 
 export interface WorksSectionProps {
   id?: string;
@@ -151,14 +134,14 @@ export function WorksSection({
 
       {/* ── Big Bento Images (with sweep entrance) ── */}
       <BentoImages
-        images={BENTO_IMAGES}
+        media={BENTO_MAIN_MEDIA}
         triggerPlay={triggerPlay}
         onProjectSelect={onProjectSelect}
       />
 
       {/* ── Small Bento Gallery (Normal flow, below the main ones) ── */}
       <BentoSideProjects
-        images={SIDE_IMAGES}
+        media={BENTO_SIDE_MEDIA}
         onProjectSelect={onProjectSelect}
       />
     </div>

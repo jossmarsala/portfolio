@@ -2,7 +2,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BentoLabel from "./components/BentoLabel";
+import SourceVideo from "./components/media/SourceVideo";
 import useParallaxItem from "./hooks/useParallaxItem";
+import type { BentoMedia } from "./config/bento-media";
 
 import "./BentoImages.css";
 
@@ -16,8 +18,8 @@ const WORK_TITLES = [
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface BentoImagesProps {
-  /** The three image URLs rendered in the asymmetric grid. */
-  images: string[];
+  /** Tile media, already sized for the grid; video posters derive from `<src>.webp`. */
+  media: readonly BentoMedia[];
   /** When this flips true the grid columns and big images animate in. */
   triggerPlay: boolean;
   className?: string;
@@ -27,7 +29,7 @@ interface BentoImagesProps {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export function BentoImages({
-  images,
+  media,
   triggerPlay,
   className = "",
   onAnimComplete,
@@ -160,8 +162,7 @@ export function BentoImages({
     >
       {/* Asymmetric Bento Grid */}
       <div className="bento-images__grid">
-        {images.slice(0, 3).map((src, i) => {
-          const isVideo = /\.(mp4|webm|mov|ogg)($|\?)/i.test(src);
+        {media.slice(0, 3).map((item, i) => {
           return (
             <div
               key={i}
@@ -180,27 +181,32 @@ export function BentoImages({
                 className={`bento-images__cell bento-images__cell--${i + 1}`}
               >
                 <div className="bento-images__cell-frame">
-                  {isVideo ? (
-                    <video
-                      key={src}
+                  {item.kind === "video" ? (
+                    <SourceVideo
+                      key={item.src}
                       ref={(el) => setCellImg(el, i)}
-                      src={src}
+                      src={item.src}
                       className="bento-images__cell-img"
+                      /* Buffer now: the grid mounts long before it is reached. */
+                      preload="auto"
                       autoPlay
                       loop
                       muted
                       playsInline
+                      disablePictureInPicture
                     />
-                  ) : (
+                  ) : item.kind === "image" ? (
                     <img
                       ref={(el) => setCellImg(el, i)}
-                      src={src}
+                      src={item.src}
                       alt={WORK_TITLES[i]?.title ?? `Work ${i + 1}`}
                       className="bento-images__cell-img"
-                      loading="lazy"
+                      /* Eager: this tile is part of the grid's first paint. */
+                      loading="eager"
+                      decoding="async"
                       draggable={false}
                     />
-                  )}
+                  ) : null}
                 </div>
               </div>
 

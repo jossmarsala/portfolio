@@ -13,9 +13,8 @@ interface ResumeSheetProps {
 }
 
 /**
- * Strictly minimalist, premium editorial A4 document.
- * Columns are defined purely through alignment and negative space,
- * with subtle 1px horizontal hairlines separating the main sections.
+ * Calm, reference-style A4 resume: name/photo/contact masthead, a quiet
+ * left-hand section rail and dense, readable content columns.
  */
 export function ResumeSheet({ lang, priority = false }: ResumeSheetProps) {
   const data = RESUME[lang];
@@ -23,30 +22,10 @@ export function ResumeSheet({ lang, priority = false }: ResumeSheetProps) {
 
   return (
     <article className="resume-sheet" aria-label={`${profile.name} — ${profile.role}`}>
-      {/* ── Masthead: name, prominent role, contact & portrait ── */}
       <header className="resume-sheet__masthead">
         <div className="resume-sheet__masthead-copy">
           <h1 className="resume-sheet__name">{profile.name}</h1>
           <p className="resume-sheet__role">{profile.role}</p>
-
-          <nav className="resume-sheet__contact" aria-label="Contact links">
-            {data.contact.map((item, index) => (
-              <span className="resume-sheet__contact-item" key={item.label}>
-                {index > 0 && <span className="resume-sheet__contact-sep">·</span>}
-                {item.href ? (
-                  <a
-                    href={item.href}
-                    target={item.href.startsWith("http") ? "_blank" : undefined}
-                    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  >
-                    {item.value}
-                  </a>
-                ) : (
-                  <span>{item.value}</span>
-                )}
-              </span>
-            ))}
-          </nav>
         </div>
 
         <figure className="resume-sheet__portrait-frame">
@@ -59,55 +38,62 @@ export function ResumeSheet({ lang, priority = false }: ResumeSheetProps) {
             draggable={false}
           />
         </figure>
+
+        <nav className="resume-sheet__contact" aria-label="Contact links">
+          {data.contact.map((item) =>
+            item.href ? (
+              <a
+                key={item.label}
+                className="resume-sheet__contact-link"
+                href={item.href}
+                target={item.href.startsWith("http") ? "_blank" : undefined}
+                rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              >
+                {item.value}
+              </a>
+            ) : (
+              <span key={item.label} className="resume-sheet__contact-link">
+                {item.value}
+              </span>
+            ),
+          )}
+        </nav>
       </header>
 
       <div className="resume-grid">
-        {/* ── ABOUT ME ── */}
         <section className="resume-row">
           <h2 className="resume-row__label">{labels.about}</h2>
-          <div className="resume-row__content resume-about">
+          <div className="resume-row__content">
             <p className="resume-about__summary">{data.summary}</p>
           </div>
         </section>
 
-        {/* ── EXPERIENCE ── */}
         <section className="resume-row">
           <h2 className="resume-row__label">{labels.experience}</h2>
           <div className="resume-row__content resume-experience">
             {data.experience.map((entry) => (
-              <div
+              <article
                 className="resume-experience__entry"
                 key={`${entry.period}-${entry.company}`}
               >
-                <span className="resume-date resume-date--experience">
-                  {entry.period}
-                </span>
-                <div className="resume-experience__detail">
-                  <div className="resume-experience__header">
-                    <span className="resume-experience__company">{entry.company}</span>
-                    <span className="resume-experience__role">
-                      {" · "}
-                      {entry.role}
-                      {entry.note && (
-                        <span className="resume-experience__location">
-                          {" · "}
-                          {entry.note}
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                  <ul className="resume-experience__bullets">
-                    {entry.bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
-                    ))}
-                  </ul>
+                <div className="resume-experience__meta">
+                  <h3 className="resume-experience__role">{entry.role}</h3>
+                  <p className="resume-experience__company">{entry.company}</p>
+                  <p className="resume-experience__period">{entry.period}</p>
+                  {entry.note && (
+                    <p className="resume-experience__note">{entry.note}</p>
+                  )}
                 </div>
-              </div>
+                <ul className="resume-experience__description">
+                  {entry.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+              </article>
             ))}
           </div>
         </section>
 
-        {/* ── EDUCATION & COURSES ── */}
         <section className="resume-row">
           <h2 className="resume-row__label">{labels.education}</h2>
           <div className="resume-row__content resume-education">
@@ -116,17 +102,14 @@ export function ResumeSheet({ lang, priority = false }: ResumeSheetProps) {
                 className="resume-education__entry"
                 key={`${entry.period}-${entry.title}`}
               >
-                <span className="resume-date">{entry.period}</span>
-                <div className="resume-education__detail">
-                  <p className="resume-education__title">{entry.title}</p>
-                  <p className="resume-education__subtitle">{entry.subtitle}</p>
-                </div>
+                <p className="resume-education__title">{entry.title}</p>
+                <p className="resume-education__subtitle">{entry.subtitle}</p>
+                <p className="resume-education__period">{entry.period}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* ── TECHNICAL SKILLS ── */}
         <section className="resume-row">
           <h2 className="resume-row__label">{labels.skills}</h2>
           <div className="resume-row__content resume-skills">
@@ -143,7 +126,6 @@ export function ResumeSheet({ lang, priority = false }: ResumeSheetProps) {
           </div>
         </section>
 
-        {/* ── ADDITIONAL ── */}
         <section className="resume-row">
           <h2 className="resume-row__label">{labels.additional}</h2>
           <div className="resume-row__content resume-additional">

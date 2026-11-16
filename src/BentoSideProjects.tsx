@@ -2,8 +2,10 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BentoLabel from "./components/BentoLabel";
+import SourceVideo from "./components/media/SourceVideo";
 import useParallaxItem from "./hooks/useParallaxItem";
 import { useLang } from "./context/LanguageContext";
+import type { BentoMedia } from "./config/bento-media";
 
 import "./BentoImages.css";
 
@@ -16,13 +18,14 @@ const SIDE_TITLES = [
 ];
 
 interface BentoSideProjectsProps {
-  images: string[];
+  /** Tile media; video posters derive from `<src>.webp`. */
+  media: readonly BentoMedia[];
   className?: string;
   onProjectSelect?: (slug: string) => void;
 }
 
 export function BentoSideProjects({
-  images,
+  media,
   className = "",
   onProjectSelect,
 }: BentoSideProjectsProps) {
@@ -109,13 +112,12 @@ export function BentoSideProjects({
       aria-label="Side projects gallery"
     >
       <div className="bento-side__grid">
-        {images.slice(0, 3).map((src, i) => {
+        {media.slice(0, 3).map((item, i) => {
           const info = SIDE_TITLES[i];
-          const isCTA = info?.slug === "__cta__";
+          const isCTA = item.kind === "cta";
           const displayTitle = isCTA
             ? t("bento_new_project")
             : (info?.title ?? "");
-          const isVideo = !isCTA && /\.(mp4|webm|mov|ogg)($|\?)/i.test(src);
 
           const handleClick = () => {
             if (isCTA) {
@@ -175,28 +177,32 @@ export function BentoSideProjects({
                         strokeLinecap="round"
                       />
                     </svg>
-                  ) : isVideo ? (
-                    <video
-                      key={src}
+                  ) : item.kind === "video" ? (
+                    <SourceVideo
+                      key={item.src}
                       ref={(el) => {
                         imgRefs.current[i] = el;
                       }}
-                      src={src}
+                      src={item.src}
                       className="bento-images__cell-img"
+                      /* Buffer now so the tile is already looping when reached. */
+                      preload="auto"
                       autoPlay
                       loop
                       muted
                       playsInline
+                      disablePictureInPicture
                     />
                   ) : (
                     <img
                       ref={(el) => {
                         imgRefs.current[i] = el;
                       }}
-                      src={src}
+                      src={item.src}
                       alt={displayTitle || `Side project ${i + 1}`}
                       className="bento-images__cell-img"
-                      loading="lazy"
+                      loading="eager"
+                      decoding="async"
                       draggable={false}
                     />
                   )}

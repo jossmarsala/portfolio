@@ -24,13 +24,14 @@ export const RESUME_FILE_NAME = "Josefina-Marsala-CV";
 export const RESUME = {
   en: {
     labels: {
-      about: "ABOUT ME",
-      experience: "EXPERIENCE",
-      education: "EDUCATION & COURSES",
-      skills: "TECHNICAL SKILLS",
-      additional: "ADDITIONAL",
-      other: "OTHER SKILLS",
-      recognitions: "RECOGNITIONS",
+      about: "About Me",
+      experience: "Experience",
+      education: "Education & Courses",
+      skills: "Technical Skills",
+      additional: "Additional",
+      other: "Other Skills",
+      recognitions: "Recognitions",
+      page: "Page",
     },
 
     profile: {
@@ -64,6 +65,8 @@ export const RESUME = {
 
     summary:
       "2nd-year Software Development student at ITU UNCuyo, high-school Computer Science graduate and national Computer Science Olympiad medalist. I have three years of experience building web projects across frontend, backend and databases (React, Python, FastAPI). My background in Multimedia Design complements my technical profile, letting me approach development with both software quality and user experience in mind. I am looking for my first professional opportunity as a junior developer, bringing problem-solving skills, attention to detail and technical value to a team.",
+
+    footerNote: "Open to junior developer roles",
 
     experience: [
       {
@@ -171,13 +174,14 @@ export const RESUME = {
 
   es: {
     labels: {
-      about: "SOBRE MÍ",
-      experience: "EXPERIENCIA",
-      education: "EDUCACIÓN Y CURSOS",
-      skills: "HABILIDADES TÉCNICAS",
-      additional: "ADICIONAL",
-      other: "OTRAS COMPETENCIAS",
-      recognitions: "RECONOCIMIENTOS",
+      about: "Sobre mí",
+      experience: "Experiencia",
+      education: "Educación y cursos",
+      skills: "Habilidades técnicas",
+      additional: "Adicional",
+      other: "Otras competencias",
+      recognitions: "Reconocimientos",
+      page: "Página",
     },
 
     profile: {
@@ -212,6 +216,8 @@ export const RESUME = {
     summary:
       "Estudiante de 2.º año de Desarrollo de Software en ITU UNCuyo, Bachiller en Informática y medallista en las Olimpiadas Nacionales de Informática. Cuento con tres años de experiencia en desarrollo de proyectos web, integrando tecnologías frontend, backend y bases de datos (React, Python, FastAPI). Mi formación en Diseño Multimedial complementa mi perfil técnico y me permite abordar el desarrollo considerando tanto la calidad del software como la experiencia de usuario (UX/UI). Busco mi primera oportunidad profesional como desarrolladora junior para aportar capacidad de resolución de problemas, atención al detalle y valor técnico a un equipo.",
 
+    footerNote: "Disponible para puestos junior",
+
     experience: [
       {
         period: "2024 — 2026",
@@ -238,7 +244,7 @@ export const RESUME = {
 
     education: [
       {
-        period: "2025 —\nPresente",
+        period: "2025 — Presente",
         title: "Desarrollo de Software",
         subtitle: "ITU UNCuyo",
       },
@@ -286,7 +292,7 @@ export const RESUME = {
         items: [
           "Linux (+ Windows y macOS)",
           "VSCode, NetBeans",
-          "Git (GitHub) control de versiones",
+          "Git y GitHub",
           "Vercel, Supabase",
           "Docker",
           "Excel, Figma y Suite de Adobe",
