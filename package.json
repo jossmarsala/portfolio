@@ -15,6 +15,7 @@
     "optimize:videos": "bash scripts/optimize-videos.sh",
     "optimize:cdn": "node scripts/optimize-cdn-assets.mjs",
     "optimize:bento": "node scripts/make-bento-media.mjs",
+    "media:build": "node scripts/build-public-media.mjs",
     "upload:cdn": "node scripts/upload-cdn-assets.mjs"
   },
   "dependencies": {

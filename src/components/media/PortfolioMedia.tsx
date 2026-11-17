@@ -53,7 +53,7 @@ function getReducedMotionOnServer() {
  *  - Pauses when out of view (keeps the decoded frame, avoids re-downloads).
  *  - Falls back to the image on error, autoplay rejection or unsupported codec.
  *  - Never mounts a video at all when prefers-reduced-motion is set.
- *  - Portfolio sources are absolute Vercel Blob URLs (see `config/cdn-assets`)
+ *  - Portfolio sources are same-origin `/media/…` paths (see `config/cdn-assets`)
  *    and pass through `mediaUrl` untouched.
  */
 export function PortfolioMedia({

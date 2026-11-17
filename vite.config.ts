@@ -34,7 +34,7 @@ const vendorChunk = (id: string): string | undefined => {
  * the tiles are already painted the instant they come into view, while the
  * videos keep buffering in the background.
  *
- * URLs come from the generated CDN map, so they follow every re-upload.
+ * URLs come from the generated asset map, so they follow every media rebuild.
  */
 function bentoPosterPreloads(): Plugin {
   const mapPath = fileURLToPath(

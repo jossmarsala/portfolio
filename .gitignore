@@ -26,9 +26,9 @@ dist-ssr
 .env*
 !.env.example
 
-# Heavy source media. Optimized once with `npm run optimize:cdn`, uploaded to
-# Vercel Blob with `npm run upload:cdn`. The generated map in
-# src/config/cdn-assets-map.json is committed; these working folders are not.
+# Heavy source media. `npm run media:build` converts these into the committed
+# public/media set that ships with the deployment. Sources and intermediate
+# folders stay out of git; only the built media and the asset map are committed.
 cdn-assets/
 cdn-assets-optimized/
 cdn-assets-upload-report.json

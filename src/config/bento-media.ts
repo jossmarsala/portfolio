@@ -9,7 +9,7 @@ import { cdnAsset } from "./cdn-assets";
  * lets the grid paint a still immediately and start looping before the visitor
  * has scrolled down to it.
  *
- * Video posters follow the CDN naming convention `<video>.webp`, so
+ * Video posters follow the `<video>.webp` naming convention, so
  * `SourceVideo` attaches them automatically.
  */
 export type BentoMedia =

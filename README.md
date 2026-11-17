@@ -88,8 +88,10 @@ direct-link projects. `VITE_SITE_URL` overrides the default production origin
 
 ### Media
 
-Project media is optimized once and served from **Vercel Blob**. The generated
-map in `src/config/cdn-assets-map.json` is the single source of truth:
+Project media ships with the deployment from `public/media/`. The generated map
+in `src/config/cdn-assets-map.json` is the single source of truth: every entry
+resolves to a same-origin `/media/…` URL, so there is no third-party CDN to 403,
+time out or rate-limit the hero carousel and case studies.
 
 ```tsx
 import { PortfolioMedia } from "@/components/media/PortfolioMedia";
@@ -97,7 +99,7 @@ import { cdnAsset } from "@/config/cdn-assets";
 
 <PortfolioMedia
   imageSrc={cdnAsset("MISU__mockup-poster.webp")}
-  videoSrc={cdnAsset("MISU__app-showcase.webm")}
+  videoSrc={cdnAsset("MISU__app-showcase.mp4")}
   alt="Misu catalog screen"
 />
 ```
@@ -106,16 +108,27 @@ import { cdnAsset } from "@/config/cdn-assets";
 - Falls back to the image on error, autoplay rejection or unsupported codec.
 - Never mounts video when `prefers-reduced-motion: reduce` is set.
 - Only the image is eager; video is `preload="none"` until in view.
-- Absolute Blob URLs pass through `mediaUrl()` untouched; set
-  `VITE_MEDIA_BASE_URL` only for media that is still served from `public/`.
+- Relative paths pass through `mediaUrl()` untouched; set
+  `VITE_MEDIA_BASE_URL` only to re-point relative media at another origin.
 
-The component is intentionally not yet wired into existing galleries — swap
-`<img>` / `<video>` instances over when the new imagery is ready.
+Add or replace media by dropping the standardized files in `cdn-assets/` (the
+folder is gitignored), then:
 
-To add or replace media: drop the source files in `cdn-assets/`, run
-`npm run optimize:cdn`, then `npm run upload:cdn`, and reference the result with
-`cdnAsset(...)`. Both working folders are gitignored; only the generated map and
-scripts are committed.
+```bash
+npm run media:build   # -> public/media + regenerated cdn-assets-map.json
+```
+
+`scripts/build-public-media.mjs` converts stills to WebP (longest edge capped at
+2000 px), transcodes clips to H.264 MP4 (max width 1920, `+faststart`, no audio)
+and captures a `.webp` poster per video. The output is committed, so production
+builds do not need ffmpeg or the source masters.
+
+> The previous Vercel Blob upload path (`npm run upload:cdn`) is still in the
+> repo, but the store was suspended (`Billing State: Inactive`), which returned
+> `403 Your store is blocked` for every asset. Only use it again after
+> reactivating billing in the Vercel dashboard and switching the map back to
+> Blob URLs.
+
 
 #### Bento tiles (index page)
 
@@ -132,15 +145,15 @@ set from the same masters:
 
 ```bash
 npm run optimize:bento
-npm run upload:cdn -- --merge   # keeps the rest of the map intact
+npm run media:build   # copies the bento derivatives into public/media
 ```
 
 `src/config/bento-media.ts` lists the resulting tiles; `preload="auto"` starts
 buffering as soon as the works section mounts (at idle, seconds before it can be
 scrolled to) and the poster paints immediately, so the grid is never a row of
 black boxes. `vite.config.ts` also injects `<link rel="preload" as="image">` tags
-for the posters straight from the CDN map, so the stills are already decoded by
-the time the grid appears.
+for the posters straight from the asset map, so the stills are already decoded
+by the time the grid appears.
 
 ### Lazy loading
 
@@ -172,4 +185,5 @@ Vercel project environment.
 | `npm run optimize:images`  | Batch image optimization                    |
 | `npm run optimize:videos`  | Batch video optimization                    |
 | `npm run optimize:bento`   | Tile-sized videos + posters for the index bentos |
+| `npm run media:build`      | Build `public/media` + regenerate the asset map |
 | `npm run lint`             | Oxlint                                      |
